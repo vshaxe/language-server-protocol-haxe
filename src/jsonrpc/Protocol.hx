@@ -4,6 +4,9 @@ import jsonrpc.Types;
 import jsonrpc.CancellationToken;
 import jsonrpc.ErrorUtils.errorToString;
 
+typedef RequestHandler<P,R,E> = P->CancellationToken->(R->Void)->(ResponseError<E>->Void)->Void;
+typedef NotificationHandler<P> = P->Void;
+
 /**
     A simple JSON-RPC protocol base class.
 **/
@@ -14,10 +17,14 @@ class Protocol {
     var writeMessage:Message->Void;
     var requestTokens:Map<String,CancellationTokenSource>;
     var nextRequestId:Int;
+    var requestHandlers:Map<String,RequestHandler<Dynamic,Dynamic,Dynamic>>;
+    var notificationHandlers:Map<String,NotificationHandler<Dynamic>>;
     var responseCallbacks:Map<Int,ResponseCallbackEntry>;
 
     public function new(writeMessage) {
         this.writeMessage = writeMessage;
+        requestHandlers = new Map();
+        notificationHandlers = new Map();
         requestTokens = new Map();
         nextRequestId = 0;
     }
@@ -31,6 +38,14 @@ class Protocol {
             else
                 handleNotification(cast message);
         }
+    }
+
+    public inline function onRequest<P,R,E>(method:RequestMethod<P,R,E>, handler:RequestHandler<P,R,E>):Void {
+        requestHandlers[method] = handler;
+    }
+
+    public inline function onNotification<P>(method:NotificationMethod<P>, handler:NotificationHandler<P>):Void {
+        notificationHandlers[method] = handler;
     }
 
     function handleRequest(request:RequestMessage) {
@@ -58,11 +73,15 @@ class Protocol {
             writeMessage(response);
         }
 
+        var handler = requestHandlers[request.method];
+        if (handleMessage == null)
+            return reject(new ResponseError(ResponseError.MethodNotFound, 'Unhandled method ${request.method}'));
+
         var tokenSource = new CancellationTokenSource();
         requestTokens[tokenKey] = tokenSource;
 
         try {
-            processRequest(request, tokenSource.token, resolve, reject);
+            handler(request.params, tokenSource.token, resolve, reject);
         } catch (e:Dynamic) {
             requestTokens.remove(tokenKey);
 
@@ -81,8 +100,11 @@ class Protocol {
                 tokenSource.cancel();
             }
         } else {
+            var handler = notificationHandlers[notification.method];
+            if (handler == null)
+                return;
             try {
-                processNotification(notification);
+                handler(notification.params);
             } catch (e:Dynamic) {
                 logError(errorToString(e, 'Exception while processing notification ${notification.method}: '));
             }
@@ -131,14 +153,6 @@ class Protocol {
         if (token != null)
             token.setCallback(function() sendNotification(CANCEL_METHOD, {id: id}));
         writeMessage(request);
-    }
-
-    // these should be implemented in sub-class
-    function processRequest(request:RequestMessage, cancelToken:CancellationToken, resolve:Dynamic->Void, reject:ResponseError<Dynamic>->Void):Void {
-        reject(new ResponseError(ResponseError.MethodNotFound, 'Unhandled method ${request.method}'));
-    }
-
-    function processNotification(notification:NotificationMessage):Void {
     }
 
     function logError(message:String):Void {

@@ -19,12 +19,12 @@ class MethodNames {
         It asks the server to shutdown, but to not exit (otherwise the response might not be delivered correctly to the client).
         There is a separate exit notification that asks the server to exit.
     **/
-    static inline var Shutdown = new RequestMethod<Void,Void,Void>("shutdown");
+    static inline var Shutdown = new RequestMethod<NoData,NoData,NoData>("shutdown");
 
     /**
         A notification to ask the server to exit its process.
     **/
-    static inline var Exit = new NotificationMethod<Void>("exit");
+    static inline var Exit = new NotificationMethod<NoData>("exit");
 
     /**
         The show message notification is sent from a server to a client to ask the client to display a particular message in the user interface.
@@ -79,83 +79,83 @@ class MethodNames {
         If computing complete completion items is expensive servers can additional provide a handler for the resolve completion item request.
         This request is send when a completion item is selected in the user interface.
     **/
-    static inline var Completion = new RequestMethod<TextDocumentPositionParams,EitherType<Array<CompletionItem>,CompletionList>,Void>("textDocument/completion");
+    static inline var Completion = new RequestMethod<TextDocumentPositionParams,EitherType<Array<CompletionItem>,CompletionList>,NoData>("textDocument/completion");
 
     /**
         The request is sent from the client to the server to resolve additional information for a given completion item.
     **/
-    static inline var CompletionItemResolve = new RequestMethod<CompletionItem,CompletionItem,Void>("completionItem/resolve");
+    static inline var CompletionItemResolve = new RequestMethod<CompletionItem,CompletionItem,NoData>("completionItem/resolve");
 
     /**
         The hover request is sent from the client to the server to request hover information at a given text document position.
     **/
-    static inline var Hover = new RequestMethod<TextDocumentPositionParams,Hover,Void>("textDocument/hover");
+    static inline var Hover = new RequestMethod<TextDocumentPositionParams,Hover,NoData>("textDocument/hover");
 
     /**
         The signature help request is sent from the client to the server to request signature information at a given cursor position.
     **/
-    static inline var SignatureHelp = new RequestMethod<TextDocumentPositionParams,SignatureHelp,Void>("textDocument/signatureHelp");
+    static inline var SignatureHelp = new RequestMethod<TextDocumentPositionParams,SignatureHelp,NoData>("textDocument/signatureHelp");
 
     /**
         The goto definition request is sent from the client to the server to to resolve the defintion location of a symbol at a given text document position.
     **/
-    static inline var GotoDefinition = new RequestMethod<TextDocumentPositionParams,EitherType<Location,Array<Location>>,Void>("textDocument/definition");
+    static inline var GotoDefinition = new RequestMethod<TextDocumentPositionParams,EitherType<Location,Array<Location>>,NoData>("textDocument/definition");
 
     /**
         The references request is sent from the client to the server to resolve project-wide references for the symbol denoted by the given text document position.
     **/
-    static inline var FindReferences = new RequestMethod<ReferenceParams,Array<Location>,Void>("textDocument/references");
+    static inline var FindReferences = new RequestMethod<ReferenceParams,Array<Location>,NoData>("textDocument/references");
 
     /**
         The document highlight request is sent from the client to the server to to resolve a document highlights for a given text document position.
     **/
-    static inline var DocumentHighlights = new RequestMethod<TextDocumentPositionParams,DocumentHighlight,Void>("textDocument/documentHighlight");
+    static inline var DocumentHighlights = new RequestMethod<TextDocumentPositionParams,DocumentHighlight,NoData>("textDocument/documentHighlight");
 
     /**
         The document symbol request is sent from the client to the server to list all symbols found in a given text document.
     **/
-    static inline var DocumentSymbols = new RequestMethod<DocumentSymbolParams,Array<SymbolInformation>,Void>("textDocument/documentSymbol");
+    static inline var DocumentSymbols = new RequestMethod<DocumentSymbolParams,Array<SymbolInformation>,NoData>("textDocument/documentSymbol");
 
     /**
         The workspace symbol request is sent from the client to the server to list project-wide symbols matching the query string.
     **/
-    static inline var WorkspaceSymbols = new RequestMethod<WorkspaceSymbolParams,Array<SymbolInformation>,Void>("workspace/symbol");
+    static inline var WorkspaceSymbols = new RequestMethod<WorkspaceSymbolParams,Array<SymbolInformation>,NoData>("workspace/symbol");
 
     /**
         The code action request is sent from the client to the server to compute commands for a given text document and range.
         The request is trigger when the user moves the cursor into an problem marker in the editor or presses the lightbulb associated with a marker.
     **/
-    static inline var CodeAction = new RequestMethod<CodeActionParams,Array<Command>,Void>("textDocument/codeAction");
+    static inline var CodeAction = new RequestMethod<CodeActionParams,Array<Command>,NoData>("textDocument/codeAction");
 
     /**
         The code lens request is sent from the client to the server to compute code lenses for a given text document.
     **/
-    static inline var CodeLens = new RequestMethod<CodeLensParams,Array<CodeLens>,Void>("textDocument/codeLens");
+    static inline var CodeLens = new RequestMethod<CodeLensParams,Array<CodeLens>,NoData>("textDocument/codeLens");
 
     /**
         The code lens resolve request is sent from the clien to the server to resolve the command for a given code lens item.
     **/
-    static inline var CodeLensResolve = new RequestMethod<CodeLens,CodeLens,Void>("codeLens/resolve");
+    static inline var CodeLensResolve = new RequestMethod<CodeLens,CodeLens,NoData>("codeLens/resolve");
 
     /**
         The document formatting resquest is sent from the server to the client to format a whole document.
     **/
-    static inline var DocumentFormatting = new RequestMethod<DocumentFormattingParams,Array<TextEdit>,Void>("textDocument/formatting");
+    static inline var DocumentFormatting = new RequestMethod<DocumentFormattingParams,Array<TextEdit>,NoData>("textDocument/formatting");
 
     /**
         The document range formatting request is sent from the client to the server to format a given range in a document.
     **/
-    static inline var DocumentRangeFormatting = new RequestMethod<DocumentRangeFormattingParams,Array<TextEdit>,Void>("textDocument/rangeFormatting");
+    static inline var DocumentRangeFormatting = new RequestMethod<DocumentRangeFormattingParams,Array<TextEdit>,NoData>("textDocument/rangeFormatting");
 
     /**
         The document on type formatting request is sent from the client to the server to format parts of the document during typing.
     **/
-    static inline var DocumentOnTypeFormatting = new RequestMethod<DocumentOnTypeFormattingParams,Array<TextEdit>,Void>("textDocument/onTypeFormatting");
+    static inline var DocumentOnTypeFormatting = new RequestMethod<DocumentOnTypeFormattingParams,Array<TextEdit>,NoData>("textDocument/onTypeFormatting");
 
     /**
         The rename request is sent from the client to the server to do a workspace wide rename of a symbol.
     **/
-    static inline var Rename = new RequestMethod<RenameParams,WorkspaceEdit,Void>("textDocument/rename");
+    static inline var Rename = new RequestMethod<RenameParams,WorkspaceEdit,NoData>("textDocument/rename");
 
     /**
         This notification is sent from the server to the client to ask the client to log a particular message in the vshaxe output channel.

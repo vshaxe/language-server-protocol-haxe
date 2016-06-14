@@ -105,3 +105,5 @@ abstract RequestMethod<TParams,TResponse,TError>(String) to String {
 abstract NotificationMethod<TParams>(String) to String {
     public inline function new(method:String) this = method;
 }
+
+enum NoData {}

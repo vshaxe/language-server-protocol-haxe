@@ -7,63 +7,81 @@ using haxe.macro.Tools;
 
 class ProtocolMacro {
     static function build(methodsClass:String):Array<Field> {
-        var fields = Context.getBuildFields();
-
-        var requestCases = new Array<Case>();
-        var notificationCases = new Array<Case>();
-
-        var cl = switch (Context.getType(methodsClass).follow()) {
+        var methodNamesClass = switch (Context.getType(methodsClass)) {
             case TInst(_.get() => cl, _): cl;
             default: throw false;
         }
-        var clPath = cl.module.split(".");
-        clPath.push(cl.name);
-        for (method in cl.statics.get()) {
-            var methodNameExpr = macro $p{clPath.concat([method.name])};
+
+        var fields = Context.getBuildFields();
+
+        var methodNamesClassPath = methodNamesClass.module.split(".");
+        methodNamesClassPath.push(methodNamesClass.name);
+
+        for (method in methodNamesClass.statics.get()) {
+            var methodNameExpr = macro $p{methodNamesClassPath.concat([method.name])};
             var handlerName = "on" + method.name;
-            var handlerArgDefs = [];
-            var handlerCallArgs = [];
             switch (method.type) {
                 case TAbstract(_.get() => {name: "RequestMethod"}, [params, resultData, errorData]):
                     var paramsCT = params.toComplexType();
-                    if (params.toString() != "Void") {
-                        handlerArgDefs.push({name: "params", type: paramsCT});
-                        handlerCallArgs.push(macro request.params);
-                    }
+                    var resultCT = resultData.toComplexType();
+                    var errorCT = errorData.toComplexType();
 
-                    handlerArgDefs.push({name: "token", type: macro : jsonrpc.CancellationToken});
-                    handlerCallArgs.push(macro token);
+                    var handlerCT = macro : jsonrpc.Protocol.RequestHandler<$paramsCT, $resultCT, $errorCT>;
 
-                    var resultDataCT, resolveExpr;
-                    if (resultData.toString() != "Void") {
-                        resultDataCT = resultData.toComplexType();
-                        resolveExpr = macro resolve;
-                    } else {
-                        resultDataCT = macro : Void;
-                        resolveExpr = macro function() resolve(null);
-                    }
-                    handlerArgDefs.push({name: "resolve", type: macro : $resultDataCT->Void});
-                    handlerCallArgs.push(resolveExpr);
-
-                    var errorDataCT = errorData.toComplexType();
-                    handlerArgDefs.push({name: "reject", type: macro : jsonrpc.ResponseError<$errorDataCT>->Void});
-                    handlerCallArgs.push(macro reject);
-
-                    requestCases.push({
-                        values: [methodNameExpr],
-                        expr: macro this.$handlerName($a{handlerCallArgs})
+                    fields.push({
+                        pos: method.pos,
+                        name: handlerName,
+                        kind: FProp("never", "set", handlerCT),
+                        access: [APublic],
                     });
+
+                    fields.push({
+                        pos: method.pos,
+                        name: "set_" + handlerName,
+                        access: [AInline],
+                        kind: FFun({
+                            args: [{name: "value", type: handlerCT}],
+                            ret: handlerCT,
+                            expr: macro {
+                                onRequest($methodNameExpr, value);
+                                return value;
+                            }
+                        })
+                    });
+
                 case TAbstract(_.get() => {name: "NotificationMethod"}, [params]):
                     var paramsCT = params.toComplexType();
+
+                    var handlerCT = macro : jsonrpc.Protocol.NotificationHandler<$paramsCT>;
+
+                    fields.push({
+                        pos: method.pos,
+                        name: handlerName,
+                        kind: FProp("never", "set", handlerCT),
+                        access: [APublic],
+                    });
+
+                    fields.push({
+                        pos: method.pos,
+                        name: "set_" + handlerName,
+                        access: [AInline],
+                        kind: FFun({
+                            args: [{name: "value", type: handlerCT}],
+                            ret: handlerCT,
+                            expr: macro {
+                                onNotification($methodNameExpr, value);
+                                return value;
+                            }
+                        })
+                    });
+
                     var sendArgDefs = [];
                     var sendCallArgs = [methodNameExpr];
-                    if (params.toString() != "Void") {
+                    if (params.match(TEnum(_.get() => {name: "NoData"}, _))) {
+                        sendCallArgs.push(macro null);
+                    } else {
                         sendArgDefs.push({name: "params", type: paramsCT});
                         sendCallArgs.push(macro params);
-                        handlerArgDefs.push({name: "params", type: paramsCT});
-                        handlerCallArgs.push(macro notification.params);
-                    } else {
-                        sendCallArgs.push(macro null);
                     }
 
                     fields.push({
@@ -77,57 +95,10 @@ class ProtocolMacro {
                         })
                     });
 
-                    notificationCases.push({
-                        values: [methodNameExpr],
-                        expr: macro this.$handlerName($a{handlerCallArgs})
-                    });
                 default:
                     throw false;
             }
-            fields.push({
-                pos: method.pos,
-                name: handlerName,
-                access: [APublic,ADynamic],
-                kind: FFun({
-                    ret: macro : Void,
-                    args: handlerArgDefs,
-                    expr: macro {}
-                })
-            });
         }
-
-        var pos = Context.currentPos();
-        fields.push({
-            pos: pos,
-            name: "processRequest",
-            access: [AOverride],
-            kind: FFun({
-                ret: null,
-                args: [
-                    {name: "request", type: macro : jsonrpc.Types.RequestMessage},
-                    {name: "token", type: macro : jsonrpc.CancellationToken},
-                    {name: "resolve", type: macro : Dynamic->Void},
-                    {name: "reject", type: macro : jsonrpc.ResponseError<Dynamic>->Void},
-                ],
-                expr: {
-                    expr: ESwitch(macro request.method, requestCases, macro super.processRequest(request, token, resolve, reject)),
-                    pos: pos
-                }
-            })
-        });
-        fields.push({
-            pos: pos,
-            name: "processNotification",
-            access: [AOverride],
-            kind: FFun({
-                ret: null,
-                args: [{name: "notification", type: macro : jsonrpc.Types.NotificationMessage}],
-                expr: {
-                    expr: ESwitch(macro notification.method, notificationCases, null),
-                    pos: pos
-                }
-            })
-        });
 
         return fields;
     }

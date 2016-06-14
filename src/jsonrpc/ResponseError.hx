@@ -1,6 +1,6 @@
 package jsonrpc;
 
-import jsonrpc.Types.ResponseErrorData;
+import jsonrpc.Types;
 
 abstract ResponseError<T>(ResponseErrorData) to ResponseErrorData {
     /**
@@ -35,7 +35,7 @@ abstract ResponseError<T>(ResponseErrorData) to ResponseErrorData {
             this.data = data;
     }
 
-    public static inline function internalError(message:String):ResponseError<Void> {
+    public static inline function internalError(message:String):ResponseError<NoData> {
         return new ResponseError(InternalError, message);
     }
 }
