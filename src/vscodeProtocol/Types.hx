@@ -575,8 +575,6 @@ typedef DidChangeConfigurationParams = {
 }
 
 typedef DidOpenTextDocumentParams = {
-    >TextDocumentIdentifier,
-
     /**
         The document that was opened.
     **/
