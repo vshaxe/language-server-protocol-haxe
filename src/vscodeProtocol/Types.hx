@@ -166,6 +166,12 @@ class MethodNames {
         This notification is sent from the client to the server when display arguments index is changed.
     **/
     static inline var VSHaxeDidChangeDisplayConfigurationIndex = new NotificationMethod<{index:Int}>("vshaxe/didChangeDisplayConfigurationIndex");
+
+    /**
+        This reuqest is sent from the client to the server to calculate the haxe package for a given file,
+        based on class paths configuration.
+    **/
+    static inline var VSHaxeCalculatePackage = new RequestMethod<{fsPath:String},{pack:String},NoData>("vshaxe/calculatePackage");
 }
 
 /**
