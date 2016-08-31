@@ -172,6 +172,11 @@ class MethodNames {
         based on class paths configuration.
     **/
     static inline var VSHaxeCalculatePackage = new RequestMethod<{fsPath:String},{pack:String},NoData>("vshaxe/calculatePackage");
+
+    /**
+        This notification is sent from the client to the server to run a global diagnostics check.
+    **/
+    static inline var VSHaxeRunGlobalDiagnostics = new NotificationMethod<String>("vshaxe/runGlobalDiagnostics");
 }
 
 /**
