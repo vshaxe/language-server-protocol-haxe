@@ -130,7 +130,7 @@ class Protocol {
         }
     }
 
-    inline function sendNotification<P>(name:NotificationMethod<P>, params:P):Void {
+    public inline function sendNotification<P>(name:NotificationMethod<P>, params:P):Void {
         var message:NotificationMessage = {
             jsonrpc: PROTOCOL_VERSION,
             method: name
@@ -140,7 +140,7 @@ class Protocol {
         writeMessage(message);
     }
 
-    function sendRequest<P,R,E>(method:RequestMethod<P,R,E>, params:P, token:Null<CancellationToken>, resolve:P->Void, reject:E->Void):Void {
+    public function sendRequest<P,R,E>(method:RequestMethod<P,R,E>, params:P, token:Null<CancellationToken>, resolve:P->Void, reject:E->Void):Void {
         var id = nextRequestId++;
         var request:RequestMessage = {
             jsonrpc: PROTOCOL_VERSION,

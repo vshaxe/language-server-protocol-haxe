@@ -156,27 +156,6 @@ class MethodNames {
         The rename request is sent from the client to the server to do a workspace wide rename of a symbol.
     **/
     static inline var Rename = new RequestMethod<RenameParams,WorkspaceEdit,NoData>("textDocument/rename");
-
-    /**
-        This notification is sent from the server to the client to ask the client to log a particular message in the vshaxe output channel.
-    **/
-    static inline var VSHaxeLog = new NotificationMethod<String>("vshaxe/log");
-
-    /**
-        This notification is sent from the client to the server when display arguments index is changed.
-    **/
-    static inline var VSHaxeDidChangeDisplayConfigurationIndex = new NotificationMethod<{index:Int}>("vshaxe/didChangeDisplayConfigurationIndex");
-
-    /**
-        This reuqest is sent from the client to the server to calculate the haxe package for a given file,
-        based on class paths configuration.
-    **/
-    static inline var VSHaxeCalculatePackage = new RequestMethod<{fsPath:String},{pack:String},NoData>("vshaxe/calculatePackage");
-
-    /**
-        This notification is sent from the client to the server to run a global diagnostics check.
-    **/
-    static inline var VSHaxeRunGlobalDiagnostics = new NotificationMethod<String>("vshaxe/runGlobalDiagnostics");
 }
 
 /**
@@ -236,7 +215,7 @@ typedef Diagnostic = {
     /**
         The diagnostic's code.
     **/
-    @:optional var code:haxe.extern.EitherType<Int,String>;
+    @:optional var code:EitherType<Int,String>;
 
     /**
         A human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'.
