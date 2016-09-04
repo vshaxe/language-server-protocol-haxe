@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/vshaxe/vscode-languageserver-haxe.svg?branch=master)](https://travis-ci.org/vshaxe/vscode-languageserver-haxe)
+[![Build Status](https://travis-ci.org/vshaxe/language-server-protocol-haxe.svg?branch=master)](https://travis-ci.org/vshaxe/language-server-protocol-haxe)
 
 This is an implementation of the [Language Server Protocol](https://github.com/Microsoft/language-server-protocol) in [Haxe](http://haxe.org/).
 
