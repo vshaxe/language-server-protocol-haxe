@@ -1,4 +1,4 @@
-package vscodeProtocol;
+package languageServerProtocol;
 
 import haxe.extern.EitherType;
 import jsonrpc.Types;
@@ -8,7 +8,7 @@ import jsonrpc.Types;
     Each value must be typed as either `RequestMethod` or `NotificationMethod`.
 **/
 @:publicFields
-class MethodNames {
+class Methods {
     /**
         The initialize request is sent as the first request from the client to the server.
     **/
