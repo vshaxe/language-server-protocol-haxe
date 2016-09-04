@@ -155,8 +155,7 @@ class Protocol {
         writeMessage(request);
     }
 
-    function logError(message:String):Void {
-    }
+    public dynamic function logError(message:String):Void {}
 }
 
 /**
