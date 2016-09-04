@@ -1,0 +1,5 @@
+-cp src
+-js all.js
+-lib hxnodejs
+--macro include("", true, null, ["src"])
+--no-output
