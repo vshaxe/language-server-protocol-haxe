@@ -721,7 +721,7 @@ typedef CompletionItem = {
         additional modifications to the current document should be described with the
         additionalTextEdits-property.
     **/
-    @:optional var commnad:Command;
+    @:optional var command:Command;
 
     /**
         An data entry field that is preserved on a completion item between a completion and a completion resolve request.
