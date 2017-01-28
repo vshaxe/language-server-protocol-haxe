@@ -240,7 +240,7 @@ typedef Diagnostic = {
     Provides a title which will be used to represent a command in the UI and,
     optionally, an array of arguments which will be passed to the command handler function when invoked.
 **/
-typedef Command  ={
+typedef Command = {
     /**
         Title of the command, like `save`.
     **/
