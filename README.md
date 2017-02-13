@@ -5,4 +5,4 @@ This is an implementation of the [Language Server Protocol](https://github.com/M
 It's used by the [Haxe Language Server](https://github.com/vshaxe/haxe-languageserver) and was separated from it
 so one could implement their own client and/or server using Haxe.
 
-**Status**: beta
+**Protocol version**: 3.0 ([protocol.md 20cc22e](https://github.com/Microsoft/language-server-protocol/blob/20cc22ec7abb26c21959a95c5cca1cd8a0fa2d54/protocol.md))

@@ -15,14 +15,21 @@ class Methods {
     static inline var Initialize = new RequestMethod<InitializeParams,InitializeResult,InitializeError>("initialize");
 
     /**
+        The initialized notification is sent from the client to the server after the client is fully initialized
+        and is able to listen to arbritary requests and notifications sent from the server.
+    **/
+    static inline var Initialized = new RequestMethod<NoData,NoData,NoData>("initialized");
+
+    /**
         The shutdown request is sent from the client to the server.
-        It asks the server to shutdown, but to not exit (otherwise the response might not be delivered correctly to the client).
+        It asks the server to shut down, but to not exit (otherwise the response might not be delivered correctly to the client).
         There is a separate exit notification that asks the server to exit.
     **/
     static inline var Shutdown = new RequestMethod<NoData,NoData,NoData>("shutdown");
 
     /**
         A notification to ask the server to exit its process.
+        The server should exit with success code 0 if the shutdown request has been received before; otherwise with error code 1.
     **/
     static inline var Exit = new NotificationMethod<NoData>("exit");
 
@@ -32,9 +39,31 @@ class Methods {
     static inline var ShowMessage = new NotificationMethod<ShowMessageParams>("window/showMessage");
 
     /**
+        The show message request is sent from a server to a client to ask the client to display a particular message in the user interface.
+        In addition to the show message notification the request allows to pass actions and to wait for an answer from the client.
+    **/
+    static inline var ShowMessageRequest = new RequestMethod<ShowMessageRequestParams,MessageActionItem,NoData>("window/showMessageRequest");
+
+    /**
         The log message notification is send from the server to the client to ask the client to log a particular message.
     **/
     static inline var LogMessage = new NotificationMethod<LogMessageParams>("window/logMessage");
+
+    /**
+        The telemetry notification is sent from the server to the client to ask the client to log a telemetry event.
+    **/
+    static inline var Telemetry = new NotificationMethod<Dynamic>("telemetry/event");
+
+    /**
+        The client/registerCapability request is sent from the server to the client to register for a new capability on the client side.
+        Not all clients need to support dynamic capability registration. A client opts in via the `ClientCapabilities.dynamicRegistration` property.
+    **/
+    static inline var RegisterCapability = new RequestMethod<RegistrationParams,NoData,NoData>("client/registerCapability");
+
+    /**
+        The client/unregisterCapability request is sent from the server to the client to unregister a previously register capability.
+    **/
+    static inline var UnregisterCapability = new RequestMethod<UnregistrationParams,NoData,NoData>("client/unregisterCapability ");
 
     /**
         A notification send from the client to the server to signal the change of configuration settings.
@@ -51,6 +80,19 @@ class Methods {
         The document change notification is sent from the client to the server to signal changes to a text document.
     **/
     static inline var DidChangeTextDocument = new NotificationMethod<DidChangeTextDocumentParams>("textDocument/didChange");
+
+    /**
+        The document will save notification is sent from the client to the server before the document is actually saved.
+    **/
+    static inline var WillSaveTextDocument = new NotificationMethod<WillSaveTextDocumentParams>("textDocument/willSave");
+
+    /**
+        The document will save request is sent from the client to the server before the document is actually saved.
+        The request can return an array of TextEdits which will be applied to the text document before it is saved.
+        Please note that clients might drop results if computing the text edits took too long or if a server constantly fails on this request.
+        This is done to keep the save fast and reliable.
+    **/
+    static inline var WillSaveWaitUntilTextDocument = new RequestMethod<WillSaveTextDocumentParams,Array<TextEdit>,NoData>("textDocument/willSaveWaitUntil");
 
     /**
         The document close notification is sent from the client to the server when the document got closed in the client.
@@ -109,7 +151,7 @@ class Methods {
     /**
         The document highlight request is sent from the client to the server to to resolve a document highlights for a given text document position.
     **/
-    static inline var DocumentHighlights = new RequestMethod<TextDocumentPositionParams,DocumentHighlight,NoData>("textDocument/documentHighlight");
+    static inline var DocumentHighlights = new RequestMethod<TextDocumentPositionParams,Array<DocumentHighlight>,NoData>("textDocument/documentHighlight");
 
     /**
         The document symbol request is sent from the client to the server to list all symbols found in a given text document.
@@ -138,6 +180,16 @@ class Methods {
     static inline var CodeLensResolve = new RequestMethod<CodeLens,CodeLens,NoData>("codeLens/resolve");
 
     /**
+        The document links request is sent from the client to the server to request the location of links in a document.
+    **/
+    static inline var DocumentLink = new RequestMethod<DocumentLinkParams,Null<Array<DocumentLink>>,NoData>("textDocument/documentLink");
+
+    /**
+        The document link resolve request is sent from the client to the server to resolve the target of a given document link.
+    **/
+    static inline var DocumentLinkResolve = new RequestMethod<DocumentLink,DocumentLink,NoData>("documentLink/resolve");
+
+    /**
         The document formatting resquest is sent from the server to the client to format a whole document.
     **/
     static inline var DocumentFormatting = new RequestMethod<DocumentFormattingParams,Array<TextEdit>,NoData>("textDocument/formatting");
@@ -156,7 +208,21 @@ class Methods {
         The rename request is sent from the client to the server to do a workspace wide rename of a symbol.
     **/
     static inline var Rename = new RequestMethod<RenameParams,WorkspaceEdit,NoData>("textDocument/rename");
+
+    /**
+        The workspace/executeCommand request is sent from the client to the server to trigger command execution on the server.
+        In most cases the server creates a `WorkspaceEdit` structure and applies the changes to the workspace using the request `workspace/applyEdit`
+        which is sent from the server to the client.
+    **/
+    static inline var ExecuteCommand = new RequestMethod<ExecuteCommandParams,Dynamic,NoData>("workspace/executeCommand");
+
+    /**
+        The workspace/applyEdit request is sent from the server to the client to modify resource on the client side.
+    **/
+    static inline var ApplyEdit = new RequestMethod<ApplyWorkspaceEditParams,ApplyWorkspaceEditResponse,NoData>("workspace/applyEdit");
 }
+
+typedef DocumentUri = String;
 
 /**
     Position in a text document expressed as zero-based line and character offset.
@@ -192,7 +258,7 @@ typedef Range = {
     Represents a location inside a resource, such as a line inside a text file.
 **/
 typedef Location = {
-    var uri:String;
+    var uri:DocumentUri;
     var range:Range;
 }
 
@@ -292,7 +358,7 @@ typedef TextDocumentIdentifier = {
     /**
         The text document's uri.
     **/
-    var uri:String;
+    var uri:DocumentUri;
 }
 
 /**
@@ -302,7 +368,7 @@ typedef TextDocumentItem = {
     /**
         The text document's uri.
     **/
-    var uri:String;
+    var uri:DocumentUri;
 
     /**
         The text document's language identifier.
@@ -347,20 +413,54 @@ typedef TextDocumentPositionParams = {
     var position:Position;
 }
 
+/**
+    Denotes a document through properties like language, schema or pattern.
+**/
+typedef DocumentFilter = {
+    /**
+        A language id, like `haxe`.
+    **/
+    @:optional var language:String;
+
+    /**
+        A Uri [scheme](#Uri.scheme), like `file` or `untitled`.
+    **/
+    @:optional var scheme:String;
+
+    /**
+        A glob pattern, like `*.{hx,hxml}`.
+    **/
+    @:optional var pattern:String;
+}
+
+/**
+    A document selector is the combination of one or many document filters.
+**/
+typedef DocumentSelector = Array<DocumentFilter>;
+
 typedef InitializeParams = {
     /**
         The process Id of the parent process that started the server.
+        Is null if the process has not been started by another process.
+        If the parent process is not alive then the server should exit (see exit notification) its process.
     **/
-    var processId:Int;
+    var processId:Null<Int>;
 
     /**
         The rootPath of the workspace.
-        Is `null` if no folder is open.
+        Is null if no folder is open.
     **/
     var rootPath:Null<String>;
 
     /**
-        The capabilities provided by the client (editor).
+        The rootUri of the workspace.
+        Is null if no folder is open.
+        If both `rootPath` and `rootUri` are set `rootUri` wins.
+    **/
+    var rootUri:Null<DocumentUri>;
+
+    /**
+        The capabilities provided by the client (editor or tool).
     **/
     var capabilities:ClientCapabilities;
 
@@ -368,6 +468,21 @@ typedef InitializeParams = {
         Initialization options passed from the client.
     **/
     @:optional var initializationOptions:Dynamic;
+
+    /**
+        The initial trace setting.
+        If omitted trace is disabled ('off').
+    **/
+    @:optional var trace:TraceMode;
+}
+
+/**
+    Tracing mode.
+**/
+@:enum abstract TraceMode(String) to String {
+    var Off = "off";
+    var Messages = "messages";
+    var Verbose = "verbose";
 }
 
 typedef InitializeResult = {
@@ -386,9 +501,266 @@ typedef InitializeError = {
 }
 
 /**
-    Currently empty.
+    Workspace specific client capabilities.
+
+    Define capabilities the editor / tool provides on the workspace.
 **/
-typedef ClientCapabilities = {}
+typedef WorkspaceClientCapabilites = {
+    /**
+        The client supports applying batch edits to the workspace.
+    **/
+    @:optional var applyEdit:Bool;
+
+    /**
+        Capabilities specific to the `workspace/didChangeConfiguration` notification.
+    **/
+    @:optional var didChangeConfiguration:{
+        /**
+            Did change configuration notification supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+
+    /**
+        Capabilities specific to the `workspace/didChangeWatchedFiles` notification.
+    **/
+    @:optional var didChangeWatchedFiles:{
+        /**
+            Did change watched files notification supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+
+    /**
+        Capabilities specific to the `workspace/symbol` request.
+    **/
+    @:optional var symbol:{
+        /**
+            Symbol request supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+
+    /**
+        Capabilities specific to the `workspace/executeCommand` request.
+    **/
+    @:optional var executeCommand:{
+        /**
+            Execute command supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+}
+
+/**
+    Text document specific client capabilities.
+    Define capabilities the editor / tool provides on text documents.
+**/
+typedef TextDocumentClientCapabilities = {
+    @:optional var synchronization:{
+        /**
+            Whether text document synchronization supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+
+        /**
+            The client supports sending will save notifications.
+        **/
+        @:optional var willSave:Bool;
+
+        /**
+            The client supports sending a will save request and
+            waits for a response providing text edits which will
+            be applied to the document before it is saved.
+        **/
+        @:optional var willSaveWaitUntil:Bool;
+
+        /**
+            The client supports did save notifications.
+        **/
+        @:optional var didSave:Bool;
+    };
+
+    /**
+        Capabilities specific to the `textDocument/completion`
+    **/
+    @:optional var completion:{
+        /**
+            Whether completion supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+
+        /**
+            The client supports the following `CompletionItem` specific
+            capabilities.
+        **/
+        @:optional var completionItem:{
+            /**
+                Client supports snippets as insert text.
+
+                A snippet can define tab stops and placeholders with `$1`, `$2`
+                and `${3:foo}`. `$0` defines the final tab stop, it defaults to
+                the end of the snippet. Placeholders with equal identifiers are linked,
+                that is typing in one will update others too.
+            **/
+            @:optional var snippetSupport:Bool;
+        }
+    };
+
+    /**
+        Capabilities specific to the `textDocument/hover`
+    **/
+    @:optional var hover:{
+        /**
+            Whether hover supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+
+    /**
+        Capabilities specific to the `textDocument/signatureHelp`
+    **/
+    @:optional var signatureHelp:{
+        /**
+            Whether signature help supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+
+    /**
+        Capabilities specific to the `textDocument/references`
+    **/
+    @:optional var references:{
+        /**
+            Whether references supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+
+    /**
+        Capabilities specific to the `textDocument/documentHighlight`
+    **/
+    @:optional var documentHighlight:{
+        /**
+            Whether document highlight supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+
+    /**
+        Capabilities specific to the `textDocument/documentSymbol`
+    **/
+    @:optional var documentSymbol:{
+        /**
+            Whether document symbol supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+
+    /**
+        Capabilities specific to the `textDocument/formatting`
+    **/
+    @:optional var formatting:{
+        /**
+            Whether formatting supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+
+    /**
+        Capabilities specific to the `textDocument/rangeFormatting`
+    **/
+    @:optional var rangeFormatting:{
+        /**
+            Whether range formatting supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+
+    /**
+        Capabilities specific to the `textDocument/onTypeFormatting`
+    **/
+    @:optional var onTypeFormatting:{
+        /**
+            Whether on type formatting supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+
+    /**
+        Capabilities specific to the `textDocument/definition`
+    **/
+    @:optional var definition:{
+        /**
+            Whether definition supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+
+    /**
+        Capabilities specific to the `textDocument/codeAction`
+    **/
+    @:optional var codeAction:{
+        /**
+            Whether code action supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+
+    /**
+        Capabilities specific to the `textDocument/codeLens`
+    **/
+    @:optional var codeLens:{
+        /**
+            Whether code lens supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+
+    /**
+        Capabilities specific to the `textDocument/documentLink`
+    **/
+    @:optional var documentLink:{
+        /**
+            Whether document link supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+
+    /**
+        Capabilities specific to the `textDocument/rename`
+    **/
+    @:optional var rename:{
+        /**
+            Whether rename supports dynamic registration.
+        **/
+        @:optional var dynamicRegistration:Bool;
+    };
+};
+
+/**
+    Define capabilities for dynamic registration, workspace and text document features the client supports.
+    The `experimental` can be used to pass experimential capabilities under development.
+    For future compatibility a `ClientCapabilities` object literal can have more properties set than currently defined.
+    Servers receiving a `ClientCapabilities` object literal with unknown properties should ignore these properties.
+    A missing property should be interpreted as an absence of the capability.
+**/
+typedef ClientCapabilities = {
+    /**
+        Workspace specific client capabilities.
+    **/
+    @:optional var workspace:WorkspaceClientCapabilites;
+
+    /**
+        Text document specific client capabilities.
+    **/
+    @:optional var textDocument:TextDocumentClientCapabilities;
+
+    /**
+        Experimental client capabilities.
+    **/
+    @:optional var experimental:Dynamic;
+};
 
 /**
     Defines how the host (editor) should sync document changes to the language server.
@@ -411,6 +783,9 @@ typedef ClientCapabilities = {}
     var Incremental = 2;
 }
 
+/**
+    Completion options.
+**/
 typedef CompletionOptions = {
     /**
         The server provides support to resolve additional information for a completion item.
@@ -423,6 +798,9 @@ typedef CompletionOptions = {
     @:optional var triggerCharacters:Array<String>;
 }
 
+/**
+    Signature help options.
+**/
 typedef SignatureHelpOptions = {
     /**
         The characters that trigger signature help automatically.
@@ -449,11 +827,60 @@ typedef DocumentOnTypeFormattingOptions = {
     @:optional var moreTriggerCharacter:Array<String>;
 }
 
+/**
+    Save options.
+**/
+typedef SaveOptions = {
+    /**
+        The client is supposed to include the content on save.
+    **/
+    @:optional var includeText:Bool;
+}
+
+typedef TextDocumentSyncOptions = {
+    /**
+        Open and close notifications are sent to the server.
+    **/
+    @:optional var openClose:Bool;
+
+    /**
+        Change notificatins are sent to the server. See TextDocumentSyncKind.None, TextDocumentSyncKind.Full
+        and TextDocumentSyncKindIncremental.
+    **/
+    @:optional var change:TextDocumentSyncKind;
+
+    /**
+        Will save notifications are sent to the server.
+    **/
+    @:optional var willSave:Bool;
+
+    /**
+        Will save wait until requests are sent to the server.
+    **/
+    @:optional var willSaveWaitUntil:Bool;
+
+    /**
+        Save notifications are sent to the server.
+    **/
+    @:optional var save:SaveOptions;
+}
+
+/**
+    Document link options
+**/
+typedef DocumentLinkOptions = {
+    /**
+        Document links have a resolve provider as well.
+    **/
+    @:optional var resolveProvider:Bool;
+}
+
 typedef ServerCapabilities = {
     /**
         Defines how text documents are synced.
+        Is either a detailed structure defining each notification or for backwards compatibility the TextDocumentSyncKind number.
     **/
-    @:optional var textDocumentSync:TextDocumentSyncKind;
+    @:optional var textDocumentSync:EitherType<TextDocumentSyncOptions,TextDocumentSyncKind>;
 
     /**
         The server provides hover support.
@@ -524,6 +951,31 @@ typedef ServerCapabilities = {
         The server provides rename support.
     **/
     @:optional var renameProvider:Bool;
+
+    /**
+        The server provides document link support.
+    **/
+    @:optional var documentLinkProvider:DocumentLinkOptions;
+
+    /**
+        The server provides execute command support.
+    **/
+    @:optional var executeCommandProvider:ExecuteCommandOptions;
+
+    /**
+        Experimental server capabilities.
+    **/
+    @:optional var experimental:Dynamic;
+}
+
+/**
+    Execute command options.
+**/
+typedef ExecuteCommandOptions = {
+    /**
+        The commands to be executed on the server
+    **/
+    var commands:Array<String>;
 }
 
 typedef ShowMessageParams = {
@@ -539,10 +991,48 @@ typedef ShowMessageParams = {
 }
 
 @:enum abstract MessageType(Int) to Int {
+    /**
+        An error message.
+    **/
     var Error = 1;
+    /**
+        A warning message.
+    **/
     var Warning = 2;
+
+    /**
+        An information message.
+    **/
     var Info = 3;
+
+    /**
+        A log message.
+    **/
     var Log = 4;
+}
+
+typedef ShowMessageRequestParams = {
+    /**
+        The message type.
+    **/
+    var type:MessageType;
+
+    /**
+        The actual message.
+    **/
+    var message:String;
+
+    /**
+        The message action items to present.
+    **/
+    @:optional var actions:Array<MessageActionItem>;
+}
+
+typedef MessageActionItem = {
+    /**
+        A short title like 'Retry', 'Open Log' etc.
+    **/
+    var title:String;
 }
 
 typedef LogMessageParams = {
@@ -555,6 +1045,59 @@ typedef LogMessageParams = {
         The actual message.
     **/
     var message:String;
+}
+
+/**
+    General paramters to to regsiter for a capability.
+**/
+typedef Registration = {
+    /**
+        The id used to register the request. The id can be used to deregister
+        the request again.
+    **/
+    var id:String;
+
+    /**
+        The method / capability to register for.
+    **/
+    var method:String;
+
+    /**
+        Options necessary for the registration.
+    **/
+    @:optional var registerOptions:Dynamic;
+}
+
+typedef RegistrationParams = {
+    var registrations:Array<Registration>;
+}
+
+typedef TextDocumentRegistrationOptions = {
+    /**
+        A document selector to identify the scope of the registration. If set to null
+        the document selector provided on the client side will be used.
+    **/
+    var documentSelector:Null<DocumentSelector>;
+}
+
+/**
+    General parameters to unregister a capability.
+**/
+typedef Unregistration = {
+    /**
+        The id used to unregister the request or notification. Usually an id
+        provided during the register request.
+    **/
+    var id:String;
+
+    /**
+        The method / capability to unregister for.
+    **/
+    var method:String;
+}
+
+typedef UnregistrationParams = {
+    var unregisterations:Array<Unregistration>;
 }
 
 typedef DidChangeConfigurationParams = {
@@ -585,6 +1128,41 @@ typedef DidChangeTextDocumentParams = {
 }
 
 /**
+    The parameters send in a will save text document notification.
+**/
+typedef WillSaveTextDocumentParams  = {
+    /**
+        The document that will be saved.
+     */
+    var textDocument:TextDocumentIdentifier;
+
+    /**
+        The 'TextDocumentSaveReason'.
+    **/
+    var reason:TextDocumentSaveReason;
+}
+
+/**
+    Represents reasons why a text document is saved.
+**/
+@:enum abstract TextDocumentSaveReason(Int) {
+    /**
+        Manually triggered, e.g. by the user pressing save, by starting debugging, or by an API call.
+    **/
+    var Manual = 1;
+
+    /**
+        Automatic after a delay.
+    **/
+    var AfterDelay = 2;
+
+    /**
+        When the editor lost focus.
+    **/
+    var FocusOut = 3;
+}
+
+/**
     An event describing a change to a text document.
     If `range` and `rangeLength` are omitted the new text is considered to be the full content of the document.
 **/
@@ -605,6 +1183,17 @@ typedef TextDocumentContentChangeEvent = {
     var text:String;
 }
 
+/**
+    Descibe options to be used when registered for text document change events.
+**/
+typedef TextDocumentChangeRegistrationOptions = {
+    >TextDocumentRegistrationOptions,
+    /**
+        How documents are synced to the server. See TextDocumentSyncKind.Full and TextDocumentSyncKindIncremental.
+    **/
+    var syncKind:TextDocumentSyncKind;
+}
+
 typedef DidCloseTextDocumentParams = {
     /**
         The document that was closed.
@@ -617,6 +1206,16 @@ typedef DidSaveTextDocumentParams = {
         The document that was saved.
     **/
     var textDocument:TextDocumentIdentifier;
+
+    /**
+        Optional the content when saved. Depends on the `includeText` value when the save notifcation was requested.
+    **/
+    @:optional var text:String;
+}
+
+typedef TextDocumentSaveRegistrationOptions = {
+    >TextDocumentRegistrationOptions,
+    >SaveOptions,
 }
 
 typedef DidChangeWatchedFilesParams = {
@@ -630,8 +1229,19 @@ typedef DidChangeWatchedFilesParams = {
     The file event type.
 **/
 @:enum abstract FileChangeType(Int) to Int {
+    /**
+        The file got created.
+    **/
     var Created = 1;
+
+    /**
+        The file got changed.
+    **/
     var Changed = 2;
+
+    /**
+        The file got deleted.
+    **/
     var Deleted = 3;
 }
 
@@ -642,7 +1252,7 @@ typedef FileEvent = {
     /**
         The file's uri.
     **/
-    var uri:String;
+    var uri:DocumentUri;
 
     /**
         The change type.
@@ -654,7 +1264,7 @@ typedef PublishDiagnosticsParams = {
     /**
         The URI for which diagnostic information is reported.
     **/
-    var uri:String;
+    var uri:DocumentUri;
 
     /**
         An array of diagnostic information items.
@@ -704,6 +1314,12 @@ typedef CompletionItem = {
     @:optional var insertText:String;
 
     /**
+        The format of the insert text. The format applies to both the `insertText` property
+        and the `newText` property of a provided `textEdit`.
+    **/
+    @:optional var insertTextFormat:InsertTextFormat;
+
+    /**
         An edit which is applied to a document when selecting this completion.
         When an edit is provided the value of `insertText` is ignored.
     **/
@@ -727,6 +1343,29 @@ typedef CompletionItem = {
         An data entry field that is preserved on a completion item between a completion and a completion resolve request.
     **/
     @:optional var data:Dynamic;
+}
+
+/**
+    Defines whether the insert text in a completion item should be interpreted as
+    plain text or a snippet.
+**/
+@:enum abstract InsertTextFormat(Int) {
+    /**
+        The primary text to be inserted is treated as a plain string.
+    **/
+    var PlainText = 1;
+
+    /**
+        The primary text to be inserted is treated as a snippet.
+
+        A snippet can define tab stops and placeholders with `$1`, `$2`
+        and `${3:foo}`. `$0` defines the final tab stop, it defaults to
+        the end of the snippet. Placeholders with equal identifiers are linked,
+        that is typing in one will update others too.
+
+        See also: https://github.com/Microsoft/vscode/blob/master/src/vs/editor/contrib/snippet/common/snippet.md
+    **/
+    var Snippet = 2;
 }
 
 /**
@@ -768,6 +1407,24 @@ typedef CompletionList = {
     var Reference = 18;
 }
 
+typedef CompletionRegistrationOptions = {
+    >TextDocumentRegistrationOptions,
+    >CompletionOptions,
+}
+
+/**
+    MarkedString can be used to render human readable text. It is either a markdown string
+    or a code-block that provides a language and a code snippet. The language identifier
+    is sematically equal to the optional language identifier in fenced code blocks in GitHub
+    issues. See https://help.github.com/articles/creating-and-highlighting-code-blocks/#syntax-highlighting
+
+    The pair of a language and a value is an equivalent to markdown:
+    ```${language}
+    ${value}
+    ```
+
+    Note that markdown strings will be sanitized - that means html will be escaped.
+**/
 typedef MarkedString = EitherType<String,{language:String, value:String}>;
 
 /**
@@ -845,6 +1502,11 @@ typedef ParameterInformation = {
         Will be shown in the UI but can be omitted.
     **/
     @:optional var documentation:String;
+}
+
+typedef SignatureHelpRegistrationOptions = {
+    >TextDocumentRegistrationOptions,
+    >SignatureHelpOptions,
 }
 
 typedef ReferenceParams = {
@@ -1020,6 +1682,39 @@ typedef CodeLens = {
     @:optional var data:Dynamic;
 }
 
+typedef CodeLensRegistrationOptions = {
+    >TextDocumentRegistrationOptions,
+    >CodeLensOptions,
+}
+
+typedef DocumentLinkParams = {
+    /**
+        The document to provide document links for.
+    **/
+    var textDocument:TextDocumentIdentifier;
+}
+
+/**
+    A document link is a range in a text document that links to an internal or external resource, like another
+    text document or a web site.
+**/
+typedef DocumentLink = {
+    /**
+        The range this link applies to.
+    **/
+    var range:Range;
+
+    /**
+        The uri this link points to. If missing a resolve request is sent later.
+    **/
+    @:optional var target:DocumentUri;
+}
+
+typedef DocumentLinkRegistrationOptions = {
+    >TextDocumentRegistrationOptions,
+    >DocumentLinkOptions,
+}
+
 typedef DocumentFormattingParams = {
     /**
         The document to format.
@@ -1087,6 +1782,10 @@ typedef DocumentOnTypeFormattingParams = {
     var options:FormattingOptions;
 }
 
+typedef DocumentOnTypeFormattingRegistrationOptions = {
+    >TextDocumentRegistrationOptions,
+    >DocumentOnTypeFormattingOptions,
+}
 
 typedef RenameParams = {
     /**
@@ -1104,4 +1803,37 @@ typedef RenameParams = {
         If the given name is not valid the request must return a `ResponseError` with an appropriate message set.
     **/
     var newName:String;
+}
+
+typedef ExecuteCommandParams = {
+    /**
+        The identifier of the actual command handler.
+    **/
+    var command:String;
+
+    /**
+        Arguments that the command should be invoked with.
+    **/
+    @:optional var arguments:Array<Dynamic>;
+}
+
+/**
+    Execute command registration options.
+**/
+typedef ExecuteCommandRegistrationOptions = {
+    >ExecuteCommandOptions,
+}
+
+typedef ApplyWorkspaceEditParams = {
+    /**
+        The edits to apply.
+    **/
+    var edit:WorkspaceEdit;
+}
+
+typedef ApplyWorkspaceEditResponse = {
+    /**
+        Indicates whether the edit was applied or not.
+    **/
+    var applied:Bool;
 }
