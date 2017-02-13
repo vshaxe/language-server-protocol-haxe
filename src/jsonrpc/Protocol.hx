@@ -74,7 +74,7 @@ class Protocol {
         }
 
         var handler = requestHandlers[request.method];
-        if (handleMessage == null)
+        if (handler == null)
             return reject(new ResponseError(ResponseError.MethodNotFound, 'Unhandled method ${request.method}'));
 
         var tokenSource = new CancellationTokenSource();
