@@ -222,7 +222,15 @@ class Methods {
     static inline var ApplyEdit = new RequestMethod<ApplyWorkspaceEditParams,ApplyWorkspaceEditResponse,NoData>("workspace/applyEdit");
 }
 
-typedef DocumentUri = String;
+abstract DocumentUri(String) {
+    public inline function new(uri:String) {
+        this = uri;
+    }
+
+    public inline function toString() {
+        return this;
+    }
+}
 
 /**
     Position in a text document expressed as zero-based line and character offset.
