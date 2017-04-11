@@ -39,7 +39,9 @@ typedef RequestMessage = {
 }
 
 /**
-    Response Message send as a result of a request.
+    Response Message send as a result of a request. If a request doesn't provide a result value the receiver of a request still needs
+    to return a response message to conform to the JSON RPC specification. The result property of the ResponseMessage should be set to
+    `null` in this case to signal a successful request.
 **/
 typedef ResponseMessage = {
     >Message,
@@ -47,7 +49,7 @@ typedef ResponseMessage = {
     /**
         The request id.
     **/
-    var id:RequestId;
+    var id:Null<RequestId>;
 
     /**
         The result of a request. This can be omitted in the case of an error.

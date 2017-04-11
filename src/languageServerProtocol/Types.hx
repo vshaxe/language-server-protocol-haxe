@@ -349,13 +349,40 @@ typedef TextEdit = {
 }
 
 /**
+    Describes textual changes on a single text document.
+    The text document is referred to as a `VersionedTextDocumentIdentifier`
+    to allow clients to check the text document version before an edit is applied.
+**/
+typedef TextDocumentEdit = {
+    /**
+        The text document to change.
+    **/
+    var textDocument:VersionedTextDocumentIdentifier;
+
+    /**
+        The edits to be applied.
+    **/
+    var edits:Array<TextEdit>;
+}
+
+/**
     A workspace edit represents changes to many resources managed in the workspace.
+    The edit should either provide `changes` or `documentChanges`.
+    If `documentChanges` are present they are preferred over `changes` if the client
+    can handle versioned document edits.
 **/
 typedef WorkspaceEdit = {
     /**
         Holds changes to existing resources.
     **/
-    var changes:haxe.DynamicAccess<Array<TextEdit>>;
+    @:optional var changes:haxe.DynamicAccess<Array<TextEdit>>;
+
+    /**
+        An array of `TextDocumentEdit`s to express changes to specific a specific
+        version of a text document. Whether a client supports versioned document
+        edits is expressed via `WorkspaceClientCapabilites.versionedWorkspaceEdit`.
+    **/
+    @:optional var documentChanges:Array<TextDocumentEdit>;
 }
 
 /**
@@ -502,8 +529,10 @@ typedef InitializeResult = {
 
 typedef InitializeError = {
     /**
-        Indicates whether the client should retry to send the initilize request
-        after showing the message provided in the `ResponseError`.
+        Indicates whether the client execute the following retry logic:
+        (1) show the message provided by the ResponseError to the user
+        (2) user selects retry or cancel
+        (3) if user selected retry the initialize method is sent again.
     **/
     var retry:Bool;
 }
@@ -515,9 +544,20 @@ typedef InitializeError = {
 **/
 typedef WorkspaceClientCapabilites = {
     /**
-        The client supports applying batch edits to the workspace.
+        The client supports applying batch edits to the workspace by supporting
+        the request 'workspace/applyEdit'
     **/
     @:optional var applyEdit:Bool;
+
+    /**
+        Capabilities specific to `WorkspaceEdit`s
+    **/
+    @:optional var workspaceEdit:{
+        /**
+            The client supports versioned document changes in `WorkspaceEdit`s
+        **/
+        @:optional var documentChanges:Bool;
+    };
 
     /**
         Capabilities specific to the `workspace/didChangeConfiguration` notification.
@@ -1186,7 +1226,7 @@ typedef TextDocumentContentChangeEvent = {
     @:optional var rangeLength:Int;
 
     /**
-        The new text of the document.
+        The new text of the range/document.
     **/
     var text:String;
 }
@@ -1461,12 +1501,24 @@ typedef SignatureHelp = {
     var signatures:Array<SignatureInformation>;
 
     /**
-        The active signature.
+        The active signature. If omitted or the value lies outside the
+        range of `signatures` the value defaults to zero or is ignored if
+        `signatures.length === 0`. Whenever possible implementors should
+        make an active decision about the active signature and shouldn't
+        rely on a default value.
+        In future version of the protocol this property might become
+        mandantory to better express this.
     **/
     @:optional var activeSignature:Int;
 
     /**
-        The active parameter of the active signature.
+        The active parameter of the active signature. If omitted or the value
+        lies outside the range of `signatures[activeSignature].parameters`
+        defaults to 0 if the active signature has parameters. If
+        the active signature has no parameters it is ignored.
+        In future version of the protocol this property might become
+        mandantory to better express the active parameter if the
+        active signature does have any.
     **/
     @:optional var activeParameter:Int;
 }
