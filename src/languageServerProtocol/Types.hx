@@ -15,8 +15,9 @@ class Methods {
     static inline var Initialize = new RequestMethod<InitializeParams,InitializeResult,InitializeError>("initialize");
 
     /**
-        The initialized notification is sent from the client to the server after the client is fully initialized
-        and is able to listen to arbritary requests and notifications sent from the server.
+        The initialized notification is sent from the client to the server after the client received the result of the initialize request
+        but before the client is sending any other request or notification to the server. The server can use the initialized notification
+        for example to dynamically register capabilities.
     **/
     static inline var Initialized = new RequestMethod<NoData,NoData,NoData>("initialized");
 
@@ -165,7 +166,7 @@ class Methods {
 
     /**
         The code action request is sent from the client to the server to compute commands for a given text document and range.
-        The request is trigger when the user moves the cursor into an problem marker in the editor or presses the lightbulb associated with a marker.
+        These commands are typically code fixes to either fix problems or to beautify/refactor code.
     **/
     static inline var CodeAction = new RequestMethod<CodeActionParams,Array<Command>,NoData>("textDocument/codeAction");
 
