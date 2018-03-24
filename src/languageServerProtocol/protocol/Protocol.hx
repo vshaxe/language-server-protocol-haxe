@@ -413,7 +413,7 @@ typedef WorkspaceClientCapabilites = {
     Text document specific client capabilities.
 **/
 typedef TextDocumentClientCapabilities = {
-    >ColorClientCapabilities,
+    //>ColorClientCapabilities,
     /**
         Defines which synchronization capabilities the client supports.
     **/
