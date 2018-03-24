@@ -314,44 +314,57 @@ typedef MarkupContent = {
 }
 
 /**
-    Represents reasons why a text document is saved.
+    The kind of a completion entry.
 **/
-@:enum abstract TextDocumentSaveReason(Int) {
-    /**
-        Manually triggered, e.g. by the user pressing save, by starting debugging, or by an API call.
-    **/
-    var Manual = 1;
-
-    /**
-        Automatic after a delay.
-    **/
-    var AfterDelay = 2;
-
-    /**
-        When the editor lost focus.
-    **/
-    var FocusOut = 3;
+@:enum abstract CompletionItemKind(Int) to Int {
+    var Text = 1;
+    var Method = 2;
+    var Function = 3;
+    var Constructor = 4;
+    var Field = 5;
+    var Variable = 6;
+    var Class = 7;
+    var Interface = 8;
+    var Module = 9;
+    var Property = 10;
+    var Unit = 11;
+    var Value = 12;
+    var Enum = 13;
+    var Keyword = 14;
+    var Snippet = 15;
+    var Color = 16;
+    var File = 17;
+    var Reference = 18;
+    var Folder = 19;
+    var EnumMember = 20;
+    var Constant = 21;
+    var Struct = 22;
+    var Event = 23;
+    var Operator = 24;
+    var TypeParameter = 25;
 }
 
 /**
-    An event describing a change to a text document.
-    If `range` and `rangeLength` are omitted the new text is considered to be the full content of the document.
+    Defines whether the insert text in a completion item should be interpreted as
+    plain text or a snippet.
 **/
-typedef TextDocumentContentChangeEvent = {
+@:enum abstract InsertTextFormat(Int) {
     /**
-        The range of the document that changed.
+        The primary text to be inserted is treated as a plain string.
     **/
-    @:optional var range:Range;
+    var PlainText = 1;
 
     /**
-        The length of the range that got replaced.
-    **/
-    @:optional var rangeLength:Int;
+        The primary text to be inserted is treated as a snippet.
 
-    /**
-        The new text of the range/document.
+        A snippet can define tab stops and placeholders with `$1`, `$2`
+        and `${3:foo}`. `$0` defines the final tab stop, it defaults to
+        the end of the snippet. Placeholders with equal identifiers are linked,
+        that is typing in one will update others too.
+
+        See also: https://github.com/Microsoft/vscode/blob/master/src/vs/editor/contrib/snippet/common/snippet.md
     **/
-    var text:String;
+    var Snippet = 2;
 }
 
 /**
@@ -452,29 +465,6 @@ typedef CompletionItem = {
 }
 
 /**
-    Defines whether the insert text in a completion item should be interpreted as
-    plain text or a snippet.
-**/
-@:enum abstract InsertTextFormat(Int) {
-    /**
-        The primary text to be inserted is treated as a plain string.
-    **/
-    var PlainText = 1;
-
-    /**
-        The primary text to be inserted is treated as a snippet.
-
-        A snippet can define tab stops and placeholders with `$1`, `$2`
-        and `${3:foo}`. `$0` defines the final tab stop, it defaults to
-        the end of the snippet. Placeholders with equal identifiers are linked,
-        that is typing in one will update others too.
-
-        See also: https://github.com/Microsoft/vscode/blob/master/src/vs/editor/contrib/snippet/common/snippet.md
-    **/
-    var Snippet = 2;
-}
-
-/**
     Represents a collection of completion items to be presented in the editor.
 **/
 typedef CompletionList = {
@@ -487,37 +477,6 @@ typedef CompletionList = {
         The completion items.
     **/
     var items:Array<CompletionItem>;
-}
-
-/**
-    The kind of a completion entry.
-**/
-@:enum abstract CompletionItemKind(Int) to Int {
-    var Text = 1;
-    var Method = 2;
-    var Function = 3;
-    var Constructor = 4;
-    var Field = 5;
-    var Variable = 6;
-    var Class = 7;
-    var Interface = 8;
-    var Module = 9;
-    var Property = 10;
-    var Unit = 11;
-    var Value = 12;
-    var Enum = 13;
-    var Keyword = 14;
-    var Snippet = 15;
-    var Color = 16;
-    var File = 17;
-    var Reference = 18;
-    var Folder = 19;
-    var EnumMember = 20;
-    var Constant = 21;
-    var Struct = 22;
-    var Event = 23;
-    var Operator = 24;
-    var TypeParameter = 25;
 }
 
 /**
@@ -552,26 +511,21 @@ typedef Hover = {
 }
 
 /**
-    Signature help represents the signature of something callable.
-    There can be multiple signature but only one active and only one active parameter.
+    Represents a parameter of a callable-signature.
+    A parameter can have a label and a doc-comment.
 **/
-typedef SignatureHelp = {
+typedef ParameterInformation = {
     /**
-        One or more signatures.
+        The label of this signature.
+        Will be shown in the UI.
     **/
-    var signatures:Array<SignatureInformation>;
+    var label:String;
 
     /**
-        The active signature. Set to `null` if no
-        signatures exist.
+        The human-readable doc-comment of this signature.
+        Will be shown in the UI but can be omitted.
     **/
-    @:optional var activeSignature:Int;
-
-    /**
-        The active parameter of the active signature. Set to `null`
-        if the active signature has no parameters.
-    **/
-    @:optional var activeParameter:Int;
+    @:optional var documentation:EitherType<String,MarkupContent>;
 }
 
 /**
@@ -598,21 +552,26 @@ typedef SignatureInformation = {
 }
 
 /**
-    Represents a parameter of a callable-signature.
-    A parameter can have a label and a doc-comment.
+    Signature help represents the signature of something callable.
+    There can be multiple signature but only one active and only one active parameter.
 **/
-typedef ParameterInformation = {
+typedef SignatureHelp = {
     /**
-        The label of this signature.
-        Will be shown in the UI.
+        One or more signatures.
     **/
-    var label:String;
+    var signatures:Array<SignatureInformation>;
 
     /**
-        The human-readable doc-comment of this signature.
-        Will be shown in the UI but can be omitted.
+        The active signature. Set to `null` if no
+        signatures exist.
     **/
-    @:optional var documentation:EitherType<String,MarkupContent>;
+    @:optional var activeSignature:Int;
+
+    /**
+        The active parameter of the active signature. Set to `null`
+        if the active signature has no parameters.
+    **/
+    @:optional var activeParameter:Int;
 }
 
 /**
@@ -631,22 +590,6 @@ typedef ReferenceContext = {
         Include the declaration of the current symbol.
     **/
     var includeDeclaration:Bool;
-}
-
-/**
-    A document highlight is a range inside a text document which deserves special attention.
-    Usually a document highlight is visualized by changing the background color of its range.
-**/
-typedef DocumentHighlight = {
-    /**
-        The range this highlight applies to.
-    **/
-    var range:Range;
-
-    /**
-        The highlight kind, default is `DocumentHighlightKind.Text`.
-    **/
-    @:optional var kind:DocumentHighlightKind;
 }
 
 /**
@@ -670,13 +613,51 @@ typedef DocumentHighlight = {
 }
 
 /**
-    Parameters for a `DocumentSymbols` request.
+    A document highlight is a range inside a text document which deserves special attention.
+    Usually a document highlight is visualized by changing the background color of its range.
 **/
-typedef DocumentSymbolParams = {
+typedef DocumentHighlight = {
     /**
-        The text document.
+        The range this highlight applies to.
     **/
-    var textDocument:TextDocumentIdentifier;
+    var range:Range;
+
+    /**
+        The highlight kind, default is `DocumentHighlightKind.Text`.
+    **/
+    @:optional var kind:DocumentHighlightKind;
+}
+
+/**
+    A symbol kind.
+**/
+@:enum abstract SymbolKind(Int) to Int {
+    var File = 1;
+    var Module = 2;
+    var Namespace = 3;
+    var Package = 4;
+    var Class = 5;
+    var Method = 6;
+    var Property = 7;
+    var Field = 8;
+    var Constructor = 9;
+    var Enum = 10;
+    var Interface = 11;
+    var Function = 12;
+    var Variable = 13;
+    var Constant = 14;
+    var String = 15;
+    var Number = 16;
+    var Boolean = 17;
+    var Array = 18;
+    var Object = 19;
+    var Key = 20;
+    var Null = 21;
+    var EnumMember = 22;
+    var Struct = 23;
+    var Event = 24;
+    var Operator = 25;
+    var TypeParameter = 26;
 }
 
 /**
@@ -716,35 +697,13 @@ typedef SymbolInformation = {
 }
 
 /**
-    A symbol kind.
+    Parameters for a `DocumentSymbols` request.
 **/
-@:enum abstract SymbolKind(Int) to Int {
-    var File = 1;
-    var Module = 2;
-    var Namespace = 3;
-    var Package = 4;
-    var Class = 5;
-    var Method = 6;
-    var Property = 7;
-    var Field = 8;
-    var Constructor = 9;
-    var Enum = 10;
-    var Interface = 11;
-    var Function = 12;
-    var Variable = 13;
-    var Constant = 14;
-    var String = 15;
-    var Number = 16;
-    var Boolean = 17;
-    var Array = 18;
-    var Object = 19;
-    var Key = 20;
-    var Null = 21;
-    var EnumMember = 22;
-    var Struct = 23;
-    var Event = 24;
-    var Operator = 25;
-    var TypeParameter = 26;
+typedef DocumentSymbolParams = {
+    /**
+        The text document.
+    **/
+    var textDocument:TextDocumentIdentifier;
 }
 
 /**
@@ -793,6 +752,22 @@ typedef CodeLens = {
 }
 
 /**
+    Value-object describing what options formatting should use.
+    This object can contain additional fields of type Bool/Int/Float/String.
+**/
+typedef FormattingOptions = {
+    /**
+        Size of a tab in spaces.
+    **/
+    var tabSize:Int;
+
+    /**
+        Prefer spaces over tabs.
+    **/
+    var insertSpaces:Bool;
+}
+
+/**
     A document link is a range in a text document that links to an internal or external resource, like another
     text document or a web site.
 **/
@@ -809,17 +784,42 @@ typedef DocumentLink = {
 }
 
 /**
-    Value-object describing what options formatting should use.
-    This object can contain additional fields of type Bool/Int/Float/String.
+    Represents reasons why a text document is saved.
 **/
-typedef FormattingOptions = {
+@:enum abstract TextDocumentSaveReason(Int) {
     /**
-        Size of a tab in spaces.
+        Manually triggered, e.g. by the user pressing save, by starting debugging, or by an API call.
     **/
-    var tabSize:Int;
+    var Manual = 1;
 
     /**
-        Prefer spaces over tabs.
+        Automatic after a delay.
     **/
-    var insertSpaces:Bool;
+    var AfterDelay = 2;
+
+    /**
+        When the editor lost focus.
+    **/
+    var FocusOut = 3;
+}
+
+/**
+    An event describing a change to a text document.
+    If `range` and `rangeLength` are omitted the new text is considered to be the full content of the document.
+**/
+typedef TextDocumentContentChangeEvent = {
+    /**
+        The range of the document that changed.
+    **/
+    @:optional var range:Range;
+
+    /**
+        The length of the range that got replaced.
+    **/
+    @:optional var rangeLength:Int;
+
+    /**
+        The new text of the range/document.
+    **/
+    var text:String;
 }
