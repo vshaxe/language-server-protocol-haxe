@@ -130,7 +130,7 @@ class Protocol {
         }
     }
 
-    public inline function sendNotification<P,RO>(name:NotificationMethod<P,RO>, params:P):Void {
+    public inline function sendNotification<P,RO>(name:NotificationMethod<P,RO>, ?params:P):Void {
         var message:NotificationMessage = {
             jsonrpc: PROTOCOL_VERSION,
             method: name
