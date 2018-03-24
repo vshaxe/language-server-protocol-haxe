@@ -1,6 +1,7 @@
-package languageServerProtocol;
+package languageServerProtocol.protocol;
 
 import languageServerProtocol.Types;
+import languageServerProtocol.protocol.ColorProvider;
 import haxe.extern.EitherType;
 import jsonrpc.Types;
 
@@ -412,6 +413,7 @@ typedef WorkspaceClientCapabilites = {
     Text document specific client capabilities.
 **/
 typedef TextDocumentClientCapabilities = {
+    >ColorClientCapabilities,
     /**
         Defines which synchronization capabilities the client supports.
     **/
@@ -846,8 +848,12 @@ typedef TextDocumentSyncOptions = {
     @:optional var save:SaveOptions;
 }
 
-
+/**
+    Defines the capabilities provided by a language
+    server.
+**/
 typedef ServerCapabilities = {
+    >ColorServerCapabilities,
     /**
         Defines how text documents are synced.
         Is either a detailed structure defining each notification or for backwards compatibility the TextDocumentSyncKind number.
