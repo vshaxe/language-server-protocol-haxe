@@ -2,6 +2,10 @@ package languageServerProtocol.protocol;
 
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.ColorProvider;
+import languageServerProtocol.protocol.Configuration;
+import languageServerProtocol.protocol.Implementation;
+import languageServerProtocol.protocol.TypeDefinition;
+import languageServerProtocol.protocol.WorkspaceFolders;
 import haxe.extern.EitherType;
 import jsonrpc.Types;
 
@@ -335,6 +339,8 @@ typedef TextDocumentPositionParams = {
     Define capabilities the editor / tool provides on the workspace.
 **/
 typedef WorkspaceClientCapabilites = {
+    >ConfigurationClientCapabilities,
+    >WorkspaceFoldersClientCapabilities,
     /**
         The client supports applying batch edits to the workspace by supporting
         the request 'workspace/applyEdit'
@@ -413,7 +419,9 @@ typedef WorkspaceClientCapabilites = {
     Text document specific client capabilities.
 **/
 typedef TextDocumentClientCapabilities = {
-    //>ColorClientCapabilities,
+    >ImplementationClientCapabilities,
+    >TypeDefinitionClientCapabilities,
+    // >ColorClientCapabilities,
     /**
         Defines which synchronization capabilities the client supports.
     **/
@@ -853,6 +861,9 @@ typedef TextDocumentSyncOptions = {
     server.
 **/
 typedef ServerCapabilities = {
+    >ImplementationServerCapabilities,
+    >TypeDefinitionServerCapabilities,
+    >WorkspaceFoldersServerCapabilities,
     >ColorServerCapabilities,
     /**
         Defines how text documents are synced.
