@@ -1,6 +1,7 @@
 package languageServerProtocol.protocol;
 
 import haxe.extern.EitherType;
+import languageServerProtocol.Types.DocumentUri;
 import jsonrpc.Types;
 
 @:publicFields
@@ -55,7 +56,7 @@ typedef WorkspaceFolder = {
     /**
         The associated URI for this workspace folder.
     **/
-    var uri:String;
+    var uri:DocumentUri;
 
     /**
         The name of the workspace folder. Defaults to the

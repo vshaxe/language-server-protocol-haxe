@@ -961,6 +961,7 @@ typedef ServerCapabilities = {
     The initialize parameters
 **/
 typedef InitializeParams = {
+    >WorkspaceFoldersInitializeParams,
     /**
         The process Id of the parent process that started the server.
         Is null if the process has not been started by another process.
