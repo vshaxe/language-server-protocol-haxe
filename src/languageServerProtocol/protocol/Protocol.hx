@@ -45,8 +45,8 @@ class Methods {
 
     /**
         A shutdown request is sent from the client to the server.
-        It is sent once when the client descides to shutdown the
-        server. The only notification that is sent after a shudown request
+        It is sent once when the client decides to shutdown the
+        server. The only notification that is sent after a shutdown request
         is the exit event.
     **/
     static inline var Shutdown = new RequestMethod<NoData,NoData,NoData,NoData>("shutdown");
@@ -68,8 +68,8 @@ class Methods {
     static inline var ShowMessage = new NotificationMethod<ShowMessageParams,NoData>("window/showMessage");
 
     /**
-        The show message request is sent from a server to a client to ask the client to display a particular message in the user interface.
-        In addition to the show message notification the request allows to pass actions and to wait for an answer from the client.
+        The show message request is sent from the server to the client to show a message
+        and a set of options actions to the user.
     **/
     static inline var ShowMessageRequest = new RequestMethod<ShowMessageRequestParams,Null<MessageActionItem>,NoData,NoData>("window/showMessageRequest");
 
@@ -100,7 +100,7 @@ class Methods {
         truth now exists on disk). As with the open notification the close notification
         is about managing the document's content. Receiving a close notification
         doesn't mean that the document was open in an editor before. A close
-        notification requires a previous open notifaction to be sent.
+        notification requires a previous open notification to be sent.
     **/
     static inline var DidCloseTextDocument = new NotificationMethod<DidCloseTextDocumentParams,TextDocumentRegistrationOptions>("textDocument/didClose");
 
@@ -123,7 +123,7 @@ class Methods {
     static inline var WillSaveWaitUntilTextDocument = new RequestMethod<WillSaveTextDocumentParams,Null<Array<TextEdit>>,NoData,TextDocumentRegistrationOptions>("textDocument/willSaveWaitUntil");
 
     /**
-        The watched files notification is sent from the client to the server when the client detects changes to file watched by the lanaguage client.
+        The watched files notification is sent from the client to the server when the client detects changes to file watched by the language client.
     **/
     static inline var DidChangeWatchedFiles = new NotificationMethod<DidChangeWatchedFilesParams,DidChangeWatchedFilesRegistrationOptions>("workspace/didChangeWatchedFiles");
 
@@ -158,7 +158,7 @@ class Methods {
     static inline var SignatureHelp = new RequestMethod<TextDocumentPositionParams,Null<SignatureHelp>,NoData,SignatureHelpRegistrationOptions>("textDocument/signatureHelp");
 
     /**
-        The goto definition request is sent from the client to the server to to resolve the defintion location of a symbol at a given text document position.
+        The goto definition request is sent from the client to the server to to resolve the definition location of a symbol at a given text document position.
     **/
     static inline var GotoDefinition = new RequestMethod<TextDocumentPositionParams,Null<Definition>,NoData,TextDocumentRegistrationOptions>("textDocument/definition");
 
@@ -274,7 +274,7 @@ typedef DocumentFilter = {
 typedef DocumentSelector = Array<EitherType<String,DocumentFilter>>;
 
 /**
-    General paramters to to regsiter for an notification or to register a provider.
+    General parameters to to register for an notification or to register a provider.
 **/
 typedef Registration = {
     /**
@@ -670,6 +670,16 @@ typedef TextDocumentClientCapabilities = {
         **/
         @:optional var dynamicRegistration:Bool;
     };
+
+    /**
+        Capabilities specific to `textDocument/publishDiagnostics`.
+    **/
+    @:optional var publishDiagnostics:{
+        /**
+            Whether the clients accepts diagnostics with related information.
+        **/
+        @:optional var relatedInformation:Bool;
+    };
 }
 
 /**
@@ -835,8 +845,8 @@ typedef TextDocumentSyncOptions = {
     @:optional var openClose:Bool;
 
     /**
-        Change notificatins are sent to the server. See TextDocumentSyncKind.None, TextDocumentSyncKind.Full
-        and TextDocumentSyncKindIncremental.
+        Change notifications are sent to the server. See TextDocumentSyncKind.None, TextDocumentSyncKind.Full
+        and TextDocumentSyncKind.Incremental.
     **/
     @:optional var change:TextDocumentSyncKind;
 
@@ -1011,7 +1021,7 @@ typedef InitializeParams = {
 }
 
 /**
-    The result returned from an initilize request.
+    The result returned from an initialize request.
     This object can contain additional fields of type String.
 **/
 typedef InitializeResult = {
@@ -1145,7 +1155,7 @@ typedef DidChangeTextDocumentParams = {
     var textDocument:VersionedTextDocumentIdentifier;
 
     /**
-        The actual content changes. The content changes descibe single state changes
+        The actual content changes. The content changes describe single state changes
         to the document. So if there are two content changes c1 and c2 for a document
         in state S10 then c1 move the document to S11 and c2 to S12.
     **/
@@ -1153,7 +1163,7 @@ typedef DidChangeTextDocumentParams = {
 }
 
 /**
-    Descibe options to be used when registered for text document change events.
+    Describe options to be used when registered for text document change events.
 **/
 typedef TextDocumentChangeRegistrationOptions = {
     >TextDocumentRegistrationOptions,
@@ -1257,7 +1267,7 @@ typedef FileEvent = {
 }
 
 /**
-    Descibe options to be used when registered for text document change events.
+    Describe options to be used when registered for text document change events.
 **/
 typedef DidChangeWatchedFilesRegistrationOptions = {
     /**
@@ -1534,7 +1544,7 @@ typedef ApplyWorkspaceEditParams = {
 }
 
 /**
-    A reponse returned from the apply workspace edit request.
+    A response returned from the apply workspace edit request.
 **/
 typedef ApplyWorkspaceEditResponse = {
     /**

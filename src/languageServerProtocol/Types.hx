@@ -9,7 +9,7 @@ import haxe.extern.EitherType;
     is 1 and the character offset of b is 3 since `𐐀` is represented using two code
     units in UTF-16.
 
-    Positions are line end character agnostic. So you can not specifiy a position that
+    Positions are line end character agnostic. So you can not specify a position that
     denotes `\r|\n` or `\n|` where `|` represents the character offset.
 **/
 typedef Position = {
@@ -63,6 +63,23 @@ typedef Range = {
 typedef Location = {
     var uri:DocumentUri;
     var range:Range;
+}
+
+/**
+    Represents a related message and source code location for a diagnostic. This should be
+    used to point to code locations that cause or related to a diagnostics, e.g when duplicating
+    a symbol in a scope.
+**/
+typedef DiagnosticRelatedInformation = {
+    /**
+        The location of this related diagnostic information.
+    **/
+    var location:Location;
+
+    /**
+        The message of this related diagnostic information.
+    **/
+    var message:String;
 }
 
 /**
@@ -120,6 +137,12 @@ typedef Diagnostic = {
         The diagnostic's message.
     **/
     var message:String;
+
+    /**
+        An array of related diagnostic information, e.g. when symbol-names within
+        a scope collide all definitions can be marked via this property.
+    **/
+    @:optional var relatedInformation:Array<DiagnosticRelatedInformation>;
 }
 
 /**
@@ -395,7 +418,7 @@ typedef CompletionItem = {
     @:optional var documentation:EitherType<String,MarkupContent>;
 
     /**
-        A string that shoud be used when comparing this item with other items.
+        A string that should be used when comparing this item with other items.
         When `falsy` the label is used.
     **/
     @:optional var sortText:String;
@@ -482,7 +505,7 @@ typedef CompletionList = {
 /**
     MarkedString can be used to render human readable text. It is either a markdown string
     or a code-block that provides a language and a code snippet. The language identifier
-    is sematically equal to the optional language identifier in fenced code blocks in GitHub
+    is semantically equal to the optional language identifier in fenced code blocks in GitHub
     issues. See https://help.github.com/articles/creating-and-highlighting-code-blocks/#syntax-highlighting
 
     The pair of a language and a value is an equivalent to markdown:
@@ -597,7 +620,7 @@ typedef ReferenceContext = {
 **/
 @:enum abstract DocumentHighlightKind(Int) to Int {
     /**
-        A textual occurrance.
+        A textual occurrence.
     **/
     var Text = 1;
 
@@ -678,7 +701,7 @@ typedef SymbolInformation = {
         The location of this symbol. The location's range is used by a tool
         to reveal the location in the editor. If the symbol is selected in the
         tool the range's start information is used to position the cursor. So
-        the range usually spwans more then the actual symbol's name and does
+        the range usually spans more than the actual symbol's name and does
         normally include thinks like visibility modifiers.
 
         The range doesn't have to denote a node range in the sense of a abstract
@@ -689,7 +712,7 @@ typedef SymbolInformation = {
 
     /**
         The name of the symbol containing this symbol. This information is for
-        user interface purposes (e.g. to render a qaulifier in the user interface
+        user interface purposes (e.g. to render a qualifier in the user interface
         if necessary). It can't be used to re-infer a hierarchy for the document
         symbols.
     **/
