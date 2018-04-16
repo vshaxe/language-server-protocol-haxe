@@ -5,7 +5,9 @@ import jsonrpc.CancellationToken;
 import jsonrpc.ErrorUtils.errorToString;
 
 typedef RequestHandler<P,R,E> = P->CancellationToken->(R->Void)->(ResponseError<E>->Void)->Void;
+typedef GenericRequestHandler<R,E> = RequestHandler<Array<Any>,R,E>;
 typedef NotificationHandler<P> = P->Void;
+typedef GenericNotificationHandler = NotificationHandler<Array<Any>>;
 
 /**
     A simple JSON-RPC protocol base class.
