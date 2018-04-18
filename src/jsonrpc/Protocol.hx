@@ -26,6 +26,7 @@ class Protocol {
     public function new(writeMessage) {
         this.writeMessage = writeMessage;
         requestHandlers = new Map();
+        responseCallbacks = new Map();
         notificationHandlers = new Map();
         requestTokens = new Map();
         nextRequestId = 0;
