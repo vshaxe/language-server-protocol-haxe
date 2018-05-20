@@ -709,7 +709,7 @@ typedef ClientCapabilities = {
 /**
     Defines how the host (editor) should sync document changes to the language server.
 **/
-@:enum abstract TextDocumentSyncKind(Int) {
+enum abstract TextDocumentSyncKind(Int) {
     /**
         Documents should not be synced at all.
     **/
@@ -1014,7 +1014,7 @@ typedef InitializeParams = {
 /**
     Tracing mode.
 **/
-@:enum abstract TraceMode(String) to String {
+enum abstract TraceMode(String) to String {
     var Off = "off";
     var Messages = "messages";
     var Verbose = "verbose";
@@ -1065,7 +1065,7 @@ typedef DidChangeConfigurationParams = {
 /**
     The message type
 **/
-@:enum abstract MessageType(Int) to Int {
+enum abstract MessageType(Int) to Int {
     /**
         An error message.
     **/
@@ -1234,7 +1234,7 @@ typedef DidChangeWatchedFilesParams = {
 /**
     The file event type.
 **/
-@:enum abstract FileChangeType(Int) to Int {
+enum abstract FileChangeType(Int) to Int {
     /**
         The file got created.
     **/
@@ -1290,7 +1290,7 @@ typedef FileSystemWatcher = {
     @:optional var kind:Int;
 }
 
-@:enum abstract WatchKind(Int) to Int {
+enum abstract WatchKind(Int) to Int {
     /**
         Interested in create events.
     **/
@@ -1333,7 +1333,7 @@ typedef CompletionRegistrationOptions = {
 /**
     How a completion was triggered
 **/
-@:enum abstract CompletionTriggerKind(Int) {
+enum abstract CompletionTriggerKind(Int) {
     /**
         Completion was triggered by typing an identifier (24x7 code
         complete), manual invocation (e.g Ctrl+Space) or via API.

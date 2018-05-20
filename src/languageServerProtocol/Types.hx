@@ -85,7 +85,7 @@ typedef DiagnosticRelatedInformation = {
 /**
     The diagnostic's serverity.
 **/
-@:enum abstract DiagnosticSeverity(Int) {
+enum abstract DiagnosticSeverity(Int) {
     /**
         Reports an error.
     **/
@@ -288,7 +288,7 @@ typedef TextDocumentItem = {
     Please note that `MarkupKinds` must not start with a `$`. This kinds
     are reserved for internal usage.
 **/
-@:enum abstract MarkupKind(String) {
+enum abstract MarkupKind(String) {
     /**
         Plain text is supported as a content format
     **/
@@ -339,7 +339,7 @@ typedef MarkupContent = {
 /**
     The kind of a completion entry.
 **/
-@:enum abstract CompletionItemKind(Int) to Int {
+enum abstract CompletionItemKind(Int) to Int {
     var Text = 1;
     var Method = 2;
     var Function = 3;
@@ -371,7 +371,7 @@ typedef MarkupContent = {
     Defines whether the insert text in a completion item should be interpreted as
     plain text or a snippet.
 **/
-@:enum abstract InsertTextFormat(Int) {
+enum abstract InsertTextFormat(Int) {
     /**
         The primary text to be inserted is treated as a plain string.
     **/
@@ -618,7 +618,7 @@ typedef ReferenceContext = {
 /**
     A document highlight kind.
 **/
-@:enum abstract DocumentHighlightKind(Int) to Int {
+enum abstract DocumentHighlightKind(Int) to Int {
     /**
         A textual occurrence.
     **/
@@ -654,7 +654,7 @@ typedef DocumentHighlight = {
 /**
     A symbol kind.
 **/
-@:enum abstract SymbolKind(Int) to Int {
+enum abstract SymbolKind(Int) to Int {
     var File = 1;
     var Module = 2;
     var Namespace = 3;
@@ -809,7 +809,7 @@ typedef DocumentLink = {
 /**
     Represents reasons why a text document is saved.
 **/
-@:enum abstract TextDocumentSaveReason(Int) {
+enum abstract TextDocumentSaveReason(Int) {
     /**
         Manually triggered, e.g. by the user pressing save, by starting debugging, or by an API call.
     **/
