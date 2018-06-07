@@ -253,17 +253,17 @@ typedef DocumentFilter = {
     /**
         A language id, like `haxe`.
     **/
-    @:optional var language:String;
+    var ?language:String;
 
     /**
         A Uri [scheme](#Uri.scheme), like `file` or `untitled`.
     **/
-    @:optional var scheme:String;
+    var ?scheme:String;
 
     /**
         A glob pattern, like `*.{hx,hxml}`.
     **/
-    @:optional var pattern:String;
+    var ?pattern:String;
 }
 
 /**
@@ -291,7 +291,7 @@ typedef Registration = {
     /**
         Options necessary for the registration.
     **/
-    @:optional var registerOptions:Dynamic;
+    var ?registerOptions:Dynamic;
 }
 
 typedef RegistrationParams = {
@@ -338,58 +338,58 @@ typedef TextDocumentPositionParams = {
 
     Define capabilities the editor / tool provides on the workspace.
 **/
-typedef WorkspaceClientCapabilites = {
-    >ConfigurationClientCapabilities,
-    >WorkspaceFoldersClientCapabilities,
+typedef WorkspaceClientCapabilites =
+    ConfigurationClientCapabilities &
+    WorkspaceFoldersClientCapabilities & {
     /**
         The client supports applying batch edits to the workspace by supporting
         the request 'workspace/applyEdit'
     **/
-    @:optional var applyEdit:Bool;
+    var ?applyEdit:Bool;
 
     /**
         Capabilities specific to `WorkspaceEdit`s
     **/
-    @:optional var workspaceEdit:{
+    var ?workspaceEdit:{
         /**
             The client supports versioned document changes in `WorkspaceEdit`s
         **/
-        @:optional var documentChanges:Bool;
+        var ?documentChanges:Bool;
     };
 
     /**
         Capabilities specific to the `workspace/didChangeConfiguration` notification.
     **/
-    @:optional var didChangeConfiguration:{
+    var ?didChangeConfiguration:{
         /**
             Did change configuration notification supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
     };
 
     /**
         Capabilities specific to the `workspace/didChangeWatchedFiles` notification.
     **/
-    @:optional var didChangeWatchedFiles:{
+    var ?didChangeWatchedFiles:{
         /**
             Did change watched files notification supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
     };
 
     /**
         Capabilities specific to the `workspace/symbol` request.
     **/
-    @:optional var symbol:{
+    var ?symbol:{
         /**
             Symbol request supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
 
         /**
             Specific capabilities for the `SymbolKind` in the `workspace/symbol` request.
         **/
-        @:optional var symbolKind:{
+        var ?symbolKind:{
             /**
                 The symbol kind values the client supports. When this
                 property exists the client also guarantees that it will
@@ -400,69 +400,69 @@ typedef WorkspaceClientCapabilites = {
                 the symbol kinds from `File` to `Array` as defined in
                 the initial version of the protocol.
             **/
-            @:optional var valueSet:Array<SymbolKind>;
+            var ?valueSet:Array<SymbolKind>;
         };
     };
 
     /**
         Capabilities specific to the `workspace/executeCommand` request.
     **/
-    @:optional var executeCommand:{
+    var ?executeCommand:{
         /**
             Execute command supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
     };
 }
 
 /**
     Text document specific client capabilities.
 **/
-typedef TextDocumentClientCapabilities = {
-    >ImplementationClientCapabilities,
-    >TypeDefinitionClientCapabilities,
-    // >ColorClientCapabilities,
+typedef TextDocumentClientCapabilities =
+    ImplementationClientCapabilities &
+    TypeDefinitionClientCapabilities &
+    /* ColorClientCapabilities & */ {
     /**
         Defines which synchronization capabilities the client supports.
     **/
-    @:optional var synchronization:{
+    var ?synchronization:{
         /**
             Whether text document synchronization supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
 
         /**
             The client supports sending will save notifications.
         **/
-        @:optional var willSave:Bool;
+        var ?willSave:Bool;
 
         /**
             The client supports sending a will save request and
             waits for a response providing text edits which will
             be applied to the document before it is saved.
         **/
-        @:optional var willSaveWaitUntil:Bool;
+        var ?willSaveWaitUntil:Bool;
 
         /**
             The client supports did save notifications.
         **/
-        @:optional var didSave:Bool;
+        var ?didSave:Bool;
     };
 
     /**
         Capabilities specific to the `textDocument/completion`
     **/
-    @:optional var completion:{
+    var ?completion:{
         /**
             Whether completion supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
 
         /**
             The client supports the following `CompletionItem` specific
             capabilities.
         **/
-        @:optional var completionItem:{
+        var ?completionItem:{
             /**
                 Client supports snippets as insert text.
 
@@ -471,21 +471,21 @@ typedef TextDocumentClientCapabilities = {
                 the end of the snippet. Placeholders with equal identifiers are linked,
                 that is typing in one will update others too.
             **/
-            @:optional var snippetSupport:Bool;
+            var ?snippetSupport:Bool;
 
             /**
                 Client supports commit characters on a completion item.
             **/
-            @:optional var commitCharactersSupport:Bool;
+            var ?commitCharactersSupport:Bool;
 
             /**
                 Client supports the follow content formats for the documentation
                 property. The order describes the preferred format of the client.
             **/
-            @:optional var documentationFormat:Array<MarkupKind>;
+            var ?documentationFormat:Array<MarkupKind>;
         };
 
-        @:optional var completionItemKind:{
+        var ?completionItemKind:{
             /**
                 The completion item kind values the client supports. When this
                 property exists the client also guarantees that it will
@@ -496,87 +496,87 @@ typedef TextDocumentClientCapabilities = {
                 the completion items kinds from `Text` to `Reference` as defined in
                 the initial version of the protocol.
             **/
-            @:optional var valueSet:Array<CompletionItemKind>;
+            var ?valueSet:Array<CompletionItemKind>;
         };
 
         /**
             The client supports to send additional context information for a
             `textDocument/completion` requestion.
         **/
-        @:optional var contextSupport:Bool;
+        var ?contextSupport:Bool;
     };
 
     /**
         Capabilities specific to the `textDocument/hover`
     **/
-    @:optional var hover:{
+    var ?hover:{
         /**
             Whether hover supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
 
         /**
             Client supports the follow content formats for the content
             property. The order describes the preferred format of the client.
         **/
-        @:optional var contentFormat:Array<MarkupKind>;
+        var ?contentFormat:Array<MarkupKind>;
     };
 
     /**
         Capabilities specific to the `textDocument/signatureHelp`
     **/
-    @:optional var signatureHelp:{
+    var ?signatureHelp:{
         /**
             Whether signature help supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
 
         /**
             The client supports the following `SignatureInformation`
             specific properties.
         **/
-        @:optional var signatureInformation:{
+        var ?signatureInformation:{
             /**
                 Client supports the follow content formats for the documentation
                 property. The order describes the preferred format of the client.
             **/
-            @:optional var documentationFormat:Array<MarkupKind>;
+            var ?documentationFormat:Array<MarkupKind>;
         };
     };
 
     /**
         Capabilities specific to the `textDocument/references`
     **/
-    @:optional var references:{
+    var ?references:{
         /**
             Whether references supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
     };
 
     /**
         Capabilities specific to the `textDocument/documentHighlight`
     **/
-    @:optional var documentHighlight:{
+    var ?documentHighlight:{
         /**
             Whether document highlight supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
     };
 
     /**
         Capabilities specific to the `textDocument/documentSymbol`
     **/
-    @:optional var documentSymbol:{
+    var ?documentSymbol:{
         /**
             Whether document symbol supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
 
         /**
             Specific capabilities for the `SymbolKind`.
         **/
-        @:optional var symbolKind:{
+        var ?symbolKind:{
             /**
                 The symbol kind values the client supports. When this
                 property exists the client also guarantees that it will
@@ -587,98 +587,98 @@ typedef TextDocumentClientCapabilities = {
                 the symbol kinds from `File` to `Array` as defined in
                 the initial version of the protocol.
             **/
-            @:optional var valueSet:Array<SymbolKind>;
+            var ?valueSet:Array<SymbolKind>;
         };
     };
 
     /**
         Capabilities specific to the `textDocument/formatting`
     **/
-    @:optional var formatting:{
+    var ?formatting:{
         /**
             Whether formatting supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
     };
 
     /**
         Capabilities specific to the `textDocument/rangeFormatting`
     **/
-    @:optional var rangeFormatting:{
+    var ?rangeFormatting:{
         /**
             Whether range formatting supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
     };
 
     /**
         Capabilities specific to the `textDocument/onTypeFormatting`
     **/
-    @:optional var onTypeFormatting:{
+    var ?onTypeFormatting:{
         /**
             Whether on type formatting supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
     };
 
     /**
         Capabilities specific to the `textDocument/definition`
     **/
-    @:optional var definition:{
+    var ?definition:{
         /**
             Whether definition supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
     };
 
     /**
         Capabilities specific to the `textDocument/codeAction`
     **/
-    @:optional var codeAction:{
+    var ?codeAction:{
         /**
             Whether code action supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
     };
 
     /**
         Capabilities specific to the `textDocument/codeLens`
     **/
-    @:optional var codeLens:{
+    var ?codeLens:{
         /**
             Whether code lens supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
     };
 
     /**
         Capabilities specific to the `textDocument/documentLink`
     **/
-    @:optional var documentLink:{
+    var ?documentLink:{
         /**
             Whether document link supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
     };
 
     /**
         Capabilities specific to the `textDocument/rename`
     **/
-    @:optional var rename:{
+    var ?rename:{
         /**
             Whether rename supports dynamic registration.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
     };
 
     /**
         Capabilities specific to `textDocument/publishDiagnostics`.
     **/
-    @:optional var publishDiagnostics:{
+    var ?publishDiagnostics:{
         /**
             Whether the clients accepts diagnostics with related information.
         **/
-        @:optional var relatedInformation:Bool;
+        var ?relatedInformation:Bool;
     };
 }
 
@@ -693,17 +693,17 @@ typedef ClientCapabilities = {
     /**
         Workspace specific client capabilities.
     **/
-    @:optional var workspace:WorkspaceClientCapabilites;
+    var ?workspace:WorkspaceClientCapabilites;
 
     /**
         Text document specific client capabilities.
     **/
-    @:optional var textDocument:TextDocumentClientCapabilities;
+    var ?textDocument:TextDocumentClientCapabilities;
 
     /**
         Experimental client capabilities.
     **/
-    @:optional var experimental:Dynamic;
+    var ?experimental:Dynamic;
 }
 
 /**
@@ -713,18 +713,18 @@ enum abstract TextDocumentSyncKind(Int) {
     /**
         Documents should not be synced at all.
     **/
-    var None = 0;
+    var None;
 
     /**
         Documents are synced by always sending the full content of the document.
     **/
-    var Full = 1;
+    var Full;
 
     /**
         Documents are synced by sending the full content on open.
         After that only incremental updates to the document are send.
     **/
-    var Incremental = 2;
+    var Incremental;
 }
 
 /**
@@ -736,7 +736,7 @@ typedef StaticRegistrationOptions = {
         The id used to register the request. The id can be used to deregister
         the request again. See also Registration#id.
     **/
-    @:optional var id:String;
+    var ?id:String;
 }
 
 /**
@@ -764,12 +764,12 @@ typedef CompletionOptions = {
         If code complete should automatically be trigger on characters not being valid inside
         an identifier (for example `.` in JavaScript) list them in `triggerCharacters`.
     **/
-    @:optional var triggerCharacters:Array<String>;
+    var ?triggerCharacters:Array<String>;
 
     /**
         The server provides support to resolve additional information for a completion item.
     **/
-    @:optional var resolveProvider:Bool;
+    var ?resolveProvider:Bool;
 }
 
 /**
@@ -779,7 +779,7 @@ typedef SignatureHelpOptions = {
     /**
         The characters that trigger signature help automatically.
     **/
-    @:optional var triggerCharacters:Array<String>;
+    var ?triggerCharacters:Array<String>;
 }
 
 /**
@@ -789,7 +789,7 @@ typedef CodeLensOptions = {
     /**
         Code lens has a resolve provider as well.
     **/
-    @:optional var resolveProvider:Bool;
+    var ?resolveProvider:Bool;
 }
 
 /**
@@ -804,7 +804,7 @@ typedef DocumentOnTypeFormattingOptions = {
     /**
         More trigger characters.
     **/
-    @:optional var moreTriggerCharacter:Array<String>;
+    var ?moreTriggerCharacter:Array<String>;
 }
 
 /**
@@ -814,7 +814,7 @@ typedef DocumentLinkOptions = {
     /**
         Document links have a resolve provider as well.
     **/
-    @:optional var resolveProvider:Bool;
+    var ?resolveProvider:Bool;
 }
 
 /**
@@ -834,7 +834,7 @@ typedef SaveOptions = {
     /**
         The client is supposed to include the content on save.
     **/
-    @:optional var includeText:Bool;
+    var ?includeText:Bool;
 }
 
 
@@ -842,136 +842,135 @@ typedef TextDocumentSyncOptions = {
     /**
         Open and close notifications are sent to the server.
     **/
-    @:optional var openClose:Bool;
+    var ?openClose:Bool;
 
     /**
         Change notifications are sent to the server. See TextDocumentSyncKind.None, TextDocumentSyncKind.Full
         and TextDocumentSyncKind.Incremental.
     **/
-    @:optional var change:TextDocumentSyncKind;
+    var ?change:TextDocumentSyncKind;
 
     /**
         Will save notifications are sent to the server.
     **/
-    @:optional var willSave:Bool;
+    var ?willSave:Bool;
 
     /**
         Will save wait until requests are sent to the server.
     **/
-    @:optional var willSaveWaitUntil:Bool;
+    var ?willSaveWaitUntil:Bool;
 
     /**
         Save notifications are sent to the server.
     **/
-    @:optional var save:SaveOptions;
+    var ?save:SaveOptions;
 }
 
 /**
     Defines the capabilities provided by a language
     server.
 **/
-typedef ServerCapabilities = {
-    >ImplementationServerCapabilities,
-    >TypeDefinitionServerCapabilities,
-    >WorkspaceFoldersServerCapabilities,
-    >ColorServerCapabilities,
+typedef ServerCapabilities =
+    ImplementationServerCapabilities &
+    TypeDefinitionServerCapabilities &
+    WorkspaceFoldersServerCapabilities &
+    ColorServerCapabilities & {
     /**
         Defines how text documents are synced.
         Is either a detailed structure defining each notification or for backwards compatibility the TextDocumentSyncKind number.
     **/
-    @:optional var textDocumentSync:EitherType<TextDocumentSyncOptions,TextDocumentSyncKind>;
+    var ?textDocumentSync:EitherType<TextDocumentSyncOptions,TextDocumentSyncKind>;
 
     /**
         The server provides hover support.
     **/
-    @:optional var hoverProvider:Bool;
+    var ?hoverProvider:Bool;
 
     /**
         The server provides completion support.
     **/
-    @:optional var completionProvider:CompletionOptions;
+    var ?completionProvider:CompletionOptions;
 
     /**
         The server provides signature help support.
     **/
-    @:optional var signatureHelpProvider:SignatureHelpOptions;
+    var ?signatureHelpProvider:SignatureHelpOptions;
 
     /**
         The server provides goto definition support.
     **/
-    @:optional var definitionProvider:Bool;
+    var ?definitionProvider:Bool;
 
     /**
         The server provides find references support.
     **/
-    @:optional var referencesProvider:Bool;
+    var ?referencesProvider:Bool;
 
     /**
         The server provides document highlight support.
     **/
-    @:optional var documentHighlightProvider:Bool;
+    var ?documentHighlightProvider:Bool;
 
     /**
         The server provides document symbol support.
     **/
-    @:optional var documentSymbolProvider:Bool;
+    var ?documentSymbolProvider:Bool;
 
     /**
         The server provides workspace symbol support.
     **/
-    @:optional var workspaceSymbolProvider:Bool;
+    var ?workspaceSymbolProvider:Bool;
 
     /**
         The server provides code actions.
     **/
-    @:optional var codeActionProvider:Bool;
+    var ?codeActionProvider:Bool;
 
     /**
         The server provides code lens.
     **/
-    @:optional var codeLensProvider:CodeLensOptions;
+    var ?codeLensProvider:CodeLensOptions;
 
     /**
         The server provides document formatting.
     **/
-    @:optional var documentFormattingProvider:Bool;
+    var ?documentFormattingProvider:Bool;
 
     /**
         The server provides document range formatting.
     **/
-    @:optional var documentRangeFormattingProvider:Bool;
+    var ?documentRangeFormattingProvider:Bool;
 
     /**
         The server provides document formatting on typing.
     **/
-    @:optional var documentOnTypeFormattingProvider:DocumentOnTypeFormattingOptions;
+    var ?documentOnTypeFormattingProvider:DocumentOnTypeFormattingOptions;
 
     /**
         The server provides rename support.
     **/
-    @:optional var renameProvider:Bool;
+    var ?renameProvider:Bool;
 
     /**
         The server provides document link support.
     **/
-    @:optional var documentLinkProvider:DocumentLinkOptions;
+    var ?documentLinkProvider:DocumentLinkOptions;
 
     /**
         The server provides execute command support.
     **/
-    @:optional var executeCommandProvider:ExecuteCommandOptions;
+    var ?executeCommandProvider:ExecuteCommandOptions;
 
     /**
         Experimental server capabilities.
     **/
-    @:optional var experimental:Dynamic;
+    var ?experimental:Dynamic;
 }
 
 /**
     The initialize parameters
 **/
-typedef InitializeParams = {
-    >WorkspaceFoldersInitializeParams,
+typedef InitializeParams = WorkspaceFoldersInitializeParams & {
     /**
         The process Id of the parent process that started the server.
         Is null if the process has not been started by another process.
@@ -1002,13 +1001,13 @@ typedef InitializeParams = {
     /**
         User provided initialization options.
     **/
-    @:optional var initializationOptions:Dynamic;
+    var ?initializationOptions:Dynamic;
 
     /**
         The initial trace setting.
         If omitted trace is disabled ('off').
     **/
-    @:optional var trace:TraceMode;
+    var ?trace:TraceMode;
 }
 
 /**
@@ -1049,7 +1048,7 @@ typedef InitializedParams = {
 }
 
 typedef DidChangeConfigurationRegistrationOptions = {
-    @:optional var section:EitherType<String,Array<String>>;
+    var ?section:EitherType<String,Array<String>>;
 }
 
 /**
@@ -1073,17 +1072,17 @@ enum abstract MessageType(Int) to Int {
     /**
         A warning message.
     **/
-    var Warning = 2;
+    var Warning;
 
     /**
         An information message.
     **/
-    var Info = 3;
+    var Info;
 
     /**
         A log message.
     **/
-    var Log = 4;
+    var Log;
 }
 
 typedef ShowMessageParams = {
@@ -1119,7 +1118,7 @@ typedef ShowMessageRequestParams = {
     /**
         The message action items to present.
     **/
-    @:optional var actions:Array<MessageActionItem>;
+    var ?actions:Array<MessageActionItem>;
 }
 
 typedef LogMessageParams = {
@@ -1165,8 +1164,7 @@ typedef DidChangeTextDocumentParams = {
 /**
     Describe options to be used when registered for text document change events.
 **/
-typedef TextDocumentChangeRegistrationOptions = {
-    >TextDocumentRegistrationOptions,
+typedef TextDocumentChangeRegistrationOptions = TextDocumentRegistrationOptions & {
     /**
         How documents are synced to the server.
     **/
@@ -1195,16 +1193,13 @@ typedef DidSaveTextDocumentParams = {
     /**
         Optional the content when saved. Depends on the `includeText` value when the save notifcation was requested.
     **/
-    @:optional var text:String;
+    var ?text:String;
 }
 
 /**
     Save registration options.
 **/
-typedef TextDocumentSaveRegistrationOptions = {
-    >TextDocumentRegistrationOptions,
-    >SaveOptions,
-}
+typedef TextDocumentSaveRegistrationOptions = TextDocumentRegistrationOptions & SaveOptions;
 
 /**
     The parameters send in a will save text document notification.
@@ -1243,12 +1238,12 @@ enum abstract FileChangeType(Int) to Int {
     /**
         The file got changed.
     **/
-    var Changed = 2;
+    var Changed;
 
     /**
         The file got deleted.
     **/
-    var Deleted = 3;
+    var Deleted;
 }
 
 /**
@@ -1287,7 +1282,7 @@ typedef FileSystemWatcher = {
         to WatchKind.Create | WatchKind.Change | WatchKind.Delete
         which is 7.
     **/
-    @:optional var kind:Int;
+    var ?kind:Int;
 }
 
 enum abstract WatchKind(Int) to Int {
@@ -1299,12 +1294,12 @@ enum abstract WatchKind(Int) to Int {
     /**
         Interested in change events
     **/
-    var Change = 2;
+    var Change;
 
     /**
         Interested in delete events
     **/
-    var Delete = 3;
+    var Delete;
 }
 
 /**
@@ -1325,10 +1320,7 @@ typedef PublishDiagnosticsParams = {
 /**
     Completion registration options.
 **/
-typedef CompletionRegistrationOptions = {
-    >TextDocumentRegistrationOptions,
-    >CompletionOptions,
-}
+typedef CompletionRegistrationOptions = TextDocumentRegistrationOptions & CompletionOptions;
 
 /**
     How a completion was triggered
@@ -1344,12 +1336,12 @@ enum abstract CompletionTriggerKind(Int) {
         Completion was triggered by a trigger character specified by
         the `triggerCharacters` properties of the `CompletionRegistrationOptions`.
     **/
-    var TriggerCharacter = 2;
+    var TriggerCharacter;
 
     /**
         Completion was re-triggered as current completion list is incomplete
     **/
-    var TriggerForIncompleteCompletions = 3;
+    var TriggerForIncompleteCompletions;
 }
 
 /**
@@ -1365,31 +1357,26 @@ typedef CompletionContext = {
         The trigger character (a single character) that has trigger code complete.
         Is undefined if `triggerKind !== CompletionTriggerKind.TriggerCharacter`
     **/
-    @:optional var triggerCharacter:String;
+    var ?triggerCharacter:String;
 }
 
 /**
     Completion parameters
 **/
-typedef CompletionParams = {
-    >TextDocumentPositionParams,
+typedef CompletionParams = TextDocumentPositionParams & {
     /**
         The completion context. This is only available it the client specifies
         to send this using `ClientCapabilities.textDocument.completion.contextSupport === true`
     **/
-    @:optional var context:CompletionContext;
+    var ?context:CompletionContext;
 }
 
 /**
     Signature help registration options.
 **/
-typedef SignatureHelpRegistrationOptions = {
-    >TextDocumentRegistrationOptions,
-    >SignatureHelpOptions,
-}
+typedef SignatureHelpRegistrationOptions = TextDocumentRegistrationOptions & SignatureHelpOptions;
 
-typedef ReferenceParams = {
-    >TextDocumentPositionParams,
+typedef ReferenceParams = TextDocumentPositionParams & {
     var context:ReferenceContext;
 }
 
@@ -1420,10 +1407,7 @@ typedef CodeLensParams = {
     var textDocument:TextDocumentIdentifier;
 }
 
-typedef CodeLensRegistrationOptions = {
-    >TextDocumentRegistrationOptions,
-    >CodeLensOptions,
-}
+typedef CodeLensRegistrationOptions = TextDocumentRegistrationOptions & CodeLensOptions;
 
 typedef DocumentFormattingParams = {
     /**
@@ -1479,10 +1463,7 @@ typedef DocumentOnTypeFormattingParams = {
 /**
     Format document on type options
 **/
-typedef DocumentOnTypeFormattingRegistrationOptions = {
-    >TextDocumentRegistrationOptions,
-    >DocumentOnTypeFormattingOptions,
-}
+typedef DocumentOnTypeFormattingRegistrationOptions = TextDocumentRegistrationOptions & DocumentOnTypeFormattingOptions;
 
 typedef RenameParams = {
     /**
@@ -1509,10 +1490,7 @@ typedef DocumentLinkParams = {
     var textDocument:TextDocumentIdentifier;
 }
 
-typedef DocumentLinkRegistrationOptions = {
-    >TextDocumentRegistrationOptions,
-    >DocumentLinkOptions,
-}
+typedef DocumentLinkRegistrationOptions = TextDocumentRegistrationOptions & DocumentLinkOptions;
 
 typedef ExecuteCommandParams = {
     /**
@@ -1523,15 +1501,13 @@ typedef ExecuteCommandParams = {
     /**
         Arguments that the command should be invoked with.
     **/
-    @:optional var arguments:Array<Dynamic>;
+    var ?arguments:Array<Dynamic>;
 }
 
 /**
     Execute command registration options.
 **/
-typedef ExecuteCommandRegistrationOptions = {
-    >ExecuteCommandOptions,
-}
+typedef ExecuteCommandRegistrationOptions = ExecuteCommandOptions;
 
 /**
     The parameters passed via a apply workspace edit request.

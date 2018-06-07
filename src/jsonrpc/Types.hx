@@ -19,9 +19,7 @@ typedef RequestId = haxe.extern.EitherType<Int,String>;
     A request message to decribe a request between the client and the server.
     Every processed request must send a response back to the sender of the request.
 **/
-typedef RequestMessage = {
-    >Message,
-
+typedef RequestMessage = Message & {
     /**
         The request id.
     **/
@@ -35,7 +33,7 @@ typedef RequestMessage = {
     /**
         The method's params.
     **/
-    @:optional var params:Dynamic;
+    var ?params:Dynamic;
 }
 
 /**
@@ -43,9 +41,7 @@ typedef RequestMessage = {
     to return a response message to conform to the JSON RPC specification. The result property of the ResponseMessage should be set to
     `null` in this case to signal a successful request.
 **/
-typedef ResponseMessage = {
-    >Message,
-
+typedef ResponseMessage = Message & {
     /**
         The request id.
     **/
@@ -54,12 +50,12 @@ typedef ResponseMessage = {
     /**
         The result of a request. This can be omitted in the case of an error.
     **/
-    @:optional var result:Dynamic;
+    var ?result:Dynamic;
 
     /**
         The error object in case a request fails.
     **/
-    @:optional var error:ResponseErrorData;
+    var ?error:ResponseErrorData;
 }
 
 /**
@@ -79,16 +75,14 @@ typedef ResponseErrorData = {
     /**
         A Primitive or Structured value that contains additional information about the error.
     **/
-    @:optional var data:Dynamic;
+    var ?data:Dynamic;
 }
 
 /**
     A notification message. A processed notification message must not send a response back.
     They work like events.
 **/
-typedef NotificationMessage = {
-    >Message,
-
+typedef NotificationMessage = Message & {
     /**
         The method to be invoked.
     **/
@@ -97,7 +91,7 @@ typedef NotificationMessage = {
     /**
         The notification's params.
     **/
-    @:optional var params:Dynamic;
+    var ?params:Dynamic;
 }
 
 abstract RequestMethod<TParams,TResponse,TError,TRegistrationOptions>(String) to String {

@@ -15,19 +15,19 @@ typedef ConfigurationClientCapabilities = {
     /**
         The client supports `workspace/configuration` requests.
     **/
-    @:optional var configuration:Bool;
+    var ?configuration:Bool;
 }
 
 typedef ConfigurationItem = {
     /**
         The scope to get the configuration section for.
     **/
-    @:optional var scopeUri:String;
+    var ?scopeUri:String;
 
     /**
         The configuration section asked for.
     **/
-    @:optional var section:String;
+    var ?section:String;
 }
 
 /**

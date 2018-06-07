@@ -22,13 +22,13 @@ typedef ColorClientCapabilities = {
     /**
         Capabilities specific to the colorProvider
     **/
-    @:optional var colorProvider:{
+    var ?colorProvider:{
         /**
             Whether implementation supports dynamic registration. If this is set to `true`
             the client supports the new `(ColorProviderOptions & TextDocumentRegistrationOptions & StaticRegistrationOptions)`
             return value for the corresponding server capability as well.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
     };
 }
 
@@ -39,7 +39,7 @@ typedef ColorServerCapabilities = {
     /**
         The server provides color provider support.
     **/
-    @:optional var colorProvider:EitherType<ColorProviderOptions,{>ColorProviderOptions,>TextDocumentRegistrationOptions,>StaticRegistrationOptions,}>;
+    var ?colorProvider:EitherType<ColorProviderOptions,ColorProviderOptions & TextDocumentRegistrationOptions & StaticRegistrationOptions>;
 }
 
 /**
@@ -125,11 +125,11 @@ typedef ColorPresentation = {
         this presentation for the color. When `falsy` the `label`
         is used.
     **/
-    @:optional var textEdit:TextEdit;
+    var ?textEdit:TextEdit;
 
     /**
         An optional array of additional text edits that are applied when
         selecting this color presentation. Edits must not overlap with the main `edit` nor with themselves.
     **/
-    @:optional var additionalTextEdits:Array<TextEdit>;
+    var ?additionalTextEdits:Array<TextEdit>;
 }

@@ -94,17 +94,17 @@ enum abstract DiagnosticSeverity(Int) {
     /**
         Reports a warning.
     **/
-    var Warning = 2;
+    var Warning;
 
     /**
         Reports an information.
     **/
-    var Information = 3;
+    var Information;
 
     /**
         Reports a hint.
     **/
-    var Hint = 4;
+    var Hint;
 }
 
 /**
@@ -121,17 +121,17 @@ typedef Diagnostic = {
         The diagnostic's severity.
         If omitted it is up to the client to interpret diagnostics as error, warning, info or hint.
     **/
-    @:optional var severity:DiagnosticSeverity;
+    var ?severity:DiagnosticSeverity;
 
     /**
         The diagnostic's code, which might appear in the user interface.
     **/
-    @:optional var code:EitherType<Int,String>;
+    var ?code:EitherType<Int,String>;
 
     /**
         A human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'.
     **/
-    @:optional var source:String;
+    var ?source:String;
 
     /**
         The diagnostic's message.
@@ -142,7 +142,7 @@ typedef Diagnostic = {
         An array of related diagnostic information, e.g. when symbol-names within
         a scope collide all definitions can be marked via this property.
     **/
-    @:optional var relatedInformation:Array<DiagnosticRelatedInformation>;
+    var ?relatedInformation:Array<DiagnosticRelatedInformation>;
 }
 
 /**
@@ -164,7 +164,7 @@ typedef Command = {
     /**
         Arguments that the command handler should be invoked with.
     **/
-    @:optional var arguments:Array<Dynamic>;
+    var ?arguments:Array<Dynamic>;
 }
 
 /**
@@ -209,7 +209,7 @@ typedef WorkspaceEdit = {
     /**
         Holds changes to existing resources.
     **/
-    @:optional var changes:haxe.DynamicAccess<Array<TextEdit>>;
+    var ?changes:haxe.DynamicAccess<Array<TextEdit>>;
 
     /**
         An array of `TextDocumentEdit`s to express changes to n different text documents
@@ -217,7 +217,7 @@ typedef WorkspaceEdit = {
         Whether a client supports versioned document edits is expressed via
         `WorkspaceClientCapabilites.workspaceEdit.documentChanges`.
     **/
-    @:optional var documentChanges:Array<TextDocumentEdit>;
+    var ?documentChanges:Array<TextDocumentEdit>;
 }
 
 abstract DocumentUri(String) {
@@ -243,9 +243,7 @@ typedef TextDocumentIdentifier = {
 /**
     An identifier to denote a specific version of a text document.
 **/
-typedef VersionedTextDocumentIdentifier = {
-    >TextDocumentIdentifier,
-
+typedef VersionedTextDocumentIdentifier = TextDocumentIdentifier & {
     /**
         The version number of this document. If a versioned text document identifier
         is sent from the server to the client and the file is not open in the editor
@@ -341,30 +339,30 @@ typedef MarkupContent = {
 **/
 enum abstract CompletionItemKind(Int) to Int {
     var Text = 1;
-    var Method = 2;
-    var Function = 3;
-    var Constructor = 4;
-    var Field = 5;
-    var Variable = 6;
-    var Class = 7;
-    var Interface = 8;
-    var Module = 9;
-    var Property = 10;
-    var Unit = 11;
-    var Value = 12;
-    var Enum = 13;
-    var Keyword = 14;
-    var Snippet = 15;
-    var Color = 16;
-    var File = 17;
-    var Reference = 18;
-    var Folder = 19;
-    var EnumMember = 20;
-    var Constant = 21;
-    var Struct = 22;
-    var Event = 23;
-    var Operator = 24;
-    var TypeParameter = 25;
+    var Method;
+    var Function;
+    var Constructor;
+    var Field;
+    var Variable;
+    var Class;
+    var Interface;
+    var Module;
+    var Property;
+    var Unit;
+    var Value;
+    var Enum;
+    var Keyword;
+    var Snippet;
+    var Color;
+    var File;
+    var Reference;
+    var Folder;
+    var EnumMember;
+    var Constant;
+    var Struct;
+    var Event;
+    var Operator;
+    var TypeParameter;
 }
 
 /**
@@ -405,29 +403,29 @@ typedef CompletionItem = {
         The kind of this completion item.
         Based of the kind an icon is chosen by the editor.
     **/
-    @:optional var kind:CompletionItemKind;
+    var ?kind:CompletionItemKind;
 
     /**
         A human-readable string with additional information about this item, like type or symbol information.
     **/
-    @:optional var detail:String;
+    var ?detail:String;
 
     /**
         A human-readable string that represents a doc-comment.
     **/
-    @:optional var documentation:EitherType<String,MarkupContent>;
+    var ?documentation:EitherType<String,MarkupContent>;
 
     /**
         A string that should be used when comparing this item with other items.
         When `falsy` the label is used.
     **/
-    @:optional var sortText:String;
+    var ?sortText:String;
 
     /**
         A string that should be used when filtering a set of completion items.
         When `falsy` the label is used.
     **/
-    @:optional var filterText:String;
+    var ?filterText:String;
 
     /**
         A string that should be inserted into a document when selecting
@@ -442,13 +440,13 @@ typedef CompletionItem = {
         since it avoids additional client side interpretation.
     **/
     @:deprecated("Use textEdit instead")
-    @:optional var insertText:String;
+    var ?insertText:String;
 
     /**
         The format of the insert text. The format applies to both the `insertText` property
         and the `newText` property of a provided `textEdit`.
     **/
-    @:optional var insertTextFormat:InsertTextFormat;
+    var ?insertTextFormat:InsertTextFormat;
 
     /**
         A `TextEdit` which is applied to a document when selecting
@@ -458,33 +456,33 @@ typedef CompletionItem = {
         *Note:* The text edit's range must be a [single line] and it must contain the position
         at which completion has been requested.
     **/
-    @:optional var textEdit:TextEdit;
+    var ?textEdit:TextEdit;
 
     /**
         An optional array of additional text edits that are applied when
         selecting this completion. Edits must not overlap with the main edit
         nor with themselves.
     **/
-    @:optional var additionalTextEdits:Array<TextEdit>;
+    var ?additionalTextEdits:Array<TextEdit>;
 
     /**
         An optional set of characters that when pressed while this completion is active will accept it first and
         then type that character. *Note* that all commit characters should have `length=1` and that superfluous
         characters will be ignored.
     **/
-    @:optional var commitCharacters:Array<String>;
+    var ?commitCharacters:Array<String>;
 
     /**
         An optional command that is executed *after* inserting this completion. *Note* that
         additional modifications to the current document should be described with the
         additionalTextEdits-property.
     **/
-    @:optional var command:Command;
+    var ?command:Command;
 
     /**
         An data entry field that is preserved on a completion item between a completion and a completion resolve request.
     **/
-    @:optional var data:Dynamic;
+    var ?data:Dynamic;
 }
 
 /**
@@ -530,7 +528,7 @@ typedef Hover = {
     /**
         An optional range.
     **/
-    @:optional var range:Range;
+    var ?range:Range;
 }
 
 /**
@@ -548,7 +546,7 @@ typedef ParameterInformation = {
         The human-readable doc-comment of this signature.
         Will be shown in the UI but can be omitted.
     **/
-    @:optional var documentation:EitherType<String,MarkupContent>;
+    var ?documentation:EitherType<String,MarkupContent>;
 }
 
 /**
@@ -566,12 +564,12 @@ typedef SignatureInformation = {
         The human-readable doc-comment of this signature.
         Will be shown in the UI but can be omitted.
     **/
-    @:optional var documentation:EitherType<String,MarkupContent>;
+    var ?documentation:EitherType<String,MarkupContent>;
 
     /**
         The parameters of this signature.
     **/
-    @:optional var parameters:Array<ParameterInformation>;
+    var ?parameters:Array<ParameterInformation>;
 }
 
 /**
@@ -588,13 +586,13 @@ typedef SignatureHelp = {
         The active signature. Set to `null` if no
         signatures exist.
     **/
-    @:optional var activeSignature:Int;
+    var ?activeSignature:Int;
 
     /**
         The active parameter of the active signature. Set to `null`
         if the active signature has no parameters.
     **/
-    @:optional var activeParameter:Int;
+    var ?activeParameter:Int;
 }
 
 /**
@@ -627,12 +625,12 @@ enum abstract DocumentHighlightKind(Int) to Int {
     /**
         Read-access of a symbol, like reading a variable.
     **/
-    var Read = 2;
+    var Read;
 
     /**
         Write-access of a symbol, like writing to a variable.
     **/
-    var Write = 3;
+    var Write;
 }
 
 /**
@@ -648,7 +646,7 @@ typedef DocumentHighlight = {
     /**
         The highlight kind, default is `DocumentHighlightKind.Text`.
     **/
-    @:optional var kind:DocumentHighlightKind;
+    var ?kind:DocumentHighlightKind;
 }
 
 /**
@@ -656,31 +654,31 @@ typedef DocumentHighlight = {
 **/
 enum abstract SymbolKind(Int) to Int {
     var File = 1;
-    var Module = 2;
-    var Namespace = 3;
-    var Package = 4;
-    var Class = 5;
-    var Method = 6;
-    var Property = 7;
-    var Field = 8;
-    var Constructor = 9;
-    var Enum = 10;
-    var Interface = 11;
-    var Function = 12;
-    var Variable = 13;
-    var Constant = 14;
-    var String = 15;
-    var Number = 16;
-    var Boolean = 17;
-    var Array = 18;
-    var Object = 19;
-    var Key = 20;
-    var Null = 21;
-    var EnumMember = 22;
-    var Struct = 23;
-    var Event = 24;
-    var Operator = 25;
-    var TypeParameter = 26;
+    var Module;
+    var Namespace;
+    var Package;
+    var Class;
+    var Method;
+    var Property;
+    var Field;
+    var Constructor;
+    var Enum;
+    var Interface;
+    var Function;
+    var Variable;
+    var Constant;
+    var String;
+    var Number;
+    var Boolean;
+    var Array;
+    var Object;
+    var Key;
+    var Null;
+    var EnumMember;
+    var Struct;
+    var Event;
+    var Operator;
+    var TypeParameter;
 }
 
 /**
@@ -716,7 +714,7 @@ typedef SymbolInformation = {
         if necessary). It can't be used to re-infer a hierarchy for the document
         symbols.
     **/
-    @:optional var containerName:String;
+    var ?containerName:String;
 }
 
 /**
@@ -766,12 +764,12 @@ typedef CodeLens = {
     /**
         The command this code lens represents.
     **/
-    @:optional var command:Command;
+    var ?command:Command;
 
     /**
         An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
     **/
-    @:optional var data:Dynamic;
+    var ?data:Dynamic;
 }
 
 /**
@@ -803,7 +801,7 @@ typedef DocumentLink = {
     /**
         The uri this link points to. If missing a resolve request is sent later.
     **/
-    @:optional var target:DocumentUri;
+    var ?target:DocumentUri;
 }
 
 /**
@@ -818,12 +816,12 @@ enum abstract TextDocumentSaveReason(Int) {
     /**
         Automatic after a delay.
     **/
-    var AfterDelay = 2;
+    var AfterDelay;
 
     /**
         When the editor lost focus.
     **/
-    var FocusOut = 3;
+    var FocusOut;
 }
 
 /**
@@ -834,12 +832,12 @@ typedef TextDocumentContentChangeEvent = {
     /**
         The range of the document that changed.
     **/
-    @:optional var range:Range;
+    var ?range:Range;
 
     /**
         The length of the range that got replaced.
     **/
-    @:optional var rangeLength:Int;
+    var ?rangeLength:Int;
 
     /**
         The new text of the range/document.

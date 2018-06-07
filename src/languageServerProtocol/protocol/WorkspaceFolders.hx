@@ -22,22 +22,22 @@ typedef WorkspaceFoldersInitializeParams = {
     /**
         The actual configured workspace folders.
     **/
-    @:optional var workspaceFolders:Array<WorkspaceFolder>;
+    var ?workspaceFolders:Array<WorkspaceFolder>;
 }
 
 typedef WorkspaceFoldersClientCapabilities = {
     /**
         The client has support for workspace folders
     **/
-    @:optional var workspaceFolders:Bool;
+    var ?workspaceFolders:Bool;
 }
 
 typedef WorkspaceFoldersServerCapabilities = {
-    @:optional var workspaceFolders:{
+    var ?workspaceFolders:{
         /**
             The Server has support for workspace folders
         **/
-        @:optional var supported:Bool;
+        var ?supported:Bool;
 
         /**
             Whether the server wants to receive workspace folder
@@ -48,7 +48,7 @@ typedef WorkspaceFoldersServerCapabilities = {
             side. The ID can be used to unregister for these events
             using the `client/unregisterCapability` request.
         **/
-        @:optional var changeNotifications:EitherType<String,Bool>;
+        var ?changeNotifications:EitherType<String,Bool>;
     };
 }
 

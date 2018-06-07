@@ -18,13 +18,13 @@ typedef ImplementationClientCapabilities = {
     /**
         Capabilities specific to the `textDocument/implementation`
     **/
-    @:optional var implementation:{
+    var ?implementation:{
         /**
             Whether implementation supports dynamic registration. If this is set to `true`
             the client supports the new `(TextDocumentRegistrationOptions & StaticRegistrationOptions)`
             return value for the corresponding server capability as well.
         **/
-        @:optional var dynamicRegistration:Bool;
+        var ?dynamicRegistration:Bool;
     };
 }
 
@@ -32,5 +32,5 @@ typedef ImplementationServerCapabilities = {
     /**
         The server provides Goto Implementation support.
     **/
-    @:optional var implementationProvider:EitherType<Bool,{>TextDocumentRegistrationOptions,>StaticRegistrationOptions,}>;
+    var ?implementationProvider:EitherType<Bool,TextDocumentRegistrationOptions & StaticRegistrationOptions>;
 }
