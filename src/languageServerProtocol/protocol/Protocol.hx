@@ -186,7 +186,7 @@ class Methods {
         The code action request is sent from the client to the server to compute commands for a given text document and range.
         These commands are typically code fixes to either fix problems or to beautify/refactor code.
     **/
-    static inline var CodeAction = new RequestMethod<CodeActionParams,Null<Array<Command>>,NoData,TextDocumentRegistrationOptions>("textDocument/codeAction");
+    static inline var CodeAction = new RequestMethod<CodeActionParams,Null<Array<EitherType<Command,CodeAction>>>,NoData,TextDocumentRegistrationOptions>("textDocument/codeAction");
 
     /**
         The code lens request is sent from the client to the server to compute code lenses for a given text document.
