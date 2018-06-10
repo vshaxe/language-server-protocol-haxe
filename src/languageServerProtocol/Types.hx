@@ -416,6 +416,11 @@ typedef CompletionItem = {
     var ?documentation:EitherType<String,MarkupContent>;
 
     /**
+        Indicates if this item is deprecated.
+    **/
+    var ?deprecated:Bool;
+
+    /**
         A string that should be used when comparing this item with other items.
         When `falsy` the label is used.
     **/
@@ -459,9 +464,13 @@ typedef CompletionItem = {
     var ?textEdit:TextEdit;
 
     /**
-        An optional array of additional text edits that are applied when
-        selecting this completion. Edits must not overlap with the main edit
-        nor with themselves.
+        An optional array of additional [text edits](#TextEdit) that are applied when
+        selecting this completion. Edits must not overlap (including the same insert position)
+        with the main [edit](#CompletionItem.textEdit) nor with themselves.
+
+        Additional text edits should be used to change text unrelated to the current cursor position
+        (for example adding an import statement at the top of the file if the completion item will
+        insert an unqualified type).
     **/
     var ?additionalTextEdits:Array<TextEdit>;
 
@@ -696,6 +705,11 @@ typedef SymbolInformation = {
     var kind:SymbolKind;
 
     /**
+        Indicates if this symbol is deprecated.
+    **/
+    var ?deprecated:Bool;
+
+    /**
         The location of this symbol. The location's range is used by a tool
         to reveal the location in the editor. If the symbol is selected in the
         tool the range's start information is used to position the cursor. So
@@ -738,6 +752,79 @@ typedef WorkspaceSymbolParams = {
 }
 
 /**
+    The kind of a code action.
+
+    Kinds are a hierarchical list of identifiers separated by `.`, e.g. `"refactor.extract.function"`.
+
+    The set of kinds is open and client needs to announce the kinds it supports to the server during
+    initialization.
+
+    This enum has a set of predefined code action kinds.
+**/
+enum abstract CodeActionKind(String) from String to String {
+    /**
+        Base kind for quickfix actions: 'quickfix'
+    **/
+    var QuickFix = 'quickfix';
+
+    /**
+        Base kind for refactoring actions: 'refactor'
+    **/
+    var Refactor = 'refactor';
+
+    /**
+        Base kind for refactoring extraction actions: 'refactor.extract'
+
+        Example extract actions:
+
+        - Extract method
+        - Extract function
+        - Extract variable
+        - Extract interface from class
+        - ...
+    **/
+    var RefactorExtract = 'refactor.extract';
+
+    /**
+        Base kind for refactoring inline actions: 'refactor.inline'
+
+        Example inline actions:
+
+        - Inline function
+        - Inline variable
+        - Inline constant
+        - ...
+    **/
+    var RefactorInline = 'refactor.inline';
+
+    /**
+        Base kind for refactoring rewrite actions: 'refactor.rewrite'
+
+        Example rewrite actions:
+
+        - Convert JavaScript function to class
+        - Add or remove parameter
+        - Encapsulate field
+        - Make method static
+        - Move method to base class
+        - ...
+    **/
+    var RefactorRewrite = 'refactor.rewrite';
+
+    /**
+        Base kind for source actions: `source`
+
+        Source code actions apply to the entire file.
+    **/
+    var Source = 'source';
+
+    /**
+        Base kind for an organize imports source action: `source.organizeImports`
+    **/
+    var SourceOrganizeImports = 'source.organizeImports';
+}
+
+/**
     Contains additional diagnostic information about the context in which a code action is run.
 **/
 typedef CodeActionContext = {
@@ -745,6 +832,51 @@ typedef CodeActionContext = {
         An array of diagnostics.
     **/
     var diagnostics:Array<Diagnostic>;
+
+    /**
+        Requested kind of actions to return.
+
+        Actions not of this kind are filtered out by the client before being shown. So servers
+        can omit computing them.
+    **/
+    var ?only:Array<CodeActionKind>;
+}
+
+/**
+    A code action represents a change that can be performed in code, e.g. to fix a problem or
+    to refactor code.
+
+    A CodeAction must set either `edit` and/or a `command`. If both are supplied, the `edit` is applied first, then the `command` is executed.
+**/
+typedef CodeAction = {
+    /**
+        A short, human-readable, title for this code action.
+    **/
+    var title:String;
+
+    /**
+        The kind of the code action.
+
+        Used to filter code actions.
+    **/
+    var ?kind:CodeActionKind;
+
+    /**
+        The diagnostics that this code action resolves.
+    **/
+    var ?diagnostics:Array<Diagnostic>;
+
+    /**
+        The workspace edit this code action performs.
+    **/
+    var ?edit:WorkspaceEdit;
+
+    /**
+        A command this code action executes. If a code action
+        provides a edit and a command, first the edit is
+        executed and then the command.
+    **/
+    var ?command:Command;
 }
 
 /**
@@ -802,6 +934,12 @@ typedef DocumentLink = {
         The uri this link points to. If missing a resolve request is sent later.
     **/
     var ?target:DocumentUri;
+
+    /**
+        A data entry field that is preserved on a document link between a
+        DocumentLinkRequest and a DocumentLinkResolveRequest.
+    **/
+    var ?data:Dynamic;
 }
 
 /**

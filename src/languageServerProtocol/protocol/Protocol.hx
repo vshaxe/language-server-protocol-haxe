@@ -483,6 +483,11 @@ typedef TextDocumentClientCapabilities =
                 property. The order describes the preferred format of the client.
             **/
             var ?documentationFormat:Array<MarkupKind>;
+
+            /**
+                Client supports the deprecated property on a completion item.
+            **/
+            var ?deprecatedSupport:Bool;
         };
 
         var ?completionItemKind:{
@@ -639,6 +644,26 @@ typedef TextDocumentClientCapabilities =
             Whether code action supports dynamic registration.
         **/
         var ?dynamicRegistration:Bool;
+
+        /**
+            The client support code action literals as a valid
+            response of the `textDocument/codeAction` request.
+        **/
+        var ?codeActionLiteralSupport:{
+            /**
+                The code action kind is support with the following value
+                set.
+            **/
+            var codeActionKind:{
+                /**
+                    The code action kind values the client supports. When this
+                    property exists the client also guarantees that it will
+                    handle values outside its set gracefully and falls back
+                    to a default value when unknown.
+                **/
+                var valueSet:Array<CodeActionKind>;
+            };
+        };
     };
 
     /**
