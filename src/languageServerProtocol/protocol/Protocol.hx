@@ -488,6 +488,11 @@ typedef TextDocumentClientCapabilities =
                 Client supports the deprecated property on a completion item.
             **/
             var ?deprecatedSupport:Bool;
+
+            /**
+                Client supports the preselect property on a completion item.
+            **/
+            var ?preselectSupport:Bool;
         };
 
         var ?completionItemKind:{

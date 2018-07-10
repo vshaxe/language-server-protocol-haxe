@@ -421,6 +421,15 @@ typedef CompletionItem = {
     var ?deprecated:Bool;
 
     /**
+     * Select this item when showing.
+     *
+     * *Note* that only one completion item can be selected and that the
+     * tool / client decides which item that is. The rule is that the *first*
+     * item of those that match best is selected.
+     */
+    var ?preselect:Bool;
+
+    /**
         A string that should be used when comparing this item with other items.
         When `falsy` the label is used.
     **/
