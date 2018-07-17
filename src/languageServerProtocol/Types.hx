@@ -741,6 +741,52 @@ typedef SymbolInformation = {
 }
 
 /**
+    Represents programming constructs like variables, classes, interfaces etc.
+    that appear in a document. Document symbols can be hierarchical and they
+    have two ranges: one that encloses its definition and one that points to
+    its most interesting range, e.g. the range of an identifier.
+**/
+typedef DocumentSymbol = {
+    /**
+        The name of this symbol.
+    **/
+    var name:String;
+
+    /**
+        More detail for this symbol, e.g the signature of a function.
+    **/
+    var detail:String;
+
+    /**
+        The kind of this symbol.
+    **/
+    var kind:SymbolKind;
+
+    /**
+        Indicates if this symbol is deprecated.
+    **/
+    var ?deprecated:Bool;
+
+    /**
+        The range enclosing this symbol not including leading/trailing whitespace but everything else
+        like comments. This information is typically used to determine if the the clients cursor is
+        inside the symbol to reveal in the symbol in the UI.
+    **/
+    var range:Range;
+
+    /**
+        The range that should be selected and reveal when this symbol is being picked, e.g the name of a function.
+        Must be contained by the the `range`.
+    **/
+    var selectionRange:Range;
+
+    /**
+        Children of this symbol, e.g. properties of a class.
+    **/
+    var ?children:Array<DocumentSymbol>;
+}
+
+/**
     Parameters for a `DocumentSymbols` request.
 **/
 typedef DocumentSymbolParams = {

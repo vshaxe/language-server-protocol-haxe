@@ -175,7 +175,7 @@ class Methods {
     /**
         The document symbol request is sent from the client to the server to list all symbols found in a given text document.
     **/
-    static inline var DocumentSymbols = new RequestMethod<DocumentSymbolParams,Null<Array<SymbolInformation>>,NoData,TextDocumentRegistrationOptions>("textDocument/documentSymbol");
+    static inline var DocumentSymbols = new RequestMethod<DocumentSymbolParams,Null<Array<EitherType<SymbolInformation,DocumentSymbol>>>,NoData,TextDocumentRegistrationOptions>("textDocument/documentSymbol");
 
     /**
         The workspace symbol request is sent from the client to the server to list project-wide symbols matching the query string.
@@ -599,6 +599,11 @@ typedef TextDocumentClientCapabilities =
             **/
             var ?valueSet:Array<SymbolKind>;
         };
+
+        /**
+            The client support hierarchical document symbols.
+        **/
+        var ?hierarchicalDocumentSymbolSupport:Bool;
     };
 
     /**
