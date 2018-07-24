@@ -66,6 +66,120 @@ typedef Location = {
 }
 
 /**
+    Represents a color in RGBA space.
+**/
+typedef Color = {
+    /**
+        The red component of this color in the range [0-1].
+    **/
+    final red:Float;
+
+    /**
+     * The green component of this color in the range [0-1].
+     */
+    final green:Float;
+
+    /**
+     * The blue component of this color in the range [0-1].
+     */
+    final blue:Float;
+
+    /**
+     * The alpha component of this color in the range [0-1].
+     */
+    final alpha:Float;
+}
+
+/**
+    Represents a color range from a document.
+**/
+typedef ColorInformation = {
+    /**
+        The range in the document where this color appers.
+    **/
+    var range:Range;
+
+    /**
+        The actual color value for this color range.
+    **/
+    var color:Color;
+}
+
+typedef ColorPresentation = {
+    /**
+        The label of this color presentation. It will be shown on the color
+        picker header. By default this is also the text that is inserted when selecting
+        this color presentation.
+    **/
+    var label:String;
+
+    /**
+        An edit which is applied to a document when selecting
+        this presentation for the color. When `falsy` the `label`
+        is used.
+    **/
+    var ?textEdit:TextEdit;
+
+    /**
+        An optional array of additional text edits that are applied when
+        selecting this color presentation. Edits must not overlap with the main `edit` nor with themselves.
+    **/
+    var ?additionalTextEdits:Array<TextEdit>;
+}
+
+/**
+    Enum of known range kinds
+**/
+enum abstract FoldingRangeKind(String) from String {
+    /**
+        Folding range for a comment
+    **/
+    var Comment = 'comment';
+
+    /**
+        Folding range for a imports or includes
+    **/
+    var Imports = 'imports';
+
+    /**
+        Folding range for a region (e.g. `#region`)
+    **/
+    var Region = 'region';
+}
+
+/**
+    Represents a folding range.
+**/
+typedef FoldingRange = {
+    /**
+        The zero-based line number from where the folded range starts.
+    **/
+    var startLine:Int;
+
+    /**
+        The zero-based character offset from where the folded range starts. If not defined, defaults to the length of the start line.
+    **/
+    var ?startCharacter:Int;
+
+    /**
+        The zero-based line number where the folded range ends.
+    **/
+    var endLine:Int;
+
+    /**
+        The zero-based character offset before the folded range ends. If not defined, defaults to the length of the end line.
+    **/
+    var ?endCharacter:Int;
+
+    /**
+        Describes the kind of the folding range such as `comment' or 'region'. The kind
+        is used to categorize folding ranges and used by commands like 'Fold all comments'. See
+        [FoldingRangeKind](#FoldingRangeKind) for an enumeration of standardized kinds.
+    **/
+    var ?kind:FoldingRangeKind;
+}
+
+/**
     Represents a related message and source code location for a diagnostic. This should be
     used to point to code locations that cause or related to a diagnostics, e.g when duplicating
     a symbol in a scope.

@@ -6,6 +6,7 @@ import languageServerProtocol.protocol.Configuration;
 import languageServerProtocol.protocol.Implementation;
 import languageServerProtocol.protocol.TypeDefinition;
 import languageServerProtocol.protocol.WorkspaceFolders;
+import languageServerProtocol.protocol.FoldingRange;
 import haxe.extern.EitherType;
 import jsonrpc.Types;
 
@@ -421,7 +422,8 @@ typedef WorkspaceClientCapabilites =
 typedef TextDocumentClientCapabilities =
     ImplementationClientCapabilities &
     TypeDefinitionClientCapabilities &
-    /* ColorClientCapabilities & */ {
+    /* ColorClientCapabilities & */
+    FoldingRangeClientCapabilities & {
     /**
         Defines which synchronization capabilities the client supports.
     **/
@@ -909,7 +911,8 @@ typedef ServerCapabilities =
     ImplementationServerCapabilities &
     TypeDefinitionServerCapabilities &
     WorkspaceFoldersServerCapabilities &
-    ColorServerCapabilities & {
+    ColorServerCapabilities &
+    FoldingRangeServerCapabilities & {
     /**
         Defines how text documents are synced.
         Is either a detailed structure defining each notification or for backwards compatibility the TextDocumentSyncKind number.
