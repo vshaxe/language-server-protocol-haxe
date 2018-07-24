@@ -867,9 +867,10 @@ typedef DocumentSymbol = {
     var name:String;
 
     /**
-        More detail for this symbol, e.g the signature of a function.
+        More detail for this symbol, e.g the signature of a function. If not provided
+        the name is used.
     **/
-    var detail:String;
+    var ?detail:String;
 
     /**
         The kind of this symbol.
