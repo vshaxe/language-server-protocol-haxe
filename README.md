@@ -5,4 +5,4 @@ This is an implementation of the [Language Server Protocol](https://microsoft.gi
 It's used by the [Haxe Language Server](https://github.com/vshaxe/haxe-languageserver) and was separated from it
 so one could implement their own client and/or server using Haxe.
 
-Based on [vscode-languageclient](https://github.com/Microsoft/vscode-languageserver-node) version 4.4.0.
+Based on [vscode-languageclient](https://github.com/Microsoft/vscode-languageserver-node) version 5.0.1.
