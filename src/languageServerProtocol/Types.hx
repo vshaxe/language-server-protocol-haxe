@@ -313,6 +313,52 @@ typedef TextDocumentEdit = {
 	var edits:Array<TextEdit>;
 }
 
+enum abstract CreateKind(String) {
+	var Create = "create";
+}
+
+typedef CreateFileOptions = {
+	var ?overwrite:Bool;
+	var ?ignoreIfExists:Bool;
+}
+
+typedef CreateFile = {
+	var kind:CreateKind;
+	var uri:DocumentUri;
+	var ?options:CreateFileOptions;
+}
+
+enum abstract RenameKind(String) {
+	var Kind = "rename";
+}
+
+typedef RenameFileOptions = {
+	var ?overwrite:Bool;
+	var ?ignoreIfExists:Bool;
+}
+
+typedef RenameFile = {
+	var kind:RenameKind;
+	var oldUri:DocumentUri;
+	var newUri:DocumentUri;
+	var ?options:RenameFileOptions;
+}
+
+enum abstract DeleteKind(String) {
+	var Delete = "Delete";
+}
+
+typedef DeleteFileOptions = {
+	var ?recursive:Bool;
+	var ?ignoreIfNotExists:Bool;
+}
+
+typedef DeleteFile = {
+	var kind:DeleteKind;
+	var uri:DocumentUri;
+	var ?options:DeleteFileOptions;
+}
+
 /**
 	A workspace edit represents changes to many resources managed in the workspace.
 	The edit should either provide `changes` or `documentChanges`.
@@ -331,7 +377,7 @@ typedef WorkspaceEdit = {
 		Whether a client supports versioned document edits is expressed via
 		`WorkspaceClientCapabilites.workspaceEdit.documentChanges`.
 	**/
-	var ?documentChanges:Array<TextDocumentEdit>;
+	var ?documentChanges:Array<EitherType<TextDocumentEdit, EitherType<CreateFile, EitherType<RenameFile, DeleteFile>>>>;
 }
 
 abstract DocumentUri(String) {

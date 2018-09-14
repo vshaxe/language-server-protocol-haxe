@@ -9,11 +9,11 @@ import jsonrpc.Types;
 class FoldingRangeMethods {
 	/**
 		A request to provide folding ranges in a document. The request's
-		parameter is of type [FoldingRangeRequestParam](#FoldingRangeRequestParam), the
+		parameter is of type [FoldingRangeParams](#FoldingRangeParams), the
 		response is of type [FoldingRangeList](#FoldingRangeList) or a Thenable
 		that resolves to such.
 	**/
-	static inline var FoldingRange = new RequestMethod<FoldingRangeRequestParam, Null<Array<FoldingRange>>, NoData, NoData>("textDocument/foldingRange");
+	static inline var FoldingRange = new RequestMethod<FoldingRangeParams, Null<Array<FoldingRange>>, NoData, NoData>("textDocument/foldingRange");
 }
 
 typedef FoldingRangeClientCapabilities = {
@@ -55,7 +55,7 @@ typedef FoldingRangeServerCapabilities = {
 /**
 	Parameters for a [FoldingRangeRequest](#FoldingRangeRequest).
 **/
-typedef FoldingRangeRequestParam = {
+typedef FoldingRangeParams = {
 	/**
 		The text document.
 	**/

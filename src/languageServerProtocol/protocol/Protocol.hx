@@ -197,7 +197,7 @@ class Methods {
 		The code action request is sent from the client to the server to compute commands for a given text document and range.
 		These commands are typically code fixes to either fix problems or to beautify/refactor code.
 	**/
-	static inline var CodeAction = new RequestMethod<CodeActionParams, Null<Array<EitherType<Command, CodeAction>>>, NoData, TextDocumentRegistrationOptions>
+	static inline var CodeAction = new RequestMethod<CodeActionParams, Null<Array<EitherType<Command, CodeAction>>>, NoData, CodeActionRegistrationOptions>
 		("textDocument/codeAction");
 
 	/**
@@ -231,7 +231,13 @@ class Methods {
 	/**
 		The rename request is sent from the client to the server to do a workspace wide rename of a symbol.
 	**/
-	static inline var Rename = new RequestMethod<RenameParams, Null<WorkspaceEdit>, NoData, TextDocumentRegistrationOptions>("textDocument/rename");
+	static inline var Rename = new RequestMethod<RenameParams, Null<WorkspaceEdit>, NoData, RenameRegistrationOptions>("textDocument/rename");
+
+	/**
+		A request to test and perform the setup necessary for a rename.
+	**/
+	static inline var PrepareRename = new RequestMethod<TextDocumentPositionParams, Null<EitherType<Range, {range:Range, placeholder:String}>>, NoData, NoData>
+		("textDocument/prepareRename");
 
 	/**
 		The document links request is sent from the client to the server to request the location of links in a document.
@@ -351,6 +357,53 @@ typedef TextDocumentPositionParams = {
 }
 
 /**
+	The kind of resource operations supported by the client.
+**/
+enum abstract ResourceOperationKind(String) {
+	/**
+		Supports creating new resources.
+	**/
+	var Create = "create";
+
+	/**
+		Supports renaming existing resources.
+	**/
+	var Rename = "rename";
+
+	/**
+		Supports deleting existing resources.
+	**/
+	var Delete = "delete";
+}
+
+enum abstract FailureHandlingKind(String) {
+	/**
+		Applying the workspace change is simply aborted if one of the changes provided
+		fails. All operations executed before the failing operation stay executed.
+	**/
+	var Abort = "abort";
+
+	/**
+		All operations are executed transactional. That means they either all
+		succeed or no changes at all are applied to the workspace.
+	**/
+	var Transactional = "transactional";
+
+	/**
+		If the workspace edit contains only textual file changes they are executed transactional.
+		If resource changes (create, rename or delete file) are part of the change the failure
+		handling startegy is abort.
+	**/
+	var TextOnlyTransactional = "textOnlyTransactional";
+
+	/**
+		The client tries to undo the operations already executed. But there is no
+		guaruntee that this is succeeding.
+	**/
+	var Undo = "undo";
+}
+
+/**
 	Workspace specific client capabilities.
 
 	Define capabilities the editor / tool provides on the workspace.
@@ -371,6 +424,18 @@ typedef WorkspaceClientCapabilites = ConfigurationClientCapabilities &
 			The client supports versioned document changes in `WorkspaceEdit`s
 		**/
 		var ?documentChanges:Bool;
+
+		/**
+			The resource operations the client supports. Clients should at least
+			support 'create', 'rename' and 'delete'.
+		**/
+		var ?resourceOperations:Array<ResourceOperationKind>;
+
+		/**
+			The failure handling strategy of a client if applying the workspace edit
+			failes.
+		**/
+		var ?failureHandling:FailureHandlingKind;
 	};
 
 	/**
@@ -719,6 +784,12 @@ typedef TextDocumentClientCapabilities = ImplementationClientCapabilities &
 			Whether rename supports dynamic registration.
 		**/
 		var ?dynamicRegistration:Bool;
+
+		/**
+			Client supports testing for validity of rename operations
+			before execution.
+		**/
+		var ?prepareSupport:Bool;
 	};
 
 	/**
@@ -843,6 +914,19 @@ typedef CodeLensOptions = {
 }
 
 /**
+	Code Action options.
+**/
+typedef CodeActionOptions = {
+	/**
+		CodeActionKinds that this server may return.
+
+		The list of kinds may be generic, such as `CodeActionKind.Refactor`, or the server
+		may list out every specific kind they provide.
+	**/
+	var ?codeActionKinds:Array<CodeActionKind>;
+}
+
+/**
 	Format document on type options
 **/
 typedef DocumentOnTypeFormattingOptions = {
@@ -855,6 +939,16 @@ typedef DocumentOnTypeFormattingOptions = {
 		More trigger characters.
 	**/
 	var ?moreTriggerCharacter:Array<String>;
+}
+
+/**
+	Rename options
+**/
+typedef RenameOptions = {
+	/**
+		Renames should be checked and tested before being executed.
+	**/
+	var ?prepareProvider:Bool;
 }
 
 /**
@@ -971,9 +1065,11 @@ typedef ServerCapabilities = ImplementationServerCapabilities &
 	var ?workspaceSymbolProvider:Bool;
 
 	/**
-		The server provides code actions.
+		The server provides code actions. CodeActionOptions may only be
+		specified if the client states that it supports
+		`codeActionLiteralSupport` in its initial `initialize` request.
 	**/
-	var ?codeActionProvider:Bool;
+	var ?codeActionProvider:EitherType<Bool, CodeActionOptions>;
 
 	/**
 		The server provides code lens.
@@ -996,9 +1092,11 @@ typedef ServerCapabilities = ImplementationServerCapabilities &
 	var ?documentOnTypeFormattingProvider:DocumentOnTypeFormattingOptions;
 
 	/**
-		The server provides rename support.
+		The server provides rename support. RenameOptions may only be
+		specified if the client states that it supports
+		`prepareSupport` in its initial `initialize` request.
 	**/
-	var ?renameProvider:Bool;
+	var ?renameProvider:EitherType<Bool, RenameOptions>;
 
 	/**
 		The server provides document link support.
@@ -1205,7 +1303,7 @@ typedef DidChangeTextDocumentParams = {
 	/**
 		The actual content changes. The content changes describe single state changes
 		to the document. So if there are two content changes c1 and c2 for a document
-		in state S10 then c1 move the document to S11 and c2 to S12.
+		in state S then c1 move the document to S' and c2 to S''.
 	**/
 	var contentChanges:Array<TextDocumentContentChangeEvent>;
 }
@@ -1449,6 +1547,8 @@ typedef CodeActionParams = {
 	var context:CodeActionContext;
 }
 
+typedef CodeActionRegistrationOptions = TextDocumentRegistrationOptions & CodeActionOptions;
+
 typedef CodeLensParams = {
 	/**
 		The document to request code lens for.
@@ -1532,6 +1632,11 @@ typedef RenameParams = {
 	var newName:String;
 }
 
+/**
+ * Rename registration options.
+ */
+typedef RenameRegistrationOptions = TextDocumentRegistrationOptions & RenameOptions;
+
 typedef DocumentLinkParams = {
 	/**
 		The document to provide document links for.
@@ -1576,4 +1681,11 @@ typedef ApplyWorkspaceEditResponse = {
 		Indicates whether the edit was applied or not.
 	**/
 	var applied:Bool;
+
+	/**
+		Depending on the client's failure handling strategy `failedChange` might
+		contain the index of the change that failed. This property is only available
+		if the client signals a `failureHandlingStrategy` in its client capabilities.
+	**/
+	var ?failedChange:Int;
 }
