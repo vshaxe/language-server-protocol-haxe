@@ -644,8 +644,8 @@ typedef CompletionList = {
 	```
 
 	Note that markdown strings will be sanitized - that means html will be escaped.
+	@deprecated use MarkupContent instead
 **/
-@:deprecated("use MarkupContent instead")
 typedef MarkedString = EitherType<String, {language:String, value:String}>;
 
 /**
