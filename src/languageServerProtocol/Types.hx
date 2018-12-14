@@ -66,6 +66,38 @@ typedef Location = {
 }
 
 /**
+	Represents the connection of two locations. Provides additional metadata over normal [locations](#Location),
+	including an origin range.
+**/
+typedef LocationLink = {
+	/**
+		Span of the origin of this link.
+
+		Used as the underlined span for mouse definition hover. Defaults to the word range at
+		the definition position.
+	**/
+	var ?originSelectionRange:Range;
+
+	/**
+		The target resource identifier of this link.
+	**/
+	var targetUri:DocumentUri;
+
+	/**
+		The full target range of this link. If the target for example is a symbol then target range is the
+		range enclosing this symbol not including leading/trailing whitespace but everything else
+		like comments. This information is typically used to highlight the range in the editor.
+	**/
+	var targetRange:Range;
+
+	/**
+		The range that should be selected and revealed when this link is being followed, e.g the name of a function.
+		Must be contained by the the `targetRange`. See also `DocumentSymbol#range`
+	**/
+	var targetSelectionRange:Range;
+}
+
+/**
 	Represents a color in RGBA space.
 **/
 typedef Color = {
@@ -238,7 +270,7 @@ typedef Diagnostic = {
 	var ?severity:DiagnosticSeverity;
 
 	/**
-		The diagnostic's code, which might appear in the user interface.
+		The diagnostic's code, which usually appear in the user interface.
 	**/
 	var ?code:EitherType<Int, String>;
 
@@ -248,7 +280,7 @@ typedef Diagnostic = {
 	var ?source:String;
 
 	/**
-		The diagnostic's message.
+		The diagnostic's message. It usually appears in the user interface
 	**/
 	var message:String;
 
@@ -317,14 +349,38 @@ enum abstract CreateKind(String) {
 	var Create = "create";
 }
 
+/**
+	Options to create a file.
+**/
 typedef CreateFileOptions = {
+	/**
+		Overwrite existing file. Overwrite wins over `ignoreIfExists`
+	**/
 	var ?overwrite:Bool;
+
+	/**
+		Ignore if exists.
+	**/
 	var ?ignoreIfExists:Bool;
 }
 
+/**
+	Create file operation.
+**/
 typedef CreateFile = {
+	/**
+		A create
+	**/
 	var kind:CreateKind;
+
+	/**
+		The resource to create.
+	**/
 	var uri:DocumentUri;
+
+	/**
+		Additional options
+	**/
 	var ?options:CreateFileOptions;
 }
 
@@ -332,15 +388,43 @@ enum abstract RenameKind(String) {
 	var Kind = "rename";
 }
 
+/**
+	Rename file options
+**/
 typedef RenameFileOptions = {
+	/**
+		Overwrite target if existing. Overwrite wins over `ignoreIfExists`
+	**/
 	var ?overwrite:Bool;
+
+	/**
+		Ignores if target exists.
+	**/
 	var ?ignoreIfExists:Bool;
 }
 
+/**
+	Rename file operation
+**/
 typedef RenameFile = {
+	/**
+		A rename
+	**/
 	var kind:RenameKind;
+
+	/**
+		The old (existing) location.
+	**/
 	var oldUri:DocumentUri;
+
+	/**
+		The new location.
+	**/
 	var newUri:DocumentUri;
+
+	/**
+		Rename options.
+	**/
 	var ?options:RenameFileOptions;
 }
 
@@ -348,14 +432,38 @@ enum abstract DeleteKind(String) {
 	var Delete = "Delete";
 }
 
+/**
+	Delete file options
+**/
 typedef DeleteFileOptions = {
+	/**
+		Delete the content recursively if a folder is denoted.
+	**/
 	var ?recursive:Bool;
+
+	/**
+		Ignore the operation if the file doesn't exist.
+	**/
 	var ?ignoreIfNotExists:Bool;
 }
 
+/**
+	Delete file operation
+**/
 typedef DeleteFile = {
+	/**
+		A delete
+	**/
 	var kind:DeleteKind;
+
+	/**
+		The file to delete.
+	**/
 	var uri:DocumentUri;
+
+	/**
+		Delete options.
+	**/
 	var ?options:DeleteFileOptions;
 }
 
@@ -372,10 +480,16 @@ typedef WorkspaceEdit = {
 	var ?changes:haxe.DynamicAccess<Array<TextEdit>>;
 
 	/**
-		An array of `TextDocumentEdit`s to express changes to n different text documents
-		where each text document edit addresses a specific version of a text document.
+		Depending on the client capability `workspace.workspaceEdit.resourceOperations` document changes
+		are either an array of `TextDocumentEdit`s to express changes to n different text documents
+		where each text document edit addresses a specific version of a text document. Or it can contain
+		above `TextDocumentEdit`s mixed with create, rename and delete file / folder operations.
+
 		Whether a client supports versioned document edits is expressed via
-		`WorkspaceClientCapabilites.workspaceEdit.documentChanges`.
+		`workspace.workspaceEdit.documentChanges` client capability.
+
+		If a client neither supports `documentChanges` nor `workspace.workspaceEdit.resourceOperations` then
+		only plain `TextEdit`s using the `changes` property are supported.
 	**/
 	var ?documentChanges:Array<EitherType<TextDocumentEdit, EitherType<CreateFile, EitherType<RenameFile, DeleteFile>>>>;
 }
@@ -715,10 +829,13 @@ typedef Hover = {
 **/
 typedef ParameterInformation = {
 	/**
-		The label of this signature.
-		Will be shown in the UI.
+		The label of this parameter information.
+
+		Either a string or inclusive start and exclusive end offsets within its containing
+		[signature label](#SignatureInformation.label). *Note*: A label of type string must be
+		a substring of its containing signature information's [label](#SignatureInformation.label).
 	**/
-	var label:String;
+	var label:EitherType<String, Array<Int>>;
 
 	/**
 		The human-readable doc-comment of this signature.
@@ -774,11 +891,38 @@ typedef SignatureHelp = {
 }
 
 /**
-	The definition of a symbol represented as one or many `locations`.
+	The definition of a symbol represented as one or many [locations](#Location).
 	For most programming languages there is only one location at which a symbol is
-	defined. If no definition can be found `null` is returned.
+	defined.
+
+	Servers should prefer returning `DefinitionLink` over `Definition` if supported
+	by the client.
 **/
 typedef Definition = Null<EitherType<Location, Array<Location>>>;
+
+/**
+	Information about where a symbol is defined.
+
+	Provides additional metadata over normal [location](#Location) definitions, including the range of
+	the defining symbol
+**/
+typedef DefinitionLink = LocationLink;
+
+/**
+	The declaration of a symbol representation as one or many [locations](#Location).
+**/
+typedef Declaration = EitherType<Location, Array<Location>>;
+
+/**
+	Information about where a symbol is declared.
+
+	Provides additional metadata over normal [location](#Location) declarations, including the range of
+	the declaring symbol.
+
+	Servers should prefer returning `DeclarationLink` over `Declaration` if supported
+	by the client.
+**/
+typedef DeclarationLink = LocationLink;
 
 /**
 	Value-object that contains additional information when
@@ -1044,7 +1188,11 @@ enum abstract CodeActionKind(String) from String to String {
 **/
 typedef CodeActionContext = {
 	/**
-		An array of diagnostics.
+		An array of diagnostics known on the client side overlapping the range provided to the
+		`textDocument/codeAction` request. They are provied so that the server knows which
+		errors are currently presented to the user for the given range. There is no guarantee
+		that these accurately reflect the error state of the resource. The primary parameter
+		to compute code actions is the provided range.
 	**/
 	var diagnostics:Array<Diagnostic>;
 

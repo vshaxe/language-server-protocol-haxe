@@ -26,6 +26,11 @@ typedef ImplementationClientCapabilities = {
 			return value for the corresponding server capability as well.
 		**/
 		var ?dynamicRegistration:Bool;
+
+		/**
+			The client supports additional metadata in the form of definition links.
+		**/
+		var ?linkSupport:Bool;
 	};
 }
 

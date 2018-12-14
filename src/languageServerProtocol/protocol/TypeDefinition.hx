@@ -11,8 +11,8 @@ class TypeDefinitionMethods {
 		A request to resolve the type definition locations of a symbol at a given text
 		document position.
 	**/
-	static inline var TypeDefinition = new RequestMethod<TextDocumentPositionParams, Null<Definition>, NoData, TextDocumentRegistrationOptions>
-		("textDocument/typeDefinition");
+	static inline var TypeDefinition = new RequestMethod<TextDocumentPositionParams, Null<EitherType<Definition, Array<DefinitionLink>>>, NoData,
+		TextDocumentRegistrationOptions>("textDocument/typeDefinition");
 }
 
 typedef TypeDefinitionClientCapabilities = {
@@ -26,6 +26,11 @@ typedef TypeDefinitionClientCapabilities = {
 			return value for the corresponding server capability as well.
 		**/
 		var ?dynamicRegistration:Bool;
+
+		/**
+			The client supports additional metadata in the form of definition links.
+		**/
+		var ?linkSupport:Bool;
 	};
 }
 

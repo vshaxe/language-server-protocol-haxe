@@ -7,6 +7,7 @@ import languageServerProtocol.protocol.Implementation;
 import languageServerProtocol.protocol.TypeDefinition;
 import languageServerProtocol.protocol.WorkspaceFolders;
 import languageServerProtocol.protocol.FoldingRange;
+import languageServerProtocol.protocol.Declaration;
 import haxe.extern.EitherType;
 import jsonrpc.Types;
 
@@ -123,8 +124,8 @@ class Methods {
 		Please note that clients might drop results if computing the text edits took too long or if a server constantly fails on this request.
 		This is done to keep the save fast and reliable.
 	**/
-	static inline var WillSaveWaitUntilTextDocument = new RequestMethod<WillSaveTextDocumentParams, Null<Array<TextEdit>>, NoData, TextDocumentRegistrationOptions>
-		("textDocument/willSaveWaitUntil");
+	static inline var WillSaveWaitUntilTextDocument = new RequestMethod<WillSaveTextDocumentParams, Null<Array<TextEdit>>, NoData,
+		TextDocumentRegistrationOptions>("textDocument/willSaveWaitUntil");
 
 	/**
 		The watched files notification is sent from the client to the server when the client detects changes to file watched by the language client.
@@ -167,8 +168,8 @@ class Methods {
 	/**
 		The goto definition request is sent from the client to the server to to resolve the definition location of a symbol at a given text document position.
 	**/
-	static inline var GotoDefinition = new RequestMethod<TextDocumentPositionParams, Null<Definition>, NoData, TextDocumentRegistrationOptions>
-		("textDocument/definition");
+	static inline var GotoDefinition = new RequestMethod<TextDocumentPositionParams, Null<EitherType<Definition, DefinitionLink>>, NoData,
+		TextDocumentRegistrationOptions>("textDocument/definition");
 
 	/**
 		The references request is sent from the client to the server to resolve project-wide references for the symbol denoted by the given text document position.
@@ -179,8 +180,7 @@ class Methods {
 	/**
 		The document highlight request is sent from the client to the server to to resolve a document highlights for a given text document position.
 	**/
-	static inline var DocumentHighlights = new RequestMethod<TextDocumentPositionParams, Null<Array<DocumentHighlight>>, NoData, TextDocumentRegistrationOptions>
-		("textDocument/documentHighlight");
+	static inline var DocumentHighlights = new RequestMethod<TextDocumentPositionParams, Null<Array<DocumentHighlight>>, NoData, TextDocumentRegistrationOptions>("textDocument/documentHighlight");
 
 	/**
 		The document symbol request is sent from the client to the server to list all symbols found in a given text document.
@@ -361,17 +361,17 @@ typedef TextDocumentPositionParams = {
 **/
 enum abstract ResourceOperationKind(String) {
 	/**
-		Supports creating new resources.
+		Supports creating new files and folders.
 	**/
 	var Create = "create";
 
 	/**
-		Supports renaming existing resources.
+		Supports renaming existing files and folders.
 	**/
 	var Rename = "rename";
 
 	/**
-		Supports deleting existing resources.
+		Supports deleting existing files and folders.
 	**/
 	var Delete = "delete";
 }
@@ -427,7 +427,7 @@ typedef WorkspaceClientCapabilites = ConfigurationClientCapabilities &
 
 		/**
 			The resource operations the client supports. Clients should at least
-			support 'create', 'rename' and 'delete'.
+			support 'create', 'rename' and 'delete' files and folders.
 		**/
 		var ?resourceOperations:Array<ResourceOperationKind>;
 
@@ -502,7 +502,8 @@ typedef WorkspaceClientCapabilites = ConfigurationClientCapabilities &
 typedef TextDocumentClientCapabilities = ImplementationClientCapabilities &
 	TypeDefinitionClientCapabilities &
 	/* ColorClientCapabilities & */
-	FoldingRangeClientCapabilities & {
+	FoldingRangeClientCapabilities &
+	DeclarationClientCapabilities & {
 	/**
 		Defines which synchronization capabilities the client supports.
 	**/
@@ -631,6 +632,17 @@ typedef TextDocumentClientCapabilities = ImplementationClientCapabilities &
 				property. The order describes the preferred format of the client.
 			**/
 			var ?documentationFormat:Array<MarkupKind>;
+
+			/**
+				Client capabilities specific to parameter information.
+			**/
+			var ?parameterInformation:{
+				/**
+					The client supports processing label offsets instead of a
+					simple label string.
+				**/
+				var ?labelOffsetSupport:Bool;
+			}
 		};
 	};
 
@@ -724,6 +736,11 @@ typedef TextDocumentClientCapabilities = ImplementationClientCapabilities &
 			Whether definition supports dynamic registration.
 		**/
 		var ?dynamicRegistration:Bool;
+
+		/**
+			The client supports additional metadata in the form of definition links.
+		**/
+		var ?linkSupport:Bool;
 	};
 
 	/**
@@ -1017,7 +1034,8 @@ typedef ServerCapabilities = ImplementationServerCapabilities &
 	TypeDefinitionServerCapabilities &
 	WorkspaceFoldersServerCapabilities &
 	ColorServerCapabilities &
-	FoldingRangeServerCapabilities & {
+	FoldingRangeServerCapabilities &
+	DeclarationServerCapabilities & {
 	/**
 		Defines how text documents are synced.
 		Is either a detailed structure defining each notification or for backwards compatibility the TextDocumentSyncKind number.
@@ -1420,7 +1438,13 @@ typedef DidChangeWatchedFilesRegistrationOptions = {
 
 typedef FileSystemWatcher = {
 	/**
-		The  glob pattern to watch
+		The  glob pattern to watch. Glob patterns can have the following syntax:
+		- `*` to match one or more characters in a path segment
+		- `?` to match on one character in a path segment
+		- `**` to match any number of path segments, including none
+		- `{}` to group conditions (e.g. `**​/*.{ts,js}` matches all TypeScript and JavaScript files)
+		- `[]` to declare a range of characters to match in a path segment (e.g., `example.[0-9]` to match on `example.0`, `example.1`, …)
+		- `[!...]` to negate a range of characters to match in a path segment (e.g., `example.[!0-9]` to match on `example.a`, `example.b`, but not `example.0`)
 	**/
 	var globPattern:String;
 
