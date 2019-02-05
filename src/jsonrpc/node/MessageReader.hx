@@ -50,8 +50,8 @@ class MessageReader {
 
 private class MessageBuffer {
 	static inline var DEFAULT_SIZE = 8192;
-	static var CR = new Buffer("\r", "ascii")[0];
-	static var LF = new Buffer("\n", "ascii")[0];
+	static var CR = Buffer.from("\r", "ascii")[0];
+	static var LF = Buffer.from("\n", "ascii")[0];
 	static inline var CRLF = "\r\n";
 
 	var encoding:String;
@@ -61,14 +61,14 @@ private class MessageBuffer {
 	public function new(encoding = "utf-8") {
 		this.encoding = encoding;
 		index = 0;
-		buffer = new Buffer(DEFAULT_SIZE);
+		buffer = Buffer.alloc(DEFAULT_SIZE);
 	}
 
 	public function append(chunk:EitherType<Buffer, String>):Void {
 		var toAppend;
 		if ((chunk is String)) {
 			var str = (chunk : String);
-			toAppend = new Buffer(str.length);
+			toAppend = Buffer.alloc(str.length);
 			toAppend.write(str, 0, str.length, encoding);
 		} else {
 			toAppend = chunk;
@@ -78,7 +78,7 @@ private class MessageBuffer {
 		} else {
 			var newSize = (Math.ceil((index + toAppend.length) / DEFAULT_SIZE) + 1) * DEFAULT_SIZE;
 			if (index == 0) {
-				buffer = new Buffer(newSize);
+				buffer = Buffer.alloc(newSize);
 				toAppend.copy(buffer, 0, 0, toAppend.length);
 			} else {
 				buffer = Buffer.concat([buffer.slice(0, index), toAppend], newSize);
