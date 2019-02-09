@@ -297,7 +297,7 @@ typedef Diagnostic = {
 	/** 
 		Additional metadata about the diagnostic.
 	**/
-	var ?tag:Array<DiagnosticTag>;
+	var ?tags:Array<DiagnosticTag>;
 
 	/**
 		An array of related diagnostic information, e.g. when symbol-names within
