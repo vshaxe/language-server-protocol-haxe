@@ -1,7 +1,10 @@
 /*
 	This module contains basic JSON-RPC types.
  */
+
 package jsonrpc;
+
+import haxe.extern.EitherType;
 
 /**
 	A general message as defined by JSON-RPC.
@@ -48,7 +51,8 @@ typedef ResponseMessage = Message & {
 	var id:Null<RequestId>;
 
 	/**
-		The result of a request. This can be omitted in the case of an error.
+		The result of a request. This member is REQUIRED on success.
+		This member MUST NOT exist if there was an error invoking the method.
 	**/
 	var ?result:Dynamic;
 

@@ -32,6 +32,7 @@ abstract ResponseError<T>(ResponseErrorData) to ResponseErrorData {
 	public static inline var UnknownErrorCode = -32001;
 	// Defined by the protocol.
 	public static inline var RequestCancelled = -32800;
+	public static inline var ContentModified = -32801;
 
 	public inline function new(code:Int, message:String, ?data:Dynamic) {
 		this = {code: code, message: message};

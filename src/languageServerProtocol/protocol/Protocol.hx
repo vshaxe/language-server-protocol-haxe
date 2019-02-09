@@ -8,6 +8,7 @@ import languageServerProtocol.protocol.TypeDefinition;
 import languageServerProtocol.protocol.WorkspaceFolders;
 import languageServerProtocol.protocol.FoldingRange;
 import languageServerProtocol.protocol.Declaration;
+import languageServerProtocol.protocol.SelectionRange;
 import haxe.extern.EitherType;
 import jsonrpc.Types;
 
@@ -269,6 +270,14 @@ class Methods {
 	the `TextDocument.languageId`, the `Uri.scheme` of
 	its resource, or a glob-pattern that is applied to the `TextDocument.fileName`.
 
+	Glob patterns can have the following syntax:
+	- `*` to match one or more characters in a path segment
+	- `?` to match on one character in a path segment
+	- `**` to match any number of path segments, including none
+	- `{}` to group conditions (e.g. `**​/*.{ts,js}` matches all TypeScript and JavaScript files)
+	- `[]` to declare a range of characters to match in a path segment (e.g., `example.[0-9]` to match on `example.0`, `example.1`, …)
+	- `[!...]` to negate a range of characters to match in a path segment (e.g., `example.[!0-9]` to match on `example.a`, `example.b`, but not `example.0`)
+
 	@sample A language filter that applies to typescript files on disk: `{ language: 'typescript', scheme: 'file' }`
 	@sample A language filter that applies to all package.json paths: `{ language: 'json', pattern: '**package.json' }`
 **/
@@ -453,7 +462,9 @@ typedef WorkspaceClientCapabilites = ConfigurationClientCapabilities &
 	**/
 	var ?didChangeWatchedFiles:{
 		/**
-			Did change watched files notification supports dynamic registration.
+			Did change watched files notification supports dynamic registration. Please note
+			that the current protocol doesn't support static configuration for file changes
+			from the server side.
 		**/
 		var ?dynamicRegistration:Bool;
 	};
@@ -503,7 +514,8 @@ typedef TextDocumentClientCapabilities = ImplementationClientCapabilities &
 	TypeDefinitionClientCapabilities &
 	/* ColorClientCapabilities & */
 	FoldingRangeClientCapabilities &
-	DeclarationClientCapabilities & {
+	DeclarationClientCapabilities &
+	SelectionRangeClientCapabilities & {
 	/**
 		Defines which synchronization capabilities the client supports.
 	**/
@@ -817,6 +829,11 @@ typedef TextDocumentClientCapabilities = ImplementationClientCapabilities &
 			Whether the clients accepts diagnostics with related information.
 		**/
 		var ?relatedInformation:Bool;
+
+		/**
+			Client supports the tag property to provide meta data about a diagnostic.
+		**/
+		var ?tagSupport:Bool;
 	};
 }
 
@@ -903,6 +920,13 @@ typedef CompletionOptions = {
 		an identifier (for example `.` in JavaScript) list them in `triggerCharacters`.
 	**/
 	var ?triggerCharacters:Array<String>;
+
+	/**
+		The list of all possible characters that commit a completion. This field can be used
+		if clients don't support individual commmit characters per completion item. See
+		`ClientCapabilities.textDocument.completion.completionItem.commitCharactersSupport`
+	**/
+	var ?allCommitCharacters:Array<String>;
 
 	/**
 		The server provides support to resolve additional information for a completion item.
@@ -1035,7 +1059,8 @@ typedef ServerCapabilities = ImplementationServerCapabilities &
 	WorkspaceFoldersServerCapabilities &
 	ColorServerCapabilities &
 	FoldingRangeServerCapabilities &
-	DeclarationServerCapabilities & {
+	DeclarationServerCapabilities &
+	SelectionRangeServerCapabilities & {
 	/**
 		Defines how text documents are synced.
 		Is either a detailed structure defining each notification or for backwards compatibility the TextDocumentSyncKind number.
@@ -1483,6 +1508,11 @@ typedef PublishDiagnosticsParams = {
 	var uri:DocumentUri;
 
 	/**
+		Optional the version number of the document the diagnostics are published for.
+	**/
+	var ?version:Int;
+
+	/**
 		An array of diagnostic information items.
 	**/
 	var diagnostics:Array<Diagnostic>;
@@ -1705,6 +1735,13 @@ typedef ApplyWorkspaceEditResponse = {
 		Indicates whether the edit was applied or not.
 	**/
 	var applied:Bool;
+
+	/**
+		An optional textual description for why the edit was not applied.
+		This may be used by the server for diagnostic logging or to provide
+		a suitable error for a request that triggered the edit.
+	**/
+	var ?failureReason:String;
 
 	/**
 		Depending on the client's failure handling strategy `failedChange` might

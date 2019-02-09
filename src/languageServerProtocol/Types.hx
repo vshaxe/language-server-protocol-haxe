@@ -253,6 +253,16 @@ enum abstract DiagnosticSeverity(Int) {
 	var Hint;
 }
 
+enum abstract DiagnosticTag(Int) {
+	/**
+		Unused or unnecessary code.
+
+		Clients are allowed to render diagnostics with this tag faded out instead of having
+		an error squiggle.
+	**/
+	var Unnecessary = 1;
+}
+
 /**
 	Represents a diagnostic, such as a compiler error or warning.
 	Diagnostic objects are only valid in the scope of a resource.
@@ -283,6 +293,11 @@ typedef Diagnostic = {
 		The diagnostic's message. It usually appears in the user interface
 	**/
 	var message:String;
+
+	/** 
+		Additional metadata about the diagnostic.
+	**/
+	var ?tag:Array<DiagnosticTag>;
 
 	/**
 		An array of related diagnostic information, e.g. when symbol-names within
@@ -831,9 +846,12 @@ typedef ParameterInformation = {
 	/**
 		The label of this parameter information.
 
-		Either a string or inclusive start and exclusive end offsets within its containing
-		[signature label](#SignatureInformation.label). *Note*: A label of type string must be
-		a substring of its containing signature information's [label](#SignatureInformation.label).
+		Either a string or an inclusive start and exclusive end offsets within its containing
+		signature label. (see SignatureInformation.label). The offsets are based on a UTF-16
+		string representation as `Position` and `Range` does.
+
+		*Note*: a label of type string should be a substring of its containing signature label.
+		Its intended use case is to highlight the parameter label part in the `SignatureInformation.label`.
 	**/
 	var label:EitherType<String, Array<Int>>;
 
@@ -1052,7 +1070,8 @@ typedef SymbolInformation = {
 **/
 typedef DocumentSymbol = {
 	/**
-		The name of this symbol.
+		The name of this symbol. Will be displayed in the user interface and therefore must not be
+		an empty string or a string only consisting of white spaces.
 	**/
 	var name:String;
 
@@ -1281,6 +1300,21 @@ typedef FormattingOptions = {
 		Prefer spaces over tabs.
 	**/
 	var insertSpaces:Bool;
+
+	/**
+		Trim trailing whitespaces on a line.
+	**/
+	var ?trimTrailingWhitespace:Bool;
+
+	/**
+		Insert a newline character at the end of the file if one does not exist.
+	**/
+	var ?insertFinalNewline:Bool;
+
+	/**
+		Trim all newlines after the final newline at the end of the file.
+	**/
+	var ?trimFinalNewlines:Bool;
 }
 
 /**
