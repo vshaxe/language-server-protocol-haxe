@@ -5,11 +5,8 @@ import jsonrpc.CancellationToken;
 import jsonrpc.ErrorUtils.errorToString;
 
 typedef RequestHandler<P, R, E> = P->CancellationToken->(R->Void)->(ResponseError<E>->Void)->Void;
-
 typedef GenericRequestHandler<R, E> = RequestHandler<Array<Any>, R, E>;
-
 typedef NotificationHandler<P> = P->Void;
-
 typedef GenericNotificationHandler = NotificationHandler<Array<Any>>;
 
 /**
@@ -146,7 +143,8 @@ class Protocol {
 		writeMessage(message);
 	}
 
-	public function sendRequest<P, R, E, RO>(method:RequestMethod<P, R, E, RO>, params:P, token:Null<CancellationToken>, resolve:P->Void, reject:E->Void):Void {
+	public function sendRequest<P, R, E, RO>(method:RequestMethod<P, R, E, RO>, params:P, token:Null<CancellationToken>, resolve:P->Void,
+			reject:E->Void):Void {
 		var id = nextRequestId++;
 		var request:RequestMessage = {
 			jsonrpc: PROTOCOL_VERSION,

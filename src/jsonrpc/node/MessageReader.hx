@@ -89,7 +89,8 @@ private class MessageBuffer {
 
 	public function tryReadHeaders():Map<String, String> {
 		var current = 0;
-		while (current + 3 < index && (buffer[current] != CR || buffer[current + 1] != LF || buffer[current + 2] != CR || buffer[current + 3] != LF))
+		while (current + 3 < index
+			&& (buffer[current] != CR || buffer[current + 1] != LF || buffer[current + 2] != CR || buffer[current + 3] != LF))
 			current++;
 		// No header / body separator found (e.g CRLFCRLF)
 		if (current + 3 >= index)
