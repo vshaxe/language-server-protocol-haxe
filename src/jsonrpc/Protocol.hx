@@ -143,7 +143,7 @@ class Protocol {
 		writeMessage(message);
 	}
 
-	public function sendRequest<P, R, E>(method:RequestMethod<P, R, E>, params:P, token:Null<CancellationToken>, resolve:(params:R) -> Void,
+	public function sendRequest<P, R, E>(method:RequestMethod<P, R, E>, params:P, token:Null<CancellationToken>, resolve:(result:R) -> Void,
 			reject:(error:E) -> Void):Void {
 		var id = nextRequestId++;
 		var request:RequestMessage = {
