@@ -1,6 +1,7 @@
 package languageServerProtocol.protocol;
 
 import jsonrpc.Types;
+import languageServerProtocol.protocol.Protocol;
 
 @:publicFields
 class ConfigurationMethods {

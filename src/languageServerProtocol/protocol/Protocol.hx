@@ -10,7 +10,10 @@ import languageServerProtocol.protocol.FoldingRange;
 import languageServerProtocol.protocol.Declaration;
 import languageServerProtocol.protocol.SelectionRange;
 import haxe.extern.EitherType;
-import jsonrpc.Types;
+import jsonrpc.Types.NoData;
+
+typedef RequestMethod<TParams, TResponse, TError, TRegistrationOptions> = jsonrpc.Types.RequestMethod<TParams, TResponse, TError>;
+typedef NotificationMethod<TParams, TRegistrationOptions> = jsonrpc.Types.NotificationMethod<TParams>;
 
 /**
 	Method names for the protocol requests and notifications.

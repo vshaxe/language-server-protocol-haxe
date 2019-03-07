@@ -14,7 +14,7 @@ typedef GenericNotificationHandler = NotificationHandler<Array<Any>>;
 **/
 class Protocol {
 	static inline var PROTOCOL_VERSION = "2.0";
-	static inline var CANCEL_METHOD = new NotificationMethod<CancelParams, NoData>("$/cancelRequest");
+	static inline var CANCEL_METHOD = new NotificationMethod<CancelParams>("$/cancelRequest");
 
 	var writeMessage:Message->Void;
 	var requestTokens:Map<String, CancellationTokenSource>;
@@ -43,11 +43,11 @@ class Protocol {
 		}
 	}
 
-	public inline function onRequest<P, R, E, RO>(method:RequestMethod<P, R, E, RO>, handler:RequestHandler<P, R, E>):Void {
+	public inline function onRequest<P, R, E>(method:RequestMethod<P, R, E>, handler:RequestHandler<P, R, E>):Void {
 		requestHandlers[method] = handler;
 	}
 
-	public inline function onNotification<P, RO>(method:NotificationMethod<P, RO>, handler:NotificationHandler<P>):Void {
+	public inline function onNotification<P>(method:NotificationMethod<P>, handler:NotificationHandler<P>):Void {
 		notificationHandlers[method] = handler;
 	}
 
@@ -133,7 +133,7 @@ class Protocol {
 		}
 	}
 
-	public inline function sendNotification<P, RO>(name:NotificationMethod<P, RO>, ?params:P):Void {
+	public inline function sendNotification<P>(name:NotificationMethod<P>, ?params:P):Void {
 		var message:NotificationMessage = {
 			jsonrpc: PROTOCOL_VERSION,
 			method: name
@@ -143,8 +143,7 @@ class Protocol {
 		writeMessage(message);
 	}
 
-	public function sendRequest<P, R, E, RO>(method:RequestMethod<P, R, E, RO>, params:P, token:Null<CancellationToken>, resolve:P->Void,
-			reject:E->Void):Void {
+	public function sendRequest<P, R, E>(method:RequestMethod<P, R, E>, params:P, token:Null<CancellationToken>, resolve:P->Void, reject:E->Void):Void {
 		var id = nextRequestId++;
 		var request:RequestMessage = {
 			jsonrpc: PROTOCOL_VERSION,

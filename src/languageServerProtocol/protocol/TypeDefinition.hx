@@ -1,9 +1,9 @@
 package languageServerProtocol.protocol;
 
+import jsonrpc.Types;
 import haxe.extern.EitherType;
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
-import jsonrpc.Types;
 
 @:publicFields
 class TypeDefinitionMethods {

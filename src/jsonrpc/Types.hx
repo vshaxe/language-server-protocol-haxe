@@ -16,7 +16,7 @@ typedef Message = {
 	var jsonrpc:String;
 }
 
-typedef RequestId = haxe.extern.EitherType<Int, String>;
+typedef RequestId = EitherType<Int, String>;
 
 /**
 	A request message to decribe a request between the client and the server.
@@ -98,12 +98,12 @@ typedef NotificationMessage = Message & {
 	var ?params:Dynamic;
 }
 
-abstract RequestMethod<TParams, TResponse, TError, TRegistrationOptions>(String) to String {
+abstract RequestMethod<TParams, TResponse, TError>(String) to String {
 	public inline function new(method:String)
 		this = method;
 }
 
-abstract NotificationMethod<TParams, TRegistrationOptions>(String) to String {
+abstract NotificationMethod<TParams>(String) to String {
 	public inline function new(method:String)
 		this = method;
 }

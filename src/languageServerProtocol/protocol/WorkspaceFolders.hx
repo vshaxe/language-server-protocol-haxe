@@ -1,8 +1,9 @@
 package languageServerProtocol.protocol;
 
+import jsonrpc.Types;
 import haxe.extern.EitherType;
 import languageServerProtocol.Types.DocumentUri;
-import jsonrpc.Types;
+import languageServerProtocol.protocol.Protocol;
 
 @:publicFields
 class WorkspaceFoldersMethods {
