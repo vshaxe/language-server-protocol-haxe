@@ -1,5 +1,6 @@
 -cp src
 -js all.js
 -lib hxnodejs
+-lib json-rpc
 --macro include("", true, null, ["src"])
 --no-output

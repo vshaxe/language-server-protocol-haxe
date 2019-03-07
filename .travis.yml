@@ -5,6 +5,7 @@ haxe:
 
 install:
  - haxelib install hxnodejs
+ - haxelib git json-rpc https://github.com/vshaxe/json-rpc
 
 script:
  - haxe build.hxml
