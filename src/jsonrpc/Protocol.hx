@@ -4,9 +4,9 @@ import jsonrpc.Types;
 import jsonrpc.CancellationToken;
 import jsonrpc.ErrorUtils.errorToString;
 
-typedef RequestHandler<P, R, E> = P->CancellationToken->(R->Void)->(ResponseError<E>->Void)->Void;
+typedef RequestHandler<P, R, E> = (params:P, token:CancellationToken, resolve:(response:R) -> Void, reject:(error:ResponseError<E>) -> Void) -> Void;
 typedef GenericRequestHandler<R, E> = RequestHandler<Array<Any>, R, E>;
-typedef NotificationHandler<P> = P->Void;
+typedef NotificationHandler<P> = (params:P) -> Void;
 typedef GenericNotificationHandler = NotificationHandler<Array<Any>>;
 
 /**
@@ -16,7 +16,7 @@ class Protocol {
 	static inline var PROTOCOL_VERSION = "2.0";
 	static inline var CANCEL_METHOD = new NotificationMethod<CancelParams>("$/cancelRequest");
 
-	var writeMessage:Message->Void;
+	var writeMessage:(message:Message) -> Void;
 	var requestTokens:Map<String, CancellationTokenSource>;
 	var nextRequestId:Int;
 	var requestHandlers:Map<String, RequestHandler<Dynamic, Dynamic, Dynamic>>;
@@ -143,7 +143,8 @@ class Protocol {
 		writeMessage(message);
 	}
 
-	public function sendRequest<P, R, E>(method:RequestMethod<P, R, E>, params:P, token:Null<CancellationToken>, resolve:P->Void, reject:E->Void):Void {
+	public function sendRequest<P, R, E>(method:RequestMethod<P, R, E>, params:P, token:Null<CancellationToken>, resolve:(params:R) -> Void,
+			reject:(error:E) -> Void):Void {
 		var id = nextRequestId++;
 		var request:RequestMessage = {
 			jsonrpc: PROTOCOL_VERSION,
@@ -154,7 +155,7 @@ class Protocol {
 			request.params = params;
 		responseCallbacks[id] = new ResponseCallbackEntry(method, resolve, reject);
 		if (token != null)
-			token.setCallback(function() sendNotification(CANCEL_METHOD, {id: id}));
+			token.setCallback(() -> sendNotification(CANCEL_METHOD, {id: id}));
 		writeMessage(request);
 	}
 
