@@ -11,9 +11,15 @@ import languageServerProtocol.protocol.Declaration;
 import languageServerProtocol.protocol.SelectionRange;
 import haxe.extern.EitherType;
 import jsonrpc.Types.NoData;
+import jsonrpc.Types.ResponseErrorData;
 
 typedef RequestMethod<TParams, TResponse, TError, TRegistrationOptions> = jsonrpc.Types.RequestMethod<TParams, TResponse, TError>;
 typedef NotificationMethod<TParams, TRegistrationOptions> = jsonrpc.Types.NotificationMethod<TParams>;
+
+abstract ResponseError<T>(ResponseErrorData) to ResponseErrorData {
+	public static inline var RequestCancelled = -32800;
+	public static inline var ContentModified = -32801;
+}
 
 /**
 	Method names for the protocol requests and notifications.
