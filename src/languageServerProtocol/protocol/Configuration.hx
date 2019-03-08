@@ -2,6 +2,7 @@ package languageServerProtocol.protocol;
 
 import jsonrpc.Types;
 import languageServerProtocol.protocol.Protocol;
+import languageServerProtocol.Types.DocumentUri;
 
 @:publicFields
 class ConfigurationMethods {
@@ -28,7 +29,7 @@ typedef ConfigurationItem = {
 	/**
 		The scope to get the configuration section for.
 	**/
-	var ?scopeUri:String;
+	var ?scopeUri:DocumentUri;
 
 	/**
 		The configuration section asked for.
