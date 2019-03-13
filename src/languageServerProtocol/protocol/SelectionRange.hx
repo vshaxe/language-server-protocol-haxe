@@ -2,7 +2,7 @@ package languageServerProtocol.protocol;
 
 import haxe.extern.EitherType;
 import jsonrpc.Types;
-import languageServerProtocol.Types.Range;
+import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
 
 @:publicFields
@@ -10,10 +10,10 @@ class SelectionRangeMethods {
 	/**
 		A request to provide selection ranges in a document. The request's
 		parameter is of type [TextDocumentPositionParams](#TextDocumentPositionParams), the
-		response is of type [SelectionRange[]](#SelectionRange[]) or a Thenable
+		response is of type [SelectionRange[][]](#SelectionRange[][]) or a Thenable
 		that resolves to such.
 	**/
-	static inline var SelectionRange = new RequestMethod<TextDocumentPositionParams, Null<Array<SelectionRange>>, NoData, NoData>
+	static inline var SelectionRange = new RequestMethod<SelectionRangeParams, Null<Array<Array<SelectionRange>>>, NoData, NoData>
 		("textDocument/selectionRange");
 }
 
@@ -77,4 +77,19 @@ typedef SelectionRange = {
 		[SelectionRangeKind](#SelectionRangeKind) for an enumeration of standardized kinds.
 	**/
 	var kind:String;
+}
+
+/**
+	A parameter literal used in selection range requests.
+**/
+typedef SelectionRangeParams = {
+	/**
+		The text document.
+	**/
+	var textDocument:TextDocumentIdentifier;
+
+	/**
+		The positions inside the text document.
+	**/
+	var positions:Array<Position>;
 }
