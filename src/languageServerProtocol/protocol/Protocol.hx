@@ -8,7 +8,9 @@ import languageServerProtocol.protocol.TypeDefinition;
 import languageServerProtocol.protocol.WorkspaceFolders;
 import languageServerProtocol.protocol.FoldingRange;
 import languageServerProtocol.protocol.Declaration;
-import languageServerProtocol.protocol.SelectionRange;
+import languageServerProtocol.protocol.proposed.SelectionRange;
+import languageServerProtocol.protocol.proposed.CallHierarchy;
+import languageServerProtocol.protocol.proposed.Progress;
 import haxe.extern.EitherType;
 import jsonrpc.Types.NoData;
 import jsonrpc.Types.ResponseErrorData;
@@ -72,8 +74,8 @@ class Methods {
 	/**
 		A notification send from the client to the server to signal the change of configuration settings.
 	**/
-	static inline var DidChangeConfiguration = new NotificationMethod<DidChangeConfigurationParams, DidChangeConfigurationRegistrationOptions>
-		("workspace/didChangeConfiguration");
+	static inline var DidChangeConfiguration = new NotificationMethod<DidChangeConfigurationParams,
+		DidChangeConfigurationRegistrationOptions>("workspace/didChangeConfiguration");
 
 	/**
 		The show message notification is sent from a server to a client to ask the client to display a particular message in the user interface.
@@ -104,8 +106,8 @@ class Methods {
 	/**
 		The document change notification is sent from the client to the server to signal changes to a text document.
 	**/
-	static inline var DidChangeTextDocument = new NotificationMethod<DidChangeTextDocumentParams, TextDocumentChangeRegistrationOptions>
-		("textDocument/didChange");
+	static inline var DidChangeTextDocument = new NotificationMethod<DidChangeTextDocumentParams,
+		TextDocumentChangeRegistrationOptions>("textDocument/didChange");
 
 	/**
 		The document close notification is sent from the client to the server when
@@ -140,8 +142,8 @@ class Methods {
 	/**
 		The watched files notification is sent from the client to the server when the client detects changes to file watched by the language client.
 	**/
-	static inline var DidChangeWatchedFiles = new NotificationMethod<DidChangeWatchedFilesParams, DidChangeWatchedFilesRegistrationOptions>
-		("workspace/didChangeWatchedFiles");
+	static inline var DidChangeWatchedFiles = new NotificationMethod<DidChangeWatchedFilesParams,
+		DidChangeWatchedFilesRegistrationOptions>("workspace/didChangeWatchedFiles");
 
 	/**
 		Diagnostics notification are sent from the server to the client to signal results of validation runs.
@@ -172,8 +174,8 @@ class Methods {
 	/**
 		The signature help request is sent from the client to the server to request signature information at a given cursor position.
 	**/
-	static inline var SignatureHelp = new RequestMethod<TextDocumentPositionParams, Null<SignatureHelp>, NoData, SignatureHelpRegistrationOptions>
-		("textDocument/signatureHelp");
+	static inline var SignatureHelp = new RequestMethod<TextDocumentPositionParams, Null<SignatureHelp>, NoData,
+		SignatureHelpRegistrationOptions>("textDocument/signatureHelp");
 
 	/**
 		The goto definition request is sent from the client to the server to to resolve the definition location of a symbol at a given text document position.
@@ -184,13 +186,14 @@ class Methods {
 	/**
 		The references request is sent from the client to the server to resolve project-wide references for the symbol denoted by the given text document position.
 	**/
-	static inline var FindReferences = new RequestMethod<ReferenceParams, Null<Array<Location>>, NoData, TextDocumentRegistrationOptions>
-		("textDocument/references");
+	static inline var FindReferences = new RequestMethod<ReferenceParams, Null<Array<Location>>, NoData,
+		TextDocumentRegistrationOptions>("textDocument/references");
 
 	/**
 		The document highlight request is sent from the client to the server to to resolve a document highlights for a given text document position.
 	**/
-	static inline var DocumentHighlights = new RequestMethod<TextDocumentPositionParams, Null<Array<DocumentHighlight>>, NoData, TextDocumentRegistrationOptions>("textDocument/documentHighlight");
+	static inline var DocumentHighlights = new RequestMethod<TextDocumentPositionParams, Null<Array<DocumentHighlight>>, NoData,
+		TextDocumentRegistrationOptions>("textDocument/documentHighlight");
 
 	/**
 		The document symbol request is sent from the client to the server to list all symbols found in a given text document.
@@ -207,8 +210,8 @@ class Methods {
 		The code action request is sent from the client to the server to compute commands for a given text document and range.
 		These commands are typically code fixes to either fix problems or to beautify/refactor code.
 	**/
-	static inline var CodeAction = new RequestMethod<CodeActionParams, Null<Array<EitherType<Command, CodeAction>>>, NoData, CodeActionRegistrationOptions>
-		("textDocument/codeAction");
+	static inline var CodeAction = new RequestMethod<CodeActionParams, Null<Array<EitherType<Command, CodeAction>>>, NoData,
+		CodeActionRegistrationOptions>("textDocument/codeAction");
 
 	/**
 		The code lens request is sent from the client to the server to compute code lenses for a given text document.
@@ -223,20 +226,20 @@ class Methods {
 	/**
 		The document formatting resquest is sent from the server to the client to format a whole document.
 	**/
-	static inline var DocumentFormatting = new RequestMethod<DocumentFormattingParams, Null<Array<TextEdit>>, NoData, TextDocumentRegistrationOptions>
-		("textDocument/formatting");
+	static inline var DocumentFormatting = new RequestMethod<DocumentFormattingParams, Null<Array<TextEdit>>, NoData,
+		TextDocumentRegistrationOptions>("textDocument/formatting");
 
 	/**
 		The document range formatting request is sent from the client to the server to format a given range in a document.
 	**/
-	static inline var DocumentRangeFormatting = new RequestMethod<DocumentRangeFormattingParams, Null<Array<TextEdit>>, NoData, TextDocumentRegistrationOptions>
-		("textDocument/rangeFormatting");
+	static inline var DocumentRangeFormatting = new RequestMethod<DocumentRangeFormattingParams, Null<Array<TextEdit>>, NoData,
+		TextDocumentRegistrationOptions>("textDocument/rangeFormatting");
 
 	/**
 		The document on type formatting request is sent from the client to the server to format parts of the document during typing.
 	**/
-	static inline var DocumentOnTypeFormatting = new RequestMethod<DocumentOnTypeFormattingParams, Null<Array<TextEdit>>, NoData, TextDocumentRegistrationOptions>
-		("textDocument/onTypeFormatting");
+	static inline var DocumentOnTypeFormatting = new RequestMethod<DocumentOnTypeFormattingParams, Null<Array<TextEdit>>, NoData,
+		TextDocumentRegistrationOptions>("textDocument/onTypeFormatting");
 
 	/**
 		The rename request is sent from the client to the server to do a workspace wide rename of a symbol.
@@ -246,14 +249,14 @@ class Methods {
 	/**
 		A request to test and perform the setup necessary for a rename.
 	**/
-	static inline var PrepareRename = new RequestMethod<TextDocumentPositionParams, Null<EitherType<Range, {range:Range, placeholder:String}>>, NoData, NoData>
-		("textDocument/prepareRename");
+	static inline var PrepareRename = new RequestMethod<TextDocumentPositionParams, Null<EitherType<Range, {range:Range, placeholder:String}>>, NoData,
+		NoData>("textDocument/prepareRename");
 
 	/**
 		The document links request is sent from the client to the server to request the location of links in a document.
 	**/
-	static inline var DocumentLink = new RequestMethod<DocumentLinkParams, Null<Array<DocumentLink>>, NoData, DocumentLinkRegistrationOptions>
-		("textDocument/documentLink");
+	static inline var DocumentLink = new RequestMethod<DocumentLinkParams, Null<Array<DocumentLink>>, NoData,
+		DocumentLinkRegistrationOptions>("textDocument/documentLink");
 
 	/**
 		The document link resolve request is sent from the client to the server to resolve the target of a given document link.
@@ -265,8 +268,8 @@ class Methods {
 		In most cases the server creates a `WorkspaceEdit` structure and applies the changes to the workspace using the request `workspace/applyEdit`
 		which is sent from the server to the client.
 	**/
-	static inline var ExecuteCommand = new RequestMethod<ExecuteCommandParams, Null<Dynamic>, NoData, ExecuteCommandRegistrationOptions>
-		("workspace/executeCommand");
+	static inline var ExecuteCommand = new RequestMethod<ExecuteCommandParams, Null<Dynamic>, NoData,
+		ExecuteCommandRegistrationOptions>("workspace/executeCommand");
 
 	/**
 		The workspace/applyEdit request is sent from the server to the client to modify resource on the client side.
@@ -524,7 +527,9 @@ typedef TextDocumentClientCapabilities = ImplementationClientCapabilities &
 	/* ColorClientCapabilities & */
 	FoldingRangeClientCapabilities &
 	DeclarationClientCapabilities &
-	SelectionRangeClientCapabilities & {
+	SelectionRangeClientCapabilities &
+	CallHierarchyClientCapabilities &
+	ProgressClientCapabilities & {
 	/**
 		Defines which synchronization capabilities the client supports.
 	**/
@@ -597,6 +602,7 @@ typedef TextDocumentClientCapabilities = ImplementationClientCapabilities &
 			**/
 			var ?preselectSupport:Bool;
 		};
+
 		var ?completionItemKind:{
 			/**
 				The completion item kind values the client supports. When this
@@ -865,6 +871,11 @@ typedef ClientCapabilities = {
 	var ?textDocument:TextDocumentClientCapabilities;
 
 	/**
+		Window specific client capabilities.
+	**/
+	var ?window:WindowClientCapabilities;
+
+	/**
 		Experimental client capabilities.
 	**/
 	var ?experimental:Dynamic;
@@ -1060,6 +1071,16 @@ typedef TextDocumentSyncOptions = {
 }
 
 /**
+	Window specific client capabilities.
+**/
+typedef WindowClientCapabilities = {
+	/**
+		Whether client supports handling progress notifications.
+	**/
+	var ?progress:Bool;
+}
+
+/**
 	Defines the capabilities provided by a language
 	server.
 **/
@@ -1069,7 +1090,8 @@ typedef ServerCapabilities = ImplementationServerCapabilities &
 	ColorServerCapabilities &
 	FoldingRangeServerCapabilities &
 	DeclarationServerCapabilities &
-	SelectionRangeServerCapabilities & {
+	SelectionRangeServerCapabilities &
+	CallHierarchyServerCapabilities & {
 	/**
 		Defines how text documents are synced.
 		Is either a detailed structure defining each notification or for backwards compatibility the TextDocumentSyncKind number.
