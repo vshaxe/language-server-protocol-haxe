@@ -529,7 +529,7 @@ typedef TextDocumentClientCapabilities = ImplementationClientCapabilities &
 	DeclarationClientCapabilities &
 	SelectionRangeClientCapabilities &
 	CallHierarchyClientCapabilities &
-	ProgressClientCapabilities & {
+	/* ProgressClientCapabilities & */ {
 	/**
 		Defines which synchronization capabilities the client supports.
 	**/
