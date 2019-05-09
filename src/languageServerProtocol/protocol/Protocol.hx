@@ -1044,28 +1044,32 @@ typedef SaveOptions = {
 
 typedef TextDocumentSyncOptions = {
 	/**
-		Open and close notifications are sent to the server.
+		Open and close notifications are sent to the server. If omitted open close notification should not
+		be sent.
 	**/
 	var ?openClose:Bool;
 
 	/**
 		Change notifications are sent to the server. See TextDocumentSyncKind.None, TextDocumentSyncKind.Full
-		and TextDocumentSyncKind.Incremental.
+		and TextDocumentSyncKind.Incremental. If omitted it defaults to TextDocumentSyncKind.None.
 	**/
 	var ?change:TextDocumentSyncKind;
 
 	/**
-		Will save notifications are sent to the server.
+		If present will save notifications are sent to the server. If omitted the notification should not be
+		sent.
 	**/
 	var ?willSave:Bool;
 
 	/**
-		Will save wait until requests are sent to the server.
+		If present will save wait until requests are sent to the server. If omitted the request should not be
+		sent.
 	**/
 	var ?willSaveWaitUntil:Bool;
 
 	/**
-		Save notifications are sent to the server.
+		If present save notifications are sent to the server. If omitted the notification should not be
+		sent.
 	**/
 	var ?save:SaveOptions;
 }
