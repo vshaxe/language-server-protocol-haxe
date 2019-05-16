@@ -11,8 +11,8 @@ class ImplementationMethods {
 		A request to resolve the implementation locations of a symbol at a given text
 		document position.
 	**/
-	static inline var Implementation = new RequestMethod<TextDocumentPositionParams, Null<Definition>, NoData, TextDocumentRegistrationOptions>
-		("textDocument/implementation");
+	static inline var Implementation = new RequestMethod<TextDocumentPositionParams, Null<Definition>, NoData,
+		TextDocumentRegistrationOptions>("textDocument/implementation");
 }
 
 typedef ImplementationClientCapabilities = {

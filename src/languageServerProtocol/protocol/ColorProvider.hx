@@ -10,14 +10,14 @@ class ColorProviderMethods {
 	/**
 		A request to list all color symbols found in a given text document.
 	**/
-	static inline var DocumentColor = new RequestMethod<DocumentColorParams, Array<ColorInformation>, NoData, TextDocumentRegistrationOptions>
-		("textDocument/documentColor");
+	static inline var DocumentColor = new RequestMethod<DocumentColorParams, Array<ColorInformation>, NoData,
+		TextDocumentRegistrationOptions>("textDocument/documentColor");
 
 	/**
 		A request to list all presentation for a color.
 	**/
-	static inline var ColorPresentation = new RequestMethod<ColorPresentationParams, Array<ColorPresentation>, NoData, TextDocumentRegistrationOptions>
-		("textDocument/colorPresentation");
+	static inline var ColorPresentation = new RequestMethod<ColorPresentationParams, Array<ColorPresentation>, NoData,
+		TextDocumentRegistrationOptions>("textDocument/colorPresentation");
 }
 
 typedef ColorClientCapabilities = {
