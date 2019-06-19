@@ -509,6 +509,9 @@ typedef WorkspaceEdit = {
 	var ?documentChanges:Array<EitherType<TextDocumentEdit, EitherType<CreateFile, EitherType<RenameFile, DeleteFile>>>>;
 }
 
+/**
+	A tagging type for string properties that are actually URIs.
+**/
 abstract DocumentUri(String) {
 	public inline function new(uri:String) {
 		this = uri;
@@ -742,7 +745,6 @@ typedef CompletionItem = {
 		will only insert `sole`. Therefore it is recommended to use `textEdit` instead
 		since it avoids additional client side interpretation.
 	**/
-	@:deprecated("Use textEdit instead")
 	var ?insertText:String;
 
 	/**
@@ -1337,6 +1339,22 @@ typedef DocumentLink = {
 		DocumentLinkRequest and a DocumentLinkResolveRequest.
 	**/
 	var ?data:Dynamic;
+}
+
+/**
+	A selection range represents a part of a selection hierarchy. A selection range
+	may have a parent selection range that contains it.
+**/
+typedef SelectionRange = {
+	/**
+		The [range](#Range) of this selection range.
+	**/
+	var range:Range;
+
+	/**
+		The parent selection range containing this range. Therefore `parent.range` must contain `this.range`.
+	**/
+	var ?parent:SelectionRange;
 }
 
 /**

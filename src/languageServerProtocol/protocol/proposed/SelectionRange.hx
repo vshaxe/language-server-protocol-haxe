@@ -30,11 +30,13 @@ typedef SelectionRangeClientCapabilities = {
 	};
 }
 
+typedef SelectionRangeProviderOptions = {}
+
 typedef SelectionRangeServerCapabilities = {
 	/**
 		The server provides selection range support.
 	**/
-	var ?selectionRangeProvider:EitherType<Bool, TextDocumentRegistrationOptions & StaticRegistrationOptions>;
+	var ?selectionRangeProvider:EitherType<Bool, TextDocumentRegistrationOptions & StaticRegistrationOptions & SelectionRangeProviderOptions>;
 }
 
 /**
@@ -50,20 +52,4 @@ typedef SelectionRangeParams = {
 		The positions inside the text document.
 	**/
 	var positions:Array<Position>;
-}
-
-/**
-	A selection range represents a part of a selection hierarchy. A selection range
-	may have a parent selection range that contains it.
-**/
-typedef SelectionRange = {
-	/**
-		The [range](#Range) of this selection range.
-	**/
-	var range:Range;
-
-	/**
-		The parent selection range containing this range. Therefore `parent.range` must contain `this.range`.
-	**/
-	var ?parent:SelectionRange;
 }
