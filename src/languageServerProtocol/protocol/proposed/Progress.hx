@@ -1,36 +1,8 @@
 package languageServerProtocol.protocol.proposed;
 
-import jsonrpc.Types;
 import languageServerProtocol.protocol.Protocol;
 
-@:publicFields
-class ProgressMethods {
-	/**
-		The `window/progress/start` notification is sent from the server to the client
-		to initiate a progress.
-	**/
-	static inline var ProgressStart = new NotificationMethod<ProgressStartParams, NoData>("window/progress/start");
-
-	/**
-		The `window/progress/report` notification is sent from the server to the client
-		to initiate a progress.
-	**/
-	static inline var ProgressReport = new NotificationMethod<ProgressReportParams, NoData>("window/progress/report");
-
-	/**
-		The `window/progress/done` notification is sent from the server to the client
-		to initiate a progress.
-	**/
-	static inline var ProgressDone = new NotificationMethod<ProgressDoneParams, NoData>("window/progress/done");
-
-	/**
-		The `window/progress/cancel` notification is sent client to the server to cancel a progress
-		initiated on the server side.
-	**/
-	static inline var ProgressCancel = new NotificationMethod<ProgressDoneParams, NoData>("window/progress/cancel");
-}
-
-typedef ProgressClientCapabilities = {
+typedef WorkDoneProgressClientCapabilities = {
 	/**
 		Window specific client capabilities.
 	**/
@@ -38,16 +10,16 @@ typedef ProgressClientCapabilities = {
 		/**
 			Whether client supports handling progress notifications.
 		**/
-		var ?progress:Bool;
+		var ?workDoneProgress:Bool;
 	}
 }
 
-typedef ProgressStartParams = {
-	/**
-		A unique identifier to associate multiple progress notifications with
-		the same progress.
-	**/
-	var id:String;
+enum abstract WorkDoneProgressBeginKind(String) {
+	var Begin = 'begin';
+}
+
+typedef WorkDoneProgressBegin = {
+	var kind:WorkDoneProgressBeginKind;
 
 	/**
 		Mandatory title of the progress operation. Used to briefly inform about
@@ -84,11 +56,21 @@ typedef ProgressStartParams = {
 	var ?percentage:Float;
 }
 
-typedef ProgressReportParams = {
+enum abstract WorkDoneProgressReportKind(String) {
+	var Report = 'report';
+}
+
+typedef WorkDoneProgressReport = {
+	var kind:WorkDoneProgressReportKind;
+
 	/**
-		A unique identifier to associate multiple progress notifications with the same progress.
+		Controls enablement state of a cancel button. This property is only valid if a cancel
+		button got requested in the `WorkDoneProgressStart` payload.
+
+		Clients that don't support cancellation or don't support control the button's
+		enablement state are allowed to ignore the setting.
 	**/
-	var id:String;
+	var ?cancellable:Bool;
 
 	/**
 		Optional, more detailed associated progress message. Contains
@@ -110,16 +92,50 @@ typedef ProgressReportParams = {
 	var ?percentage:Float;
 }
 
-typedef ProgressDoneParams = {
-	/**
-		A unique identifier to associate multiple progress notifications with the same progress.
-	**/
-	var id:String;
+enum abstract WorkDoneProgressDoneKind(String) {
+	var Done = 'done';
 }
 
-typedef ProgressCancelParams = {
+typedef WorkDoneProgressDone = {
+	var kind:WorkDoneProgressDoneKind;
+
 	/**
-		A unique identifier to associate multiple progress notifications with the same progress.
+		Optional, a final message indicating to for example indicate the outcome
+		of the operation.
 	**/
-	var id:String;
+	var ?message:String;
+}
+
+class WorkDoneProgress {
+	public final type = new ProgressType<EitherType<WorkDoneProgressBegin, EitherType<WorkDoneProgressReport, WorkDoneProgressDone>>>();
+}
+
+typedef WorkDoneProgressCreateParams = {
+	/**
+		The token to be used to report progress.
+	**/
+	var token:ProgressToken;
+}
+
+/**
+	The `window/workDoneProgress/create` request is sent from the server to the client to initiate progress
+	reporting from the server.
+**/
+class WorkDoneProgressCreateRequest {
+	public static inline var type = new RequestType<WorkDoneProgressCreateParams, NoData, NoData, NoData>("window/workDoneProgress/create");
+}
+
+typedef WorkDoneProgressCancelParams = {
+	/**
+		The token to be used to report progress.
+	**/
+	var token:ProgressToken;
+}
+
+/**
+	The `window/workDoneProgress/cancel` notification is sent from  the client to the server to cancel a progress
+	initiated on the server side.
+**/
+class WorkDoneProgressCancelNotification {
+	public static inline var type = new NotificationType<WorkDoneProgressCancelParams, NoData>("window/workDoneProgress/cancel");
 }

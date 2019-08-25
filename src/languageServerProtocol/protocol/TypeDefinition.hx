@@ -1,19 +1,7 @@
 package languageServerProtocol.protocol;
 
-import jsonrpc.Types;
-import haxe.extern.EitherType;
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
-
-@:publicFields
-class TypeDefinitionMethods {
-	/**
-		A request to resolve the type definition locations of a symbol at a given text
-		document position.
-	**/
-	static inline var TypeDefinition = new RequestMethod<TextDocumentPositionParams, Null<EitherType<Definition, Array<DefinitionLink>>>, NoData,
-		TextDocumentRegistrationOptions>("textDocument/typeDefinition");
-}
 
 typedef TypeDefinitionClientCapabilities = {
 	/**
@@ -34,9 +22,27 @@ typedef TypeDefinitionClientCapabilities = {
 	};
 }
 
+typedef TypeDefinitionOptions = WorkDoneProgressOptions;
+typedef TypeDefinitionRegistrationOptions = TextDocumentRegistrationOptions & TypeDefinitionOptions;
+
 typedef TypeDefinitionServerCapabilities = {
 	/**
 		The server provides Goto Type Definition support.
 	**/
-	var ?typeDefinitionProvider:EitherType<Bool, TextDocumentRegistrationOptions & StaticRegistrationOptions>;
+	var ?typeDefinitionProvider:EitherType<Bool, EitherType<TypeDefinitionOptions, TypeDefinitionRegistrationOptions & StaticRegistrationOptions>>;
+}
+
+typedef TypeDefinitionParams = TextDocumentPositionParams & WorkDoneProgressParams & PartialResultParams;
+
+/**
+	A request to resolve the type definition locations of a symbol at a given text
+	document position. The request's parameter is of type [TextDocumentPositioParams]
+	(#TextDocumentPositionParams) the response is of type [Definition](#Definition) or a
+	Thenable that resolves to such.
+**/
+class TypeDefinitionRequest {
+	public static inline var type = new RequestType<TypeDefinitionParams, Null<EitherType<Definition, Array<DefinitionLink>>>, NoData,
+		TypeDefinitionRegistrationOptions>("textDocument/typeDefinition");
+
+	public static final resultType = new ProgressType<EitherType<Array<Location>, Array<DefinitionLink>>>();
 }

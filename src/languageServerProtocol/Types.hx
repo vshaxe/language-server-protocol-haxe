@@ -1,7 +1,5 @@
 package languageServerProtocol;
 
-import haxe.extern.EitherType;
-
 /**
 	Position in a text document expressed as zero-based line and character offset.
 	The offsets are based on a UTF-16 string representation. So a string of the form
@@ -38,7 +36,7 @@ typedef Position = {
 	If you want to specify a range that contains a line including the line ending
 	character(s) then use an end position denoting the start of the next line.
 	For example:
-	```ts
+	```haxe
 	{
 		start: { line: 5, character: 23 }
 		end : { line 6, character : 0 }
@@ -107,18 +105,18 @@ typedef Color = {
 	final red:Float;
 
 	/**
-	 * The green component of this color in the range [0-1].
-	 */
+		The green component of this color in the range [0-1].
+	**/
 	final green:Float;
 
 	/**
-	 * The blue component of this color in the range [0-1].
-	 */
+		The blue component of this color in the range [0-1].
+	**/
 	final blue:Float;
 
 	/**
-	 * The alpha component of this color in the range [0-1].
-	 */
+		The alpha component of this color in the range [0-1].
+	**/
 	final alpha:Float;
 }
 
@@ -261,6 +259,13 @@ enum abstract DiagnosticTag(Int) {
 		an error squiggle.
 	**/
 	var Unnecessary = 1;
+
+	/**
+		Deprecated or obsolete code.
+
+		Clients are allowed to rendered diagnostics with this tag strike through.
+	**/
+	var Deprecated = 2;
 }
 
 /**
@@ -360,7 +365,7 @@ typedef TextDocumentEdit = {
 	var edits:Array<TextEdit>;
 }
 
-enum abstract CreateKind(String) {
+enum abstract CreateFileKind(String) {
 	var Create = "create";
 }
 
@@ -386,7 +391,7 @@ typedef CreateFile = {
 	/**
 		A create
 	**/
-	var kind:CreateKind;
+	var kind:CreateFileKind;
 
 	/**
 		The resource to create.
@@ -399,7 +404,7 @@ typedef CreateFile = {
 	var ?options:CreateFileOptions;
 }
 
-enum abstract RenameKind(String) {
+enum abstract RenameFileKind(String) {
 	var Kind = "rename";
 }
 
@@ -425,7 +430,7 @@ typedef RenameFile = {
 	/**
 		A rename
 	**/
-	var kind:RenameKind;
+	var kind:RenameFileKind;
 
 	/**
 		The old (existing) location.
@@ -443,7 +448,7 @@ typedef RenameFile = {
 	var ?options:RenameFileOptions;
 }
 
-enum abstract DeleteKind(String) {
+enum abstract DeleteFileKind(String) {
 	var Delete = "Delete";
 }
 
@@ -469,7 +474,7 @@ typedef DeleteFile = {
 	/**
 		A delete
 	**/
-	var kind:DeleteKind;
+	var kind:DeleteFileKind;
 
 	/**
 		The file to delete.
@@ -713,12 +718,12 @@ typedef CompletionItem = {
 	var ?deprecated:Bool;
 
 	/**
-	 * Select this item when showing.
-	 *
-	 * *Note* that only one completion item can be selected and that the
-	 * tool / client decides which item that is. The rule is that the *first*
-	 * item of those that match best is selected.
-	 */
+		Select this item when showing.
+
+		*Note* that only one completion item can be selected and that the
+		tool / client decides which item that is. The rule is that the *first*
+		item of those that match best is selected.
+	**/
 	var ?preselect:Bool;
 
 	/**
@@ -1112,26 +1117,6 @@ typedef DocumentSymbol = {
 }
 
 /**
-	Parameters for a `DocumentSymbols` request.
-**/
-typedef DocumentSymbolParams = {
-	/**
-		The text document.
-	**/
-	var textDocument:TextDocumentIdentifier;
-}
-
-/**
-	The parameters of a `WorkspaceSymbols` request.
-**/
-typedef WorkspaceSymbolParams = {
-	/**
-		A non-empty query string.
-	**/
-	var query:String;
-}
-
-/**
 	The kind of a code action.
 
 	Kinds are a hierarchical list of identifiers separated by `.`, e.g. `"refactor.extract.function"`.
@@ -1142,6 +1127,11 @@ typedef WorkspaceSymbolParams = {
 	This enum has a set of predefined code action kinds.
 **/
 enum abstract CodeActionKind(String) from String to String {
+	/**
+		Empty kind.
+	**/
+	var Empty = '';
+
 	/**
 		Base kind for quickfix actions: 'quickfix'
 	**/

@@ -1,23 +1,7 @@
 package languageServerProtocol.protocol.proposed;
 
-import haxe.extern.EitherType;
-import jsonrpc.Types;
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
-
-@:publicFields
-class CallHierarchyMethods {
-	/**
-		Request to provide the call hierarchy at a given text document position.
-
-		The request's parameter is of type [CallHierarchyParams](#CallHierarchyParams). The response
-		is of type [CallHierarchyCall[]](#CallHierarchyCall) or a Thenable that resolves to such.
-
-		Evaluates the symbol defined (or referenced) at the given position, and returns all incoming or outgoing calls to the symbol(s).
-	**/
-	static inline var CallHierarchy = new RequestMethod<CallHierarchyParams, Array<CallHierarchyCall>, NoData,
-		TextDocumentRegistrationOptions>("textDocument/callHierarchy");
-}
 
 typedef CallHierarchyClientCapabilities = {
 	/**
@@ -33,17 +17,22 @@ typedef CallHierarchyClientCapabilities = {
 	};
 }
 
+typedef CallHierarchyOptions = WorkDoneProgressOptions;
+typedef CallHierarchyRegistrationOptions = TextDocumentRegistrationOptions & CallHierarchyOptions;
+
 typedef CallHierarchyServerCapabilities = {
 	/**
 		The server provides Call Hierarchy support.
 	**/
-	var ?callHierarchyProvider:EitherType<Bool, TextDocumentRegistrationOptions & StaticRegistrationOptions>;
+	var ?callHierarchyProvider:EitherType<Bool, EitherType<CallHierarchyOptions, CallHierarchyRegistrationOptions & StaticRegistrationOptions>>;
 }
 
 /**
 	The parameter of a `textDocument/callHierarchy` request extends the `TextDocumentPositionParams` with the direction of calls to resolve.
 **/
-typedef CallHierarchyParams = TextDocumentPositionParams & {
+typedef CallHierarchyParams = TextDocumentPositionParams &
+	WorkDoneProgressParams &
+	PartialResultParams & {
 	/**
 		The direction of calls to provide.
 	**/
@@ -118,4 +107,19 @@ typedef CallHierarchyCall = {
 		The symbol that is referenced.
 	**/
 	var to:CallHierarchyItem;
+}
+
+/**
+	Request to provide the call hierarchy at a given text document position.
+
+	The request's parameter is of type [CallHierarchyParams](#CallHierarchyParams). The response
+	is of type [CallHierarchyCall[]](#CallHierarchyCall) or a Thenable that resolves to such.
+
+	Evaluates the symbol defined (or referenced) at the given position, and returns all incoming or outgoing calls to the symbol(s).
+**/
+class CallHierarchyRequest {
+	public static inline var CallHierarchy = new RequestType<CallHierarchyParams, Array<CallHierarchyCall>, NoData,
+		CallHierarchyRegistrationOptions>("textDocument/callHierarchy");
+
+	public static final CallHierarchyResult = new ProgressType<Array<CallHierarchyCall>>();
 }

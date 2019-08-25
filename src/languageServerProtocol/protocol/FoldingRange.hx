@@ -1,20 +1,7 @@
 package languageServerProtocol.protocol;
 
-import jsonrpc.Types;
-import haxe.extern.EitherType;
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
-
-@:publicFields
-class FoldingRangeMethods {
-	/**
-		A request to provide folding ranges in a document. The request's
-		parameter is of type [FoldingRangeParams](#FoldingRangeParams), the
-		response is of type [FoldingRangeList](#FoldingRangeList) or a Thenable
-		that resolves to such.
-	**/
-	static inline var FoldingRange = new RequestMethod<FoldingRangeParams, Null<Array<FoldingRange>>, NoData, NoData>("textDocument/foldingRange");
-}
 
 typedef FoldingRangeClientCapabilities = {
 	/**
@@ -42,22 +29,36 @@ typedef FoldingRangeClientCapabilities = {
 	};
 }
 
-typedef FoldingRangeProviderOptions = {}
+typedef FoldingRangeOptions = WorkDoneProgressOptions;
+typedef FoldingRangeRegistrationOptions = TextDocumentRegistrationOptions & FoldingRangeOptions;
 
 typedef FoldingRangeServerCapabilities = {
 	/**
 		The server provides folding provider support.
 	**/
-	var ?foldingRangeProvider:EitherType<Bool,
-		EitherType<FoldingRangeProviderOptions, FoldingRangeProviderOptions & TextDocumentRegistrationOptions & StaticRegistrationOptions>>;
+	var ?foldingRangeProvider:EitherType<Bool, EitherType<FoldingRangeOptions, FoldingRangeRegistrationOptions & StaticRegistrationOptions>>;
 }
 
 /**
 	Parameters for a [FoldingRangeRequest](#FoldingRangeRequest).
 **/
-typedef FoldingRangeParams = {
+typedef FoldingRangeParams = WorkDoneProgressParams &
+	PartialResultParams & {
 	/**
 		The text document.
 	**/
 	var textDocument:TextDocumentIdentifier;
+}
+
+/**
+	A request to provide folding ranges in a document. The request's
+	parameter is of type [FoldingRangeParams](#FoldingRangeParams), the
+	response is of type [FoldingRangeList](#FoldingRangeList) or a Thenable
+	that resolves to such.
+**/
+class FoldingRangeRequest {
+	public static inline var type = new RequestType<FoldingRangeParams, Null<Array<FoldingRange>>, NoData,
+		FoldingRangeRegistrationOptions>("textDocument/foldingRange");
+
+	public static final resultType = new ProgressType<Array<FoldingRange>>();
 }

@@ -1,19 +1,7 @@
 package languageServerProtocol.protocol;
 
-import jsonrpc.Types;
-import haxe.extern.EitherType;
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
-
-@:publicFields
-class ImplementationMethods {
-	/**
-		A request to resolve the implementation locations of a symbol at a given text
-		document position.
-	**/
-	static inline var Implementation = new RequestMethod<TextDocumentPositionParams, Null<Definition>, NoData,
-		TextDocumentRegistrationOptions>("textDocument/implementation");
-}
 
 typedef ImplementationClientCapabilities = {
 	/**
@@ -34,9 +22,27 @@ typedef ImplementationClientCapabilities = {
 	};
 }
 
+typedef ImplementationOptions = WorkDoneProgressOptions;
+typedef ImplementationRegistrationOptions = TextDocumentRegistrationOptions & ImplementationOptions;
+
 typedef ImplementationServerCapabilities = {
 	/**
 		The server provides Goto Implementation support.
 	**/
-	var ?implementationProvider:EitherType<Bool, TextDocumentRegistrationOptions & StaticRegistrationOptions>;
+	var ?implementationProvider:EitherType<Bool, EitherType<ImplementationOptions, ImplementationRegistrationOptions & StaticRegistrationOptions>>;
+}
+
+typedef ImplementationParams = TextDocumentPositionParams & WorkDoneProgressParams & PartialResultParams;
+
+/**
+	A request to resolve the implementation locations of a symbol at a given text
+	document position. The request's parameter is of type [TextDocumentPositioParams]
+	(#TextDocumentPositionParams) the response is of type [Definition](#Definition) or a
+	Thenable that resolves to such.
+**/
+class ImplementationRequest {
+	public static inline var type = new RequestType<ImplementationParams, Null<Definition>, NoData,
+		TextDocumentRegistrationOptions>("textDocument/implementation");
+
+	public static final resultType = new ProgressType<EitherType<Array<Location>, Array<DefinitionLink>>>();
 }

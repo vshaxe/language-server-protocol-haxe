@@ -1,23 +1,7 @@
 package languageServerProtocol.protocol;
 
-import jsonrpc.Types;
-import haxe.extern.EitherType;
 import languageServerProtocol.Types.DocumentUri;
 import languageServerProtocol.protocol.Protocol;
-
-@:publicFields
-class WorkspaceFoldersMethods {
-	/**
-		The `workspace/workspaceFolders` is sent from the server to the client to fetch the open workspace folders.
-	**/
-	static inline var WorkspaceFolders = new RequestMethod<NoData, Null<Array<WorkspaceFolder>>, NoData, NoData>("workspace/workspaceFolders");
-
-	/**
-		The `workspace/didChangeWorkspaceFolders` notification is sent from the client to the server when the workspace
-		folder configuration changes.
-	**/
-	static inline var DidChangeWorkspaceFolders = new NotificationMethod<DidChangeWorkspaceFoldersParams, NoData>("workspace/didChangeWorkspaceFolders");
-}
 
 typedef WorkspaceFoldersInitializeParams = {
 	/**
@@ -64,6 +48,21 @@ typedef WorkspaceFolder = {
 		workspace folder in thge user interface.
 	**/
 	var name:String;
+}
+
+/**
+	The `workspace/workspaceFolders` is sent from the server to the client to fetch the open workspace folders.
+**/
+class WorkspaceFoldersRequest {
+	public static inline var type = new RequestType<NoData, Null<Array<WorkspaceFolder>>, NoData, NoData>("workspace/workspaceFolders");
+}
+
+/**
+	The `workspace/didChangeWorkspaceFolders` notification is sent from the client to the server when the workspace
+	folder configuration changes.
+**/
+class DidChangeWorkspaceFoldersNotification {
+	public static inline var type = new NotificationType<DidChangeWorkspaceFoldersParams, NoData>("workspace/didChangeWorkspaceFolders");
 }
 
 /**

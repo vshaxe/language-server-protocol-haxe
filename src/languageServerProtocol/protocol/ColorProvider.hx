@@ -1,24 +1,7 @@
 package languageServerProtocol.protocol;
 
-import jsonrpc.Types;
-import haxe.extern.EitherType;
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
-
-@:publicFields
-class ColorProviderMethods {
-	/**
-		A request to list all color symbols found in a given text document.
-	**/
-	static inline var DocumentColor = new RequestMethod<DocumentColorParams, Array<ColorInformation>, NoData,
-		TextDocumentRegistrationOptions>("textDocument/documentColor");
-
-	/**
-		A request to list all presentation for a color.
-	**/
-	static inline var ColorPresentation = new RequestMethod<ColorPresentationParams, Array<ColorPresentation>, NoData,
-		TextDocumentRegistrationOptions>("textDocument/colorPresentation");
-}
 
 typedef ColorClientCapabilities = {
 	/**
@@ -27,20 +10,21 @@ typedef ColorClientCapabilities = {
 	var ?colorProvider:{
 		/**
 			Whether implementation supports dynamic registration. If this is set to `true`
-			the client supports the new `(ColorProviderOptions & TextDocumentRegistrationOptions & StaticRegistrationOptions)`
+			the client supports the new `(ColorRegistrationOptions & StaticRegistrationOptions)`
 			return value for the corresponding server capability as well.
 		**/
 		var ?dynamicRegistration:Bool;
 	};
 }
 
-typedef ColorProviderOptions = {}
+typedef ColorOptions = {}
+typedef ColorRegistrationOptions = TextDocumentRegistrationOptions & ColorOptions;
 
 typedef ColorServerCapabilities = {
 	/**
 		The server provides color provider support.
 	**/
-	var ?colorProvider:EitherType<ColorProviderOptions, ColorProviderOptions & TextDocumentRegistrationOptions & StaticRegistrationOptions>;
+	var ?colorProvider:EitherType<ColorOptions, ColorRegistrationOptions & StaticRegistrationOptions>;
 }
 
 /**
@@ -54,9 +38,23 @@ typedef DocumentColorParams = {
 }
 
 /**
- * Parameters for a `ColorPresentation` request.
- */
-typedef ColorPresentationParams = {
+	A request to list all color symbols found in a given text document. The request's
+	parameter is of type [DocumentColorParams](#DocumentColorParams) the
+	response is of type [ColorInformation[]](#ColorInformation) or a Thenable
+	that resolves to such.
+**/
+class DocumentColorRequest {
+	public static inline var type = new RequestType<DocumentColorParams, Array<ColorInformation>, NoData,
+		ColorRegistrationOptions>("textDocument/documentColor");
+
+	public static final resultType = new ProgressType<Array<ColorInformation>>();
+}
+
+/**
+	Parameters for a `ColorPresentation` request.
+**/
+typedef ColorPresentationParams = WorkDoneProgressParams &
+	PartialResultParams & {
 	/**
 		The text document.
 	**/
@@ -71,4 +69,15 @@ typedef ColorPresentationParams = {
 		The range where the color would be inserted. Serves as a context.
 	**/
 	var range:Range;
+}
+
+/**
+	A request to list all presentation for a color. The request's
+	parameter is of type [ColorPresentationParams](#ColorPresentationParams) the
+	response is of type [ColorInformation[]](#ColorInformation) or a Thenable
+	that resolves to such.
+**/
+class ColorPresentationRequest {
+	public static inline var type = new RequestType<ColorPresentationParams, Array<ColorPresentation>, NoData, WorkDoneProgressOptions &
+		TextDocumentRegistrationOptions>("textDocument/colorPresentation");
 }

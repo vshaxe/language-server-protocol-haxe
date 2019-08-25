@@ -10,271 +10,13 @@ import languageServerProtocol.protocol.FoldingRange;
 import languageServerProtocol.protocol.Declaration;
 import languageServerProtocol.protocol.proposed.SelectionRange;
 import languageServerProtocol.protocol.proposed.CallHierarchy;
-import languageServerProtocol.protocol.proposed.Progress;
-import haxe.extern.EitherType;
-import jsonrpc.Types.NoData;
-import jsonrpc.Types.ResponseErrorData;
 
-typedef RequestMethod<TParams, TResponse, TError, TRegistrationOptions> = jsonrpc.Types.RequestMethod<TParams, TResponse, TError>;
-typedef NotificationMethod<TParams, TRegistrationOptions> = jsonrpc.Types.NotificationMethod<TParams>;
+typedef RequestType<TParams, TResponse, TError, TRegistrationOptions> = jsonrpc.Types.RequestType<TParams, TResponse, TError>;
+typedef NotificationType<TParams, TRegistrationOptions> = jsonrpc.Types.NotificationType<TParams>;
 
 abstract ResponseError<T>(ResponseErrorData) to ResponseErrorData {
 	public static inline var RequestCancelled = -32800;
 	public static inline var ContentModified = -32801;
-}
-
-/**
-	Method names for the protocol requests and notifications.
-	Each value must be typed as either `RequestMethod` or `NotificationMethod`.
-**/
-@:publicFields
-class Methods {
-	/**
-		The `client/registerCapability` request is sent from the server to the client to register a new capability
-		handler on the client side.
-	**/
-	static inline var RegisterCapability = new RequestMethod<RegistrationParams, NoData, NoData, NoData>("client/registerCapability");
-
-	/**
-		The `client/unregisterCapability` request is sent from the server to the client to unregister a previously registered capability
-		handler on the client side.
-	**/
-	static inline var UnregisterCapability = new RequestMethod<UnregistrationParams, NoData, NoData, NoData>("client/unregisterCapability");
-
-	/**
-		The initialize request is sent from the client to the server.
-		It is sent once as the request after starting up the server.
-		The requests parameter is of type `InitializeParams`
-		the response if of type `InitializeResult` of a Thenable that
-		resolves to such.
-	**/
-	static inline var Initialize = new RequestMethod<InitializeParams, InitializeResult, InitializeError, NoData>("initialize");
-
-	/**
-		The initialized notification is sent from the client to the server after the client received the result of the initialize request
-		but before the client is sending any other request or notification to the server. The server can use the initialized notification
-		for example to dynamically register capabilities.
-	**/
-	static inline var Initialized = new NotificationMethod<InitializedParams, NoData>("initialized");
-
-	/**
-		A shutdown request is sent from the client to the server.
-		It is sent once when the client decides to shutdown the
-		server. The only notification that is sent after a shutdown request
-		is the exit event.
-	**/
-	static inline var Shutdown = new RequestMethod<NoData, NoData, NoData, NoData>("shutdown");
-
-	/**
-		A notification to ask the server to exit its process.
-		The server should exit with success code 0 if the shutdown request has been received before; otherwise with error code 1.
-	**/
-	static inline var Exit = new NotificationMethod<NoData, NoData>("exit");
-
-	/**
-		A notification send from the client to the server to signal the change of configuration settings.
-	**/
-	static inline var DidChangeConfiguration = new NotificationMethod<DidChangeConfigurationParams,
-		DidChangeConfigurationRegistrationOptions>("workspace/didChangeConfiguration");
-
-	/**
-		The show message notification is sent from a server to a client to ask the client to display a particular message in the user interface.
-	**/
-	static inline var ShowMessage = new NotificationMethod<ShowMessageParams, NoData>("window/showMessage");
-
-	/**
-		The show message request is sent from the server to the client to show a message
-		and a set of options actions to the user.
-	**/
-	static inline var ShowMessageRequest = new RequestMethod<ShowMessageRequestParams, Null<MessageActionItem>, NoData, NoData>("window/showMessageRequest");
-
-	/**
-		The log message notification is send from the server to the client to ask the client to log a particular message.
-	**/
-	static inline var LogMessage = new NotificationMethod<LogMessageParams, NoData>("window/logMessage");
-
-	/**
-		The telemetry notification is sent from the server to the client to ask the client to log a telemetry event.
-	**/
-	static inline var Telemetry = new NotificationMethod<Dynamic, NoData>("telemetry/event");
-
-	/**
-		The document open notification is sent from the client to the server to signal newly opened text documents. The document’s truth is now managed by the client and the server must not try to read the document’s truth using the document’s uri. Open in this sense means it is managed by the client. It doesn’t necessarily mean that its content is presented in an editor. An open notification must not be sent more than once without a corresponding close notification send before. This means open and close notification must be balanced and the max open count for a particular textDocument is one.
-	**/
-	static inline var DidOpenTextDocument = new NotificationMethod<DidOpenTextDocumentParams, TextDocumentRegistrationOptions>("textDocument/didOpen");
-
-	/**
-		The document change notification is sent from the client to the server to signal changes to a text document.
-	**/
-	static inline var DidChangeTextDocument = new NotificationMethod<DidChangeTextDocumentParams,
-		TextDocumentChangeRegistrationOptions>("textDocument/didChange");
-
-	/**
-		The document close notification is sent from the client to the server when
-		the document got closed in the client. The document's truth now exists where
-		the document's uri points to (e.g. if the document's uri is a file uri the
-		truth now exists on disk). As with the open notification the close notification
-		is about managing the document's content. Receiving a close notification
-		doesn't mean that the document was open in an editor before. A close
-		notification requires a previous open notification to be sent.
-	**/
-	static inline var DidCloseTextDocument = new NotificationMethod<DidCloseTextDocumentParams, TextDocumentRegistrationOptions>("textDocument/didClose");
-
-	/**
-		The document save notification is sent from the client to the server when the document for saved in the clinet.
-	**/
-	static inline var DidSaveTextDocument = new NotificationMethod<DidSaveTextDocumentParams, TextDocumentSaveRegistrationOptions>("textDocument/didSave");
-
-	/**
-		The document will save notification is sent from the client to the server before the document is actually saved.
-	**/
-	static inline var WillSaveTextDocument = new NotificationMethod<WillSaveTextDocumentParams, TextDocumentRegistrationOptions>("textDocument/willSave");
-
-	/**
-		The document will save request is sent from the client to the server before the document is actually saved.
-		The request can return an array of TextEdits which will be applied to the text document before it is saved.
-		Please note that clients might drop results if computing the text edits took too long or if a server constantly fails on this request.
-		This is done to keep the save fast and reliable.
-	**/
-	static inline var WillSaveWaitUntilTextDocument = new RequestMethod<WillSaveTextDocumentParams, Null<Array<TextEdit>>, NoData,
-		TextDocumentRegistrationOptions>("textDocument/willSaveWaitUntil");
-
-	/**
-		The watched files notification is sent from the client to the server when the client detects changes to file watched by the language client.
-	**/
-	static inline var DidChangeWatchedFiles = new NotificationMethod<DidChangeWatchedFilesParams,
-		DidChangeWatchedFilesRegistrationOptions>("workspace/didChangeWatchedFiles");
-
-	/**
-		Diagnostics notification are sent from the server to the client to signal results of validation runs.
-	**/
-	static inline var PublishDiagnostics = new NotificationMethod<PublishDiagnosticsParams, NoData>("textDocument/publishDiagnostics");
-
-	/**
-		Request to request completion at a given text document position. The request's
-		parameter is of type `TextDocumentPosition` the response is of type `Array<CompletionItem>` or `CompletionList` or a Thenable that resolves to such.
-
-		The request can delay the computation of the `CompletionItem.detail` and `documentation` properties to the `completionItem/resolve`
-		request. However, properties that are needed for the inital sorting and filtering, like `sortText`,
-		`filterText`, `insertText`, and `textEdit`, must not be changed during resolve.
-	**/
-	static inline var Completion = new RequestMethod<CompletionParams, Null<EitherType<Array<CompletionItem>, CompletionList>>, NoData,
-		CompletionRegistrationOptions>("textDocument/completion");
-
-	/**
-		The request is sent from the client to the server to resolve additional information for a given completion item.
-	**/
-	static inline var CompletionItemResolve = new RequestMethod<CompletionItem, CompletionItem, NoData, NoData>("completionItem/resolve");
-
-	/**
-		The hover request is sent from the client to the server to request hover information at a given text document position.
-	**/
-	static inline var Hover = new RequestMethod<TextDocumentPositionParams, Null<Hover>, NoData, TextDocumentRegistrationOptions>("textDocument/hover");
-
-	/**
-		The signature help request is sent from the client to the server to request signature information at a given cursor position.
-	**/
-	static inline var SignatureHelp = new RequestMethod<TextDocumentPositionParams, Null<SignatureHelp>, NoData,
-		SignatureHelpRegistrationOptions>("textDocument/signatureHelp");
-
-	/**
-		The goto definition request is sent from the client to the server to to resolve the definition location of a symbol at a given text document position.
-	**/
-	static inline var GotoDefinition = new RequestMethod<TextDocumentPositionParams, Null<EitherType<Definition, DefinitionLink>>, NoData,
-		TextDocumentRegistrationOptions>("textDocument/definition");
-
-	/**
-		The references request is sent from the client to the server to resolve project-wide references for the symbol denoted by the given text document position.
-	**/
-	static inline var FindReferences = new RequestMethod<ReferenceParams, Null<Array<Location>>, NoData,
-		TextDocumentRegistrationOptions>("textDocument/references");
-
-	/**
-		The document highlight request is sent from the client to the server to to resolve a document highlights for a given text document position.
-	**/
-	static inline var DocumentHighlights = new RequestMethod<TextDocumentPositionParams, Null<Array<DocumentHighlight>>, NoData,
-		TextDocumentRegistrationOptions>("textDocument/documentHighlight");
-
-	/**
-		The document symbol request is sent from the client to the server to list all symbols found in a given text document.
-	**/
-	static inline var DocumentSymbols = new RequestMethod<DocumentSymbolParams, Null<Array<EitherType<SymbolInformation, DocumentSymbol>>>, NoData,
-		TextDocumentRegistrationOptions>("textDocument/documentSymbol");
-
-	/**
-		The workspace symbol request is sent from the client to the server to list project-wide symbols matching the query string.
-	**/
-	static inline var WorkspaceSymbols = new RequestMethod<WorkspaceSymbolParams, Null<Array<SymbolInformation>>, NoData, NoData>("workspace/symbol");
-
-	/**
-		The code action request is sent from the client to the server to compute commands for a given text document and range.
-		These commands are typically code fixes to either fix problems or to beautify/refactor code.
-	**/
-	static inline var CodeAction = new RequestMethod<CodeActionParams, Null<Array<EitherType<Command, CodeAction>>>, NoData,
-		CodeActionRegistrationOptions>("textDocument/codeAction");
-
-	/**
-		The code lens request is sent from the client to the server to compute code lenses for a given text document.
-	**/
-	static inline var CodeLens = new RequestMethod<CodeLensParams, Array<CodeLens>, NoData, NoData>("textDocument/codeLens");
-
-	/**
-		The code lens resolve request is sent from the clien to the server to resolve the command for a given code lens item.
-	**/
-	static inline var CodeLensResolve = new RequestMethod<CodeLens, CodeLens, NoData, NoData>("codeLens/resolve");
-
-	/**
-		The document formatting resquest is sent from the server to the client to format a whole document.
-	**/
-	static inline var DocumentFormatting = new RequestMethod<DocumentFormattingParams, Null<Array<TextEdit>>, NoData,
-		TextDocumentRegistrationOptions>("textDocument/formatting");
-
-	/**
-		The document range formatting request is sent from the client to the server to format a given range in a document.
-	**/
-	static inline var DocumentRangeFormatting = new RequestMethod<DocumentRangeFormattingParams, Null<Array<TextEdit>>, NoData,
-		TextDocumentRegistrationOptions>("textDocument/rangeFormatting");
-
-	/**
-		The document on type formatting request is sent from the client to the server to format parts of the document during typing.
-	**/
-	static inline var DocumentOnTypeFormatting = new RequestMethod<DocumentOnTypeFormattingParams, Null<Array<TextEdit>>, NoData,
-		TextDocumentRegistrationOptions>("textDocument/onTypeFormatting");
-
-	/**
-		The rename request is sent from the client to the server to do a workspace wide rename of a symbol.
-	**/
-	static inline var Rename = new RequestMethod<RenameParams, Null<WorkspaceEdit>, NoData, RenameRegistrationOptions>("textDocument/rename");
-
-	/**
-		A request to test and perform the setup necessary for a rename.
-	**/
-	static inline var PrepareRename = new RequestMethod<TextDocumentPositionParams, Null<EitherType<Range, {range:Range, placeholder:String}>>, NoData,
-		NoData>("textDocument/prepareRename");
-
-	/**
-		The document links request is sent from the client to the server to request the location of links in a document.
-	**/
-	static inline var DocumentLink = new RequestMethod<DocumentLinkParams, Null<Array<DocumentLink>>, NoData,
-		DocumentLinkRegistrationOptions>("textDocument/documentLink");
-
-	/**
-		The document link resolve request is sent from the client to the server to resolve the target of a given document link.
-	**/
-	static inline var DocumentLinkResolve = new RequestMethod<DocumentLink, DocumentLink, NoData, NoData>("documentLink/resolve");
-
-	/**
-		The workspace/executeCommand request is sent from the client to the server to trigger command execution on the server.
-		In most cases the server creates a `WorkspaceEdit` structure and applies the changes to the workspace using the request `workspace/applyEdit`
-		which is sent from the server to the client.
-	**/
-	static inline var ExecuteCommand = new RequestMethod<ExecuteCommandParams, Null<Dynamic>, NoData,
-		ExecuteCommandRegistrationOptions>("workspace/executeCommand");
-
-	/**
-		The workspace/applyEdit request is sent from the server to the client to modify resource on the client side.
-	**/
-	static inline var ApplyEdit = new RequestMethod<ApplyWorkspaceEditParams, ApplyWorkspaceEditResponse, NoData, NoData>("workspace/applyEdit");
 }
 
 /**
@@ -343,6 +85,14 @@ typedef RegistrationParams = {
 }
 
 /**
+	The `client/registerCapability` request is sent from the server to the client to register a new capability
+	handler on the client side.
+**/
+class RegistrationRequest {
+	public static inline var type = new RequestType<RegistrationParams, NoData, NoData, NoData>("client/registerCapability");
+}
+
+/**
 	General parameters to unregister a request or notification.
 **/
 typedef Unregistration = {
@@ -363,6 +113,29 @@ typedef UnregistrationParams = {
 }
 
 /**
+	The `client/unregisterCapability` request is sent from the server to the client to unregister a previously registered capability
+	handler on the client side.
+**/
+class UnregistrationRequest {
+	public static inline var type = new RequestType<UnregistrationParams, NoData, NoData, NoData>("client/unregisterCapability");
+}
+
+typedef WorkDoneProgressParams = {
+	/**
+		An optional token that a server can use to report work done progress.
+	**/
+	var ?workDoneToken:ProgressToken;
+}
+
+typedef PartialResultParams = {
+	/**
+		An optional token that a server can use to report partial results (e.g. streaming) to
+		the client.
+	**/
+	var ?partialResultToken:ProgressToken;
+}
+
+/**
 	A parameter literal used in requests to pass a text document and a position inside that document.
 **/
 typedef TextDocumentPositionParams = {
@@ -376,6 +149,8 @@ typedef TextDocumentPositionParams = {
 	**/
 	var position:Position;
 }
+
+//---- Initialize Method ----
 
 /**
 	The kind of resource operations supported by the client.
@@ -873,7 +648,7 @@ typedef ClientCapabilities = {
 	/**
 		Window specific client capabilities.
 	**/
-	var ?window:WindowClientCapabilities;
+	var ?window:{};
 
 	/**
 		Experimental client capabilities.
@@ -928,7 +703,7 @@ typedef TextDocumentRegistrationOptions = {
 /**
 	Completion options.
 **/
-typedef CompletionOptions = {
+typedef CompletionOptions = WorkDoneProgressOptions & {
 	/**
 		Most tools trigger completion request automatically without explicitly requesting
 		it using a keyboard shortcut (e.g. Ctrl+Space). Typically they do so when the user
@@ -955,9 +730,14 @@ typedef CompletionOptions = {
 }
 
 /**
+	Hover options.
+**/
+typedef HoverOptions = WorkDoneProgressOptions;
+
+/**
 	Signature help options.
 **/
-typedef SignatureHelpOptions = {
+typedef SignatureHelpOptions = WorkDoneProgressOptions & {
 	/**
 		The characters that trigger signature help automatically.
 	**/
@@ -965,19 +745,34 @@ typedef SignatureHelpOptions = {
 }
 
 /**
-	Code Lens options.
+	Definition options.
 **/
-typedef CodeLensOptions = {
-	/**
-		Code lens has a resolve provider as well.
-	**/
-	var ?resolveProvider:Bool;
-}
+typedef DefinitionOptions = WorkDoneProgressOptions;
+
+/**
+	Reference options.
+**/
+typedef ReferenceOptions = WorkDoneProgressOptions;
+
+/**
+	Document highlight options.
+**/
+typedef DocumentHighlightOptions = WorkDoneProgressOptions;
+
+/**
+	Document symbol options.
+**/
+typedef DocumentSymbolOptions = WorkDoneProgressOptions;
+
+/**
+	Workspace symbol options.
+**/
+typedef WorkspaceSymbolOptions = WorkDoneProgressOptions;
 
 /**
 	Code Action options.
 **/
-typedef CodeActionOptions = {
+typedef CodeActionOptions = WorkDoneProgressOptions & {
 	/**
 		CodeActionKinds that this server may return.
 
@@ -986,6 +781,26 @@ typedef CodeActionOptions = {
 	**/
 	var ?codeActionKinds:Array<CodeActionKind>;
 }
+
+/**
+	Code Lens options.
+**/
+typedef CodeLensOptions = WorkDoneProgressOptions & {
+	/**
+		Code lens has a resolve provider as well.
+	**/
+	var ?resolveProvider:Bool;
+}
+
+/**
+	Document formatting options.
+**/
+typedef DocumentFormattingOptions = WorkDoneProgressOptions;
+
+/**
+	Document range formatting options.
+**/
+typedef DocumentRangeFormattingOptions = WorkDoneProgressOptions;
 
 /**
 	Format document on type options
@@ -1005,7 +820,7 @@ typedef DocumentOnTypeFormattingOptions = {
 /**
 	Rename options
 **/
-typedef RenameOptions = {
+typedef RenameOptions = WorkDoneProgressOptions & {
 	/**
 		Renames should be checked and tested before being executed.
 	**/
@@ -1015,7 +830,7 @@ typedef RenameOptions = {
 /**
 	Document link options
 **/
-typedef DocumentLinkOptions = {
+typedef DocumentLinkOptions = WorkDoneProgressOptions & {
 	/**
 		Document links have a resolve provider as well.
 	**/
@@ -1025,7 +840,7 @@ typedef DocumentLinkOptions = {
 /**
 	Execute command options.
 **/
-typedef ExecuteCommandOptions = {
+typedef ExecuteCommandOptions = WorkDoneProgressOptions & {
 	/**
 		The commands to be executed on the server
 	**/
@@ -1074,14 +889,8 @@ typedef TextDocumentSyncOptions = {
 	var ?save:SaveOptions;
 }
 
-/**
-	Window specific client capabilities.
-**/
-typedef WindowClientCapabilities = {
-	/**
-		Whether client supports handling progress notifications.
-	**/
-	var ?progress:Bool;
+typedef WorkDoneProgressOptions = {
+	var ?workDoneProgress:Bool;
 }
 
 /**
@@ -1105,7 +914,7 @@ typedef ServerCapabilities = ImplementationServerCapabilities &
 	/**
 		The server provides hover support.
 	**/
-	var ?hoverProvider:Bool;
+	var ?hoverProvider:EitherType<Bool, HoverOptions>;
 
 	/**
 		The server provides completion support.
@@ -1120,27 +929,27 @@ typedef ServerCapabilities = ImplementationServerCapabilities &
 	/**
 		The server provides goto definition support.
 	**/
-	var ?definitionProvider:Bool;
+	var ?definitionProvider:EitherType<Bool, DefinitionOptions>;
 
 	/**
 		The server provides find references support.
 	**/
-	var ?referencesProvider:Bool;
+	var ?referencesProvider:EitherType<Bool, ReferenceOptions>;
 
 	/**
 		The server provides document highlight support.
 	**/
-	var ?documentHighlightProvider:Bool;
+	var ?documentHighlightProvider:EitherType<Bool, DocumentHighlightOptions>;
 
 	/**
 		The server provides document symbol support.
 	**/
-	var ?documentSymbolProvider:Bool;
+	var ?documentSymbolProvider:EitherType<Bool, DocumentSymbolOptions>;
 
 	/**
 		The server provides workspace symbol support.
 	**/
-	var ?workspaceSymbolProvider:Bool;
+	var ?workspaceSymbolProvider:EitherType<Bool, WorkspaceSymbolOptions>;
 
 	/**
 		The server provides code actions. CodeActionOptions may only be
@@ -1157,12 +966,12 @@ typedef ServerCapabilities = ImplementationServerCapabilities &
 	/**
 		The server provides document formatting.
 	**/
-	var ?documentFormattingProvider:Bool;
+	var ?documentFormattingProvider:EitherType<Bool, DocumentFormattingOptions>;
 
 	/**
 		The server provides document range formatting.
 	**/
-	var ?documentRangeFormattingProvider:Bool;
+	var ?documentRangeFormattingProvider:EitherType<Bool, DocumentRangeFormattingOptions>;
 
 	/**
 		The server provides document formatting on typing.
@@ -1190,6 +999,17 @@ typedef ServerCapabilities = ImplementationServerCapabilities &
 		Experimental server capabilities.
 	**/
 	var ?experimental:Dynamic;
+}
+
+/**
+	The initialize request is sent from the client to the server.
+	It is sent once as the request after starting up the server.
+	The requests parameter is of type [InitializeParams](#InitializeParams)
+	the response if of type [InitializeResult](#InitializeResult) of a Thenable that
+	resolves to such.
+**/
+class InitializeRequest {
+	public static inline var type = new RequestType<InitializeParams & WorkDoneProgressParams, InitializeResult, InitializeError, NoData>("initialize");
 }
 
 /**
@@ -1235,9 +1055,6 @@ typedef InitializeParams = WorkspaceFoldersInitializeParams & {
 	var ?trace:TraceMode;
 }
 
-/**
-	Tracing mode.
-**/
 enum abstract TraceMode(String) to String {
 	var Off = "off";
 	var Messages = "messages";
@@ -1271,6 +1088,49 @@ typedef InitializeError = {
 
 typedef InitializedParams = {}
 
+/**
+	The intialized notification is sent from the client to the
+	server after the client is fully initialized and the server
+	is allowed to send requests from the server to the client.
+**/
+class InitializedNotification {
+	public static inline var type = new NotificationType<InitializedParams, NoData>("initialized");
+}
+
+//---- Shutdown Method ----
+
+/**
+	A shutdown request is sent from the client to the server.
+	It is sent once when the client decides to shutdown the
+	server. The only notification that is sent after a shutdown request
+	is the exit event.
+**/
+class ShutdownRequest {
+	public static inline var type = new RequestType<NoData, NoData, NoData, NoData>("shutdown");
+}
+
+//---- Exit Notification ----
+
+/**
+	The exit event is sent from the client to the server to
+	ask the server to exit its process.
+**/
+class ExitNotification {
+	public static inline var type = new NotificationType<NoData, NoData>("exit");
+}
+
+//---- Configuration notification ----
+
+/**
+	The configuration change notification is sent from the client to the server
+	when the client's configuration has changed. The notification contains
+	the changed configuration as defined by the language client.
+**/
+class DidChangeConfigurationNotification {
+	public static inline var type = new NotificationType<DidChangeConfigurationParams,
+		DidChangeConfigurationRegistrationOptions>("workspace/didChangeConfiguration");
+}
+
 typedef DidChangeConfigurationRegistrationOptions = {
 	var ?section:EitherType<String, Array<String>>;
 }
@@ -1284,6 +1144,8 @@ typedef DidChangeConfigurationParams = {
 	**/
 	var settings:Dynamic;
 }
+
+//---- Message show and log notifications ----
 
 /**
 	The message type
@@ -1322,6 +1184,14 @@ typedef ShowMessageParams = {
 	var message:String;
 }
 
+/**
+	The show message notification is sent from a server to a client to ask
+	the client to display a particular message in the user interface.
+**/
+class ShowMessageNotification {
+	public static inline var type = new NotificationType<ShowMessageParams, NoData>("window/showMessage");
+}
+
 typedef MessageActionItem = {
 	/**
 		A short title like 'Retry', 'Open Log' etc.
@@ -1331,7 +1201,7 @@ typedef MessageActionItem = {
 
 typedef ShowMessageRequestParams = {
 	/**
-		The message type.
+		The message type. See {@link MessageType}
 	**/
 	var type:MessageType;
 
@@ -1346,6 +1216,22 @@ typedef ShowMessageRequestParams = {
 	var ?actions:Array<MessageActionItem>;
 }
 
+/**
+	The show message request is sent from the server to the client to show a message
+	and a set of options actions to the user.
+**/
+class ShowMessageRequest {
+	public static inline var type = new RequestType<ShowMessageRequestParams, Null<MessageActionItem>, NoData, NoData>("window/showMessageRequest");
+}
+
+/**
+	The log message notification is sent from the server to the client to ask
+	the client to log a particular message.
+**/
+class LogMessageNotification {
+	public static inline var type = new NotificationType<LogMessageParams, NoData>("window/logMessage");
+}
+
 typedef LogMessageParams = {
 	/**
 		The message type.
@@ -1358,6 +1244,18 @@ typedef LogMessageParams = {
 	var message:String;
 }
 
+//---- Telemetry notification
+
+/**
+	The telemetry event notification is sent from the server to the client to ask
+	the client to log telemetry data.
+**/
+class TelemetryEventNotification {
+	public static inline var type = new NotificationType<Dynamic, NoData>("telemetry/event");
+}
+
+//---- Text document notifications ----
+
 /**
 	The parameters send in a open text document notification
 **/
@@ -1366,6 +1264,20 @@ typedef DidOpenTextDocumentParams = {
 		The document that was opened.
 	**/
 	var textDocument:TextDocumentItem;
+}
+
+/**
+	The document open notification is sent from the client to the server to signal
+	newly opened text documents. The document's truth is now managed by the client
+	and the server must not try to read the document's truth using the document's
+	uri. Open in this sense means it is managed by the client. It doesn't necessarily
+	mean that its content is presented in an editor. An open notification must not
+	be sent more than once without a corresponding close notification send before.
+	This means open and close notification must be balanced and the max open count
+	is one.
+**/
+class DidOpenTextDocumentNotification {
+	public static inline var type = new NotificationType<DidOpenTextDocumentParams, TextDocumentRegistrationOptions>("textDocument/didOpen");
 }
 
 /**
@@ -1397,6 +1309,14 @@ typedef TextDocumentChangeRegistrationOptions = TextDocumentRegistrationOptions 
 }
 
 /**
+	The document change notification is sent from the client to the server to signal
+	changes to a text document.
+**/
+class DidChangeTextDocumentNotification {
+	public static inline var type = new NotificationType<DidChangeTextDocumentParams, TextDocumentChangeRegistrationOptions>("textDocument/didChange");
+}
+
+/**
 	The parameters send in a close text document notification
 **/
 typedef DidCloseTextDocumentParams = {
@@ -1404,6 +1324,19 @@ typedef DidCloseTextDocumentParams = {
 		The document that was closed.
 	**/
 	var textDocument:TextDocumentIdentifier;
+}
+
+/**
+	The document close notification is sent from the client to the server when
+	the document got closed in the client. The document's truth now exists where
+	the document's uri points to (e.g. if the document's uri is a file uri the
+	truth now exists on disk). As with the open notification the close notification
+	is about managing the document's content. Receiving a close notification
+	doesn't mean that the document was open in an editor before. A close
+	notification requires a previous open notification to be sent.
+**/
+class DidCloseTextDocumentNotification {
+	public static inline var type = new NotificationType<DidCloseTextDocumentParams, TextDocumentRegistrationOptions>("textDocument/didClose");
 }
 
 /**
@@ -1427,6 +1360,14 @@ typedef DidSaveTextDocumentParams = {
 typedef TextDocumentSaveRegistrationOptions = TextDocumentRegistrationOptions & SaveOptions;
 
 /**
+	The document save notification is sent from the client to the server when
+	the document got saved in the client.
+**/
+class DidSaveTextDocumentNotification {
+	public static inline var type = new NotificationType<DidSaveTextDocumentParams, TextDocumentSaveRegistrationOptions>("textDocument/didSave");
+}
+
+/**
 	The parameters send in a will save text document notification.
 **/
 typedef WillSaveTextDocumentParams = {
@@ -1439,6 +1380,38 @@ typedef WillSaveTextDocumentParams = {
 		The 'TextDocumentSaveReason'.
 	**/
 	var reason:TextDocumentSaveReason;
+}
+
+/**
+	A document will save notification is sent from the client to the server before
+	the document is actually saved.
+**/
+class WillSaveTextDocumentNotification {
+	public static inline var type = new NotificationType<WillSaveTextDocumentParams, TextDocumentRegistrationOptions>("textDocument/willSave");
+}
+
+/**
+	A document will save request is sent from the client to the server before
+	the document is actually saved. The request can return an array of TextEdits
+	which will be applied to the text document before it is saved. Please note that
+	clients might drop results if computing the text edits took too long or if a
+	server constantly fails on this request. This is done to keep the save fast and
+	reliable.
+**/
+class WillSaveTextDocumentWaitUntilRequest {
+	public static inline var type = new RequestType<WillSaveTextDocumentParams, Null<Array<TextEdit>>, NoData,
+		TextDocumentRegistrationOptions>("textDocument/willSaveWaitUntil");
+}
+
+//---- File eventing ----
+
+/**
+	The watched files notification is sent from the client to the server when
+	the client detects changes to file watched by the language client.
+**/
+class DidChangeWatchedFilesNotification {
+	public static inline var type = new NotificationType<DidChangeWatchedFilesParams,
+		DidChangeWatchedFilesRegistrationOptions>("workspace/didChangeWatchedFiles");
 }
 
 /**
@@ -1533,6 +1506,16 @@ enum abstract WatchKind(Int) to Int {
 	var Delete;
 }
 
+//---- Diagnostic notification ----
+
+/**
+	Diagnostics notification are sent from the server to the client to signal
+	results of validation runs.
+**/
+class PublishDiagnosticsNotification {
+	public static inline var type = new NotificationType<PublishDiagnosticsParams, NoData>("textDocument/publishDiagnostics");
+}
+
 /**
 	The publish diagnostic notification's parameters.
 **/
@@ -1555,10 +1538,7 @@ typedef PublishDiagnosticsParams = {
 	var diagnostics:Array<Diagnostic>;
 }
 
-/**
-	Completion registration options.
-**/
-typedef CompletionRegistrationOptions = TextDocumentRegistrationOptions & CompletionOptions;
+//---- Completion Support --------------------------
 
 /**
 	How a completion was triggered
@@ -1601,7 +1581,9 @@ typedef CompletionContext = {
 /**
 	Completion parameters
 **/
-typedef CompletionParams = TextDocumentPositionParams & {
+typedef CompletionParams = TextDocumentPositionParams &
+	WorkDoneProgressParams &
+	PartialResultParams & {
 	/**
 		The completion context. This is only available it the client specifies
 		to send this using `ClientCapabilities.textDocument.completion.contextSupport === true`
@@ -1610,18 +1592,223 @@ typedef CompletionParams = TextDocumentPositionParams & {
 }
 
 /**
-	Signature help registration options.
+	Registration options for a [CompletionRequest](#CompletionRequest).
 **/
-typedef SignatureHelpRegistrationOptions = TextDocumentRegistrationOptions & SignatureHelpOptions;
+typedef CompletionRegistrationOptions = TextDocumentRegistrationOptions & CompletionOptions;
 
-typedef ReferenceParams = TextDocumentPositionParams & {
-	var context:ReferenceContext;
+/**
+	Request to request completion at a given text document position. The request's
+	parameter is of type [TextDocumentPosition](#TextDocumentPosition) the response
+	is of type [CompletionItem[]](#CompletionItem) or [CompletionList](#CompletionList)
+	or a Thenable that resolves to such.
+
+	The request can delay the computation of the [`detail`](#CompletionItem.detail)
+	and [`documentation`](#CompletionItem.documentation) properties to the `completionItem/resolve`
+	request. However, properties that are needed for the initial sorting and filtering, like `sortText`,
+	`filterText`, `insertText`, and `textEdit`, must not be changed during resolve.
+**/
+class CompletionRequest {
+	public static inline var type = new RequestType<CompletionParams, Null<EitherType<Array<CompletionItem>, CompletionList>>, NoData,
+		CompletionRegistrationOptions>("textDocument/completion");
+
+	public static final resultType = new ProgressType<Array<CompletionItem>>();
 }
 
 /**
-	Params for the CodeActionRequest
+	Request to resolve additional information for a given completion item.The request's
+	parameter is of type [CompletionItem](#CompletionItem) the response
+	is of type [CompletionItem](#CompletionItem) or a Thenable that resolves to such.
 **/
-typedef CodeActionParams = {
+class CompletionResolveRequest {
+	public static inline var type = new RequestType<CompletionItem, CompletionItem, NoData, NoData>("completionItem/resolve");
+}
+
+//---- Hover Support -------------------------------
+
+/**
+	Parameters for a [HoverRequest](#HoverRequest).
+**/
+typedef HoverParams = TextDocumentPositionParams & WorkDoneProgressParams;
+
+/**
+	Registration options for a [HoverRequest](#HoverRequest).
+**/
+typedef HoverRegistrationOptions = TextDocumentRegistrationOptions & HoverOptions;
+
+/**
+	Request to request hover information at a given text document position. The request's
+	parameter is of type [TextDocumentPosition](#TextDocumentPosition) the response is of
+	type [Hover](#Hover) or a Thenable that resolves to such.
+**/
+class HoverRequest {
+	public static inline var type = new RequestType<HoverParams, Null<Hover>, NoData, HoverRegistrationOptions>("textDocument/hover");
+}
+
+//---- SignatureHelp ----------------------------------
+
+/**
+	Parameters for a [SignatureHelpRequest](#SignatureHelpRequest).
+**/
+typedef SignatureHelpParams = TextDocumentPositionParams & WorkDoneProgressParams;
+
+/**
+	Registration options for a [SignatureHelpRequest](#SignatureHelpRequest).
+**/
+typedef SignatureHelpRegistrationOptions = TextDocumentRegistrationOptions & SignatureHelpOptions;
+
+class SignatureHelpRequest {
+	public static inline var type = new RequestType<SignatureHelpParams, Null<SignatureHelp>, NoData,
+		SignatureHelpRegistrationOptions>("textDocument/signatureHelp");
+}
+
+//---- Goto Definition -------------------------------------
+
+/**
+	Parameters for a [DefinitionParams](#DefinitionParams).
+**/
+typedef DefinitionParams = TextDocumentPositionParams & WorkDoneProgressParams & PartialResultParams;
+
+/**
+	Registration options for a [DefinitionRequest](#DefinitionRequest).
+**/
+typedef DefinitionRegistrationOptions = TextDocumentRegistrationOptions & DefinitionOptions;
+
+/**
+	A request to resolve the definition location of a symbol at a given text
+	document position. The request's parameter is of type [TextDocumentPosition]
+	(#TextDocumentPosition) the response is of either type [Definition](#Definition)
+	or a typed array of [DefinitionLink](#DefinitionLink) or a Thenable that resolves
+	to such.
+**/
+class DefinitionRequest {
+	public static inline var type = new RequestType<DefinitionParams, Null<EitherType<Definition, DefinitionLink>>, NoData,
+		DefinitionRegistrationOptions>("textDocument/definition");
+
+	public static final resultType = new ProgressType<EitherType<Array<Location>, Array<DefinitionLink>>>();
+}
+
+//---- Reference Provider ----------------------------------
+
+/**
+	Parameters for a [ReferencesRequest](#ReferencesRequest).
+**/
+typedef ReferenceParams = TextDocumentPositionParams &
+	WorkDoneProgressParams &
+	PartialResultParams & {
+	var context:ReferenceContext;
+}
+
+/** 
+	Registration options for a [ReferencesRequest](#ReferencesRequest).
+**/
+typedef ReferenceRegistrationOptions = TextDocumentRegistrationOptions & ReferenceOptions;
+
+/**
+	A request to resolve project-wide references for the symbol denoted
+	by the given text document position. The request's parameter is of
+	type [ReferenceParams](#ReferenceParams) the response is of type
+	[Location[]](#Location) or a Thenable that resolves to such.
+**/
+class ReferencesRequest {
+	public static inline var type = new RequestType<ReferenceParams, Null<Array<Location>>, NoData, ReferenceRegistrationOptions>("textDocument/references");
+
+	public static final resultType = new ProgressType<Array<Location>>();
+}
+
+//---- Document Highlight ----------------------------------
+
+/**
+	Parameters for a [DocumentHighlightRequest](#DocumentHighlightRequest).
+**/
+typedef DocumentHighlightParams = TextDocumentPositionParams & WorkDoneProgressParams & PartialResultParams;
+
+/**
+	Registration options for a [DocumentHighlightRequest](#DocumentHighlightRequest).
+**/
+typedef DocumentHighlightRegistrationOptions = TextDocumentRegistrationOptions & DocumentHighlightOptions;
+
+/**
+	Request to resolve a [DocumentHighlight](#DocumentHighlight) for a given
+	text document position. The request's parameter is of type [TextDocumentPosition]
+	(#TextDocumentPosition) the request response is of type [DocumentHighlight[]]
+	(#DocumentHighlight) or a Thenable that resolves to such.
+**/
+class DocumentHighlightRequest {
+	public static inline var type = new RequestType<DocumentHighlightParams, Null<Array<DocumentHighlight>>, NoData,
+		DocumentHighlightRegistrationOptions>("textDocument/documentHighlight");
+
+	public static final resultType = new ProgressType<Array<DocumentHighlight>>();
+}
+
+//---- Document Symbol Provider ---------------------------
+
+/**
+	Parameters for a [DocumentSymbolRequest](#DocumentSymbolRequest).
+**/
+typedef DocumentSymbolParams = WorkDoneProgressParams &
+	PartialResultParams & {
+	/**
+		The text document.
+	**/
+	var textDocument:TextDocumentIdentifier;
+}
+
+/**
+	Registration options for a [DocumentSymbolRequest](#DocumentSymbolRequest).
+**/
+typedef DocumentSymbolRegistrationOptions = TextDocumentRegistrationOptions & DocumentSymbolOptions;
+
+/**
+	A request to list all symbols found in a given text document. The request's
+	parameter is of type [TextDocumentIdentifier](#TextDocumentIdentifier) the
+	response is of type [SymbolInformation[]](#SymbolInformation) or a Thenable
+	that resolves to such.
+**/
+class DocumentSymbolRequest {
+	public static inline var type = new RequestType<DocumentSymbolParams, Null<Array<EitherType<SymbolInformation, DocumentSymbol>>>, NoData,
+		DocumentSymbolRegistrationOptions>("textDocument/documentSymbol");
+
+	public static final resultType = new ProgressType<EitherType<Array<SymbolInformation>, Array<DocumentSymbol>>>();
+}
+
+//---- Workspace Symbol Provider ---------------------------
+
+/**
+	The parameters of a [WorkspaceSymbolRequest](#WorkspaceSymbolRequest).
+**/
+typedef WorkspaceSymbolParams = WorkDoneProgressParams &
+	PartialResultParams & {
+	/**
+		A non-empty query string
+	**/
+	var query:String;
+}
+
+/**
+	Registration options for a [WorkspaceSymbolRequest](#WorkspaceSymbolRequest).
+**/
+typedef WorkspaceSymbolRegistrationOptions = WorkspaceSymbolOptions;
+
+/**
+	A request to list project-wide symbols matching the query string given
+	by the [WorkspaceSymbolParams](#WorkspaceSymbolParams). The response is
+	of type [SymbolInformation[]](#SymbolInformation) or a Thenable that
+	resolves to such.
+**/
+class WorkspaceSymbolRequest {
+	public static inline var type = new RequestType<WorkspaceSymbolParams, Null<Array<SymbolInformation>>, NoData,
+		WorkspaceSymbolRegistrationOptions>("workspace/symbol");
+
+	public static final resultType = new ProgressType<Array<SymbolInformation>>();
+}
+
+//---- Code Action Provider ----------------------------------
+
+/**
+	The parameters of a [CodeActionRequest](#CodeActionRequest).
+**/
+typedef CodeActionParams = WorkDoneProgressParams &
+	PartialResultParams & {
 	/**
 		The document in which the command was invoked.
 	**/
@@ -1638,8 +1825,26 @@ typedef CodeActionParams = {
 	var context:CodeActionContext;
 }
 
+/**
+	Registration options for a [CodeActionRequest](#CodeActionRequest).
+**/
 typedef CodeActionRegistrationOptions = TextDocumentRegistrationOptions & CodeActionOptions;
 
+/**
+	A request to provide commands for the given text document and range.
+**/
+class CodeActionRequest {
+	public static inline var type = new RequestType<CodeActionParams, Null<Array<EitherType<Command, CodeAction>>>, NoData,
+		CodeActionRegistrationOptions>("textDocument/codeAction");
+
+	public static final resultType = new ProgressType<Array<EitherType<Command, CodeAction>>>();
+}
+
+//---- Code Lens Provider -------------------------------------------
+
+/**
+	The parameters of a [CodeLensRequest](#CodeLensRequest).
+**/
 typedef CodeLensParams = {
 	/**
 		The document to request code lens for.
@@ -1647,8 +1852,32 @@ typedef CodeLensParams = {
 	var textDocument:TextDocumentIdentifier;
 }
 
+/**
+	Registration options for a [CodeLensRequest](#CodeLensRequest).
+**/
 typedef CodeLensRegistrationOptions = TextDocumentRegistrationOptions & CodeLensOptions;
 
+/**
+	A request to provide code lens for the given text document.
+**/
+class CodeLensRequest {
+	public static inline var type = new RequestType<CodeLensParams, Array<CodeLens>, NoData, CodeLensRegistrationOptions>("textDocument/codeLens");
+
+	public static final resultType = new ProgressType<Array<CodeLens>>();
+}
+
+/**
+	A request to resolve a command for a given code lens.
+**/
+class CodeLensResolveRequest {
+	public static inline var type = new RequestType<CodeLens, CodeLens, NoData, NoData>("codeLens/resolve");
+}
+
+//---- Formatting ----------------------------------------------
+
+/**
+	The parameters of a [DocumentFormattingRequest](#DocumentFormattingRequest).
+**/
 typedef DocumentFormattingParams = {
 	/**
 		The document to format.
@@ -1661,6 +1890,22 @@ typedef DocumentFormattingParams = {
 	var options:FormattingOptions;
 }
 
+/**
+	Registration options for a [DocumentFormattingRequest](#DocumentFormattingRequest).
+**/
+typedef DocumentFormattingRegistrationOptions = TextDocumentRegistrationOptions & DocumentFormattingOptions;
+
+/**
+	A request to to format a whole document.
+**/
+class DocumentFormattingRequest {
+	public static inline var type = new RequestType<DocumentFormattingParams, Null<Array<TextEdit>>, NoData,
+		DocumentFormattingRegistrationOptions>("textDocument/formatting");
+}
+
+/**
+	The parameters of a [DocumentRangeFormattingRequest](#DocumentRangeFormattingRequest).
+**/
 typedef DocumentRangeFormattingParams = {
 	/**
 		The document to format.
@@ -1678,6 +1923,22 @@ typedef DocumentRangeFormattingParams = {
 	var options:FormattingOptions;
 }
 
+/**
+	Registration options for a [DocumentRangeFormattingRequest](#DocumentRangeFormattingRequest).
+**/
+typedef DocumentRangeFormattingRegistrationOptions = TextDocumentRegistrationOptions & DocumentRangeFormattingOptions;
+
+/**
+	A request to to format a range in a document.
+**/
+class DocumentRangeFormattingRequest {
+	public static inline var type = new RequestType<DocumentRangeFormattingParams, Null<Array<TextEdit>>, NoData,
+		DocumentRangeFormattingRegistrationOptions>("textDocument/rangeFormatting");
+}
+
+/**
+	The parameters of a [DocumentOnTypeFormattingRequest](#DocumentOnTypeFormattingRequest).
+**/
 typedef DocumentOnTypeFormattingParams = {
 	/**
 		The document to format.
@@ -1701,10 +1962,23 @@ typedef DocumentOnTypeFormattingParams = {
 }
 
 /**
-	Format document on type options
+	Registration options for a [DocumentOnTypeFormattingRequest](#DocumentOnTypeFormattingRequest).
 **/
 typedef DocumentOnTypeFormattingRegistrationOptions = TextDocumentRegistrationOptions & DocumentOnTypeFormattingOptions;
 
+/**
+	A request to format a document on type.
+**/
+class DocumentOnTypeFormattingRequest {
+	public static inline var type = new RequestType<DocumentOnTypeFormattingParams, Null<Array<TextEdit>>, NoData,
+		DocumentOnTypeFormattingRegistrationOptions>("textDocument/onTypeFormatting");
+}
+
+//---- Rename ----------------------------------------------
+
+/**
+	The parameters of a [RenameRequest](#RenameRequest).
+**/
 typedef RenameParams = {
 	/**
 		The document to format.
@@ -1724,10 +1998,32 @@ typedef RenameParams = {
 }
 
 /**
- * Rename registration options.
- */
+	Registration options for a [RenameRequest](#RenameRequest).
+**/
 typedef RenameRegistrationOptions = TextDocumentRegistrationOptions & RenameOptions;
 
+/**
+	A request to rename a symbol.
+**/
+class RenameRequest {
+	public static inline var type = new RequestType<RenameParams, Null<WorkspaceEdit>, NoData, RenameRegistrationOptions>("textDocument/rename");
+}
+
+typedef PrepareRenameParams = TextDocumentPositionParams & WorkDoneProgressParams;
+
+/**
+	A request to test and perform the setup necessary for a rename.
+**/
+class PrepareRenameRequest {
+	public static inline var type = new RequestType<PrepareRenameParams, Null<EitherType<Range, {range:Range, placeholder:String}>>, NoData,
+		NoData>("textDocument/prepareRename");
+}
+
+//---- Document Links ----------------------------------------------
+
+/**
+	The parameters of a [DocumentLinkRequest](#DocumentLinkRequest).
+**/
 typedef DocumentLinkParams = {
 	/**
 		The document to provide document links for.
@@ -1735,8 +2031,35 @@ typedef DocumentLinkParams = {
 	var textDocument:TextDocumentIdentifier;
 }
 
+/**
+	Registration options for a [DocumentLinkRequest](#DocumentLinkRequest).
+**/
 typedef DocumentLinkRegistrationOptions = TextDocumentRegistrationOptions & DocumentLinkOptions;
 
+/**
+	A request to provide document links
+**/
+class DocumentLinkRequest {
+	public static inline var type = new RequestType<DocumentLinkParams, Null<Array<DocumentLink>>, NoData,
+		DocumentLinkRegistrationOptions>("textDocument/documentLink");
+
+	public static final resultType = new ProgressType<Array<DocumentLink>>();
+}
+
+/**
+	Request to resolve additional information for a given document link. The request's
+	parameter is of type [DocumentLink](#DocumentLink) the response
+	is of type [DocumentLink](#DocumentLink) or a Thenable that resolves to such.
+**/
+class DocumentLinkResolveRequest {
+	public static inline var type = new RequestType<DocumentLink, DocumentLink, NoData, NoData>("documentLink/resolve");
+}
+
+//---- Command Execution -------------------------------------------
+
+/**
+	The parameters of a [ExecuteCommandRequest](#ExecuteCommandRequest).
+**/
 typedef ExecuteCommandParams = {
 	/**
 		The identifier of the actual command handler.
@@ -1750,9 +2073,20 @@ typedef ExecuteCommandParams = {
 }
 
 /**
-	Execute command registration options.
+	Registration options for a [ExecuteCommandRequest](#ExecuteCommandRequest).
 **/
 typedef ExecuteCommandRegistrationOptions = ExecuteCommandOptions;
+
+/**
+	A request send from the client to the server to execute a command. The request might return
+	a workspace edit which the client will apply to the workspace.
+**/
+class ExecuteCommandRequest {
+	public static inline var type = new RequestType<ExecuteCommandParams, Null<Dynamic>, NoData,
+		ExecuteCommandRegistrationOptions>("workspace/executeCommand");
+}
+
+//---- Apply Edit request ----------------------------------------
 
 /**
 	The parameters passed via a apply workspace edit request.
@@ -1786,4 +2120,11 @@ typedef ApplyWorkspaceEditResponse = {
 		if the client signals a `failureHandlingStrategy` in its client capabilities.
 	**/
 	var ?failedChange:Int;
+}
+
+/**
+	A request sent from the server to the client to modified certain resources.
+**/
+class ApplyWorkspaceEditRequest {
+	public static inline var type = new RequestType<ApplyWorkspaceEditParams, ApplyWorkspaceEditResponse, NoData, NoData>("workspace/applyEdit");
 }

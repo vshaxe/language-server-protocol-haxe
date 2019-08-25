@@ -1,23 +1,12 @@
 package languageServerProtocol.protocol;
 
-import jsonrpc.Types;
-import haxe.extern.EitherType;
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
 
-@:publicFields
-class DeclarationMethods {
-	/**
-		A request to resolve the type definition locations of a symbol at a given text document position.
-	**/
-	static inline var Declaration = new RequestMethod<TextDocumentPositionParams, Null<EitherType<Declaration, Array<Declaration>>>, NoData,
-		TextDocumentRegistrationOptions>("textDocument/declaration");
-}
-
 typedef DeclarationClientCapabilities = {
 	/**
-	 * Capabilities specific to the `textDocument/declaration`
-	 */
+		Capabilities specific to the `textDocument/declaration`
+	**/
 	var ?declaration:{
 		/**
 			 Whether declaration supports dynamic registration. If this is set to `true`
@@ -33,9 +22,28 @@ typedef DeclarationClientCapabilities = {
 	};
 }
 
+typedef DeclarationOptions = WorkDoneProgressOptions;
+typedef DeclarationRegistrationOptions = TextDocumentRegistrationOptions & DeclarationOptions;
+
 typedef DeclarationServerCapabilities = {
 	/**
-	 * The server provides Goto Type Definition support.
-	 */
-	var ?declarationProvider:EitherType<Bool, TextDocumentRegistrationOptions & StaticRegistrationOptions>;
+		The server provides Goto Type Definition support.
+	**/
+	var ?declarationProvider:EitherType<Bool, EitherType<DeclarationOptions, DeclarationRegistrationOptions & StaticRegistrationOptions>>;
+}
+
+typedef DeclarationParams = TextDocumentPositionParams & WorkDoneProgressParams & PartialResultParams;
+
+/**
+	A request to resolve the type definition locations of a symbol at a given text
+	document position. The request's parameter is of type [TextDocumentPositioParams]
+	(#TextDocumentPositionParams) the response is of type [Declaration](#Declaration)
+	or a typed array of [DeclarationLink](#DeclarationLink) or a Thenable that resolves
+	to such.
+**/
+class DeclarationRequest {
+	public static inline var type = new RequestType<DeclarationParams, Null<EitherType<Declaration, Array<DeclarationLink>>>, NoData,
+		DeclarationRegistrationOptions>("textDocument/declaration");
+
+	public static final resultType = new ProgressType<EitherType<Array<Location>, Array<DeclarationLink>>>();
 }
