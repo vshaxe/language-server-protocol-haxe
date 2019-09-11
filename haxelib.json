@@ -7,8 +7,6 @@
 	"releasenote": "Initial release",
 	"classPath": "src",
 	"contributors": ["nadako", "Gama11"],
-	"dependencies": {
-		"vscode-json-rpc": ""
-	},
+	"dependencies": {},
 	"tags": ["vscode", "lsp"]
 }
