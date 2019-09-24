@@ -251,6 +251,11 @@ enum abstract DiagnosticSeverity(Int) {
 	var Hint;
 }
 
+/**
+	The diagnostic tags.
+
+	@since 3.15.0
+**/
 enum abstract DiagnosticTag(Int) {
 	/**
 		Unused or unnecessary code.
@@ -686,6 +691,19 @@ enum abstract InsertTextFormat(Int) {
 }
 
 /**
+	Completion item tags are extra annotations that tweak the rendering of a completion
+	item.
+
+	@since 3.15.0
+**/
+enum abstract CompletionItemTag(Int) {
+	/**
+		Render a completion as obsolete, usually using a strike-out.
+	**/
+	var Deprecated = 1;
+}
+
+/**
 	A completion item represents a text snippet that is
 	proposed to complete text that is being typed.
 **/
@@ -703,6 +721,13 @@ typedef CompletionItem = {
 	var ?kind:CompletionItemKind;
 
 	/**
+		Tags for this completion item.
+
+		@since 3.15.0
+	**/
+	var ?tags:Array<CompletionItemTag>;
+
+	/**
 		A human-readable string with additional information about this item, like type or symbol information.
 	**/
 	var ?detail:String;
@@ -714,6 +739,7 @@ typedef CompletionItem = {
 
 	/**
 		Indicates if this item is deprecated.
+		@deprecated Use `tags` instead.
 	**/
 	var ?deprecated:Bool;
 
@@ -1241,6 +1267,17 @@ typedef CodeAction = {
 	var ?diagnostics:Array<Diagnostic>;
 
 	/**
+		Marks this as a preferred action. Preferred actions are used by the `auto fix` command and can be targeted
+		by keybindings.
+
+		A quick fix should be marked preferred if it properly addresses the underlying error.
+		A refactoring should be marked preferred if it is the most reasonable choice of actions to take.
+
+		@since 3.15.0
+	**/
+	var ?isPreferred:Bool;
+
+	/**
 		The workspace edit this code action performs.
 	**/
 	var ?edit:WorkspaceEdit;
@@ -1295,16 +1332,22 @@ typedef FormattingOptions = {
 
 	/**
 		Trim trailing whitespaces on a line.
+
+		@since 3.15.0
 	**/
 	var ?trimTrailingWhitespace:Bool;
 
 	/**
 		Insert a newline character at the end of the file if one does not exist.
+
+		@since 3.15.0
 	**/
 	var ?insertFinalNewline:Bool;
 
 	/**
 		Trim all newlines after the final newline at the end of the file.
+
+		@since 3.15.0
 	**/
 	var ?trimFinalNewlines:Bool;
 }
@@ -1323,6 +1366,17 @@ typedef DocumentLink = {
 		The uri this link points to. If missing a resolve request is sent later.
 	**/
 	var ?target:DocumentUri;
+
+	/**
+		The tooltip text when you hover over this link.
+
+		If a tooltip is provided, is will be displayed in a string that includes instructions on how to
+		trigger the link, such as `{0} (ctrl + click)`. The specific instructions vary depending on OS,
+		user settings, and localization.
+
+		@since 3.15.0
+	**/
+	var ?tooltip:String;
 
 	/**
 		A data entry field that is preserved on a document link between a

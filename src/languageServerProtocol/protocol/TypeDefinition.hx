@@ -3,35 +3,27 @@ package languageServerProtocol.protocol;
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
 
+/**
+	Since 3.6.0
+**/
 typedef TypeDefinitionClientCapabilities = {
 	/**
-		Capabilities specific to the `textDocument/typeDefinition`
+		Whether implementation supports dynamic registration. If this is set to `true`
+		the client supports the new `TypeDefinitionRegistrationOptions` return value
+		for the corresponding server capability as well.
 	**/
-	var ?typeDefinition:{
-		/**
-			Whether implementation supports dynamic registration. If this is set to `true`
-			the client supports the new `(TextDocumentRegistrationOptions & StaticRegistrationOptions)`
-			return value for the corresponding server capability as well.
-		**/
-		var ?dynamicRegistration:Bool;
+	var ?dynamicRegistration:Bool;
 
-		/**
-			The client supports additional metadata in the form of definition links.
-		**/
-		var ?linkSupport:Bool;
-	};
-}
-
-typedef TypeDefinitionOptions = WorkDoneProgressOptions;
-typedef TypeDefinitionRegistrationOptions = TextDocumentRegistrationOptions & TypeDefinitionOptions;
-
-typedef TypeDefinitionServerCapabilities = {
 	/**
-		The server provides Goto Type Definition support.
+		The client supports additional metadata in the form of definition links.
+
+		Since 3.14.0
 	**/
-	var ?typeDefinitionProvider:EitherType<Bool, EitherType<TypeDefinitionOptions, TypeDefinitionRegistrationOptions & StaticRegistrationOptions>>;
+	var ?linkSupport:Bool;
 }
 
+typedef TypeDefinitionOptions = WorkDoneProgressOptions & {};
+typedef TypeDefinitionRegistrationOptions = TextDocumentRegistrationOptions & TypeDefinitionOptions & StaticRegistrationOptions;
 typedef TypeDefinitionParams = TextDocumentPositionParams & WorkDoneProgressParams & PartialResultParams;
 
 /**

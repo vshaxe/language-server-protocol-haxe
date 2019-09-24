@@ -3,6 +3,8 @@ package languageServerProtocol.protocol;
 import languageServerProtocol.protocol.Protocol;
 import languageServerProtocol.Types.DocumentUri;
 
+//---- Get Configuration request ----
+
 typedef ConfigurationClientCapabilities = {
 	/**
 		The client supports `workspace/configuration` requests.

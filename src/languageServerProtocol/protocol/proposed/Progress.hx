@@ -8,7 +8,10 @@ typedef WorkDoneProgressClientCapabilities = {
 	**/
 	var ?window:{
 		/**
-			Whether client supports handling progress notifications.
+			Whether client supports handling progress notifications. If set servers are allowed to
+			report in `workDoneProgress` property in the request specific server capabilities.
+
+			Since 3.15.0
 		**/
 		var ?workDoneProgress:Bool;
 	}
@@ -92,12 +95,12 @@ typedef WorkDoneProgressReport = {
 	var ?percentage:Float;
 }
 
-enum abstract WorkDoneProgressDoneKind(String) {
-	var Done = 'done';
+enum abstract WorkDoneProgressEndKind(String) {
+	var End = 'end';
 }
 
-typedef WorkDoneProgressDone = {
-	var kind:WorkDoneProgressDoneKind;
+typedef WorkDoneProgressEnd = {
+	var kind:WorkDoneProgressEndKind;
 
 	/**
 		Optional, a final message indicating to for example indicate the outcome
@@ -107,7 +110,7 @@ typedef WorkDoneProgressDone = {
 }
 
 class WorkDoneProgress {
-	public final type = new ProgressType<EitherType<WorkDoneProgressBegin, EitherType<WorkDoneProgressReport, WorkDoneProgressDone>>>();
+	public final type = new ProgressType<EitherType<WorkDoneProgressBegin, EitherType<WorkDoneProgressReport, WorkDoneProgressEnd>>>();
 }
 
 typedef WorkDoneProgressCreateParams = {

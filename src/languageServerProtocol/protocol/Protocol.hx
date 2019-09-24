@@ -9,7 +9,6 @@ import languageServerProtocol.protocol.WorkspaceFolders;
 import languageServerProtocol.protocol.FoldingRange;
 import languageServerProtocol.protocol.Declaration;
 import languageServerProtocol.protocol.proposed.SelectionRange;
-import languageServerProtocol.protocol.proposed.CallHierarchy;
 
 typedef RequestType<TParams, TResponse, TError, TRegistrationOptions> = jsonrpc.Types.RequestType<TParams, TResponse, TError>;
 typedef NotificationType<TParams, TRegistrationOptions> = jsonrpc.Types.NotificationType<TParams>;
@@ -109,6 +108,9 @@ typedef Unregistration = {
 }
 
 typedef UnregistrationParams = {
+	// Should correctly be named `unregistrations`. However
+	// this is a breaking change which has to wait for
+	// protocol version 4.0.
 	var unregisterations:Array<Unregistration>;
 }
 
@@ -215,416 +217,152 @@ typedef WorkspaceClientCapabilites = ConfigurationClientCapabilities &
 	/**
 		Capabilities specific to `WorkspaceEdit`s
 	**/
-	var ?workspaceEdit:{
-		/**
-			The client supports versioned document changes in `WorkspaceEdit`s
-		**/
-		var ?documentChanges:Bool;
-
-		/**
-			The resource operations the client supports. Clients should at least
-			support 'create', 'rename' and 'delete' files and folders.
-		**/
-		var ?resourceOperations:Array<ResourceOperationKind>;
-
-		/**
-			The failure handling strategy of a client if applying the workspace edit
-			failes.
-		**/
-		var ?failureHandling:FailureHandlingKind;
-	};
+	var ?workspaceEdit:WorkspaceEditClientCapabilities;
 
 	/**
 		Capabilities specific to the `workspace/didChangeConfiguration` notification.
 	**/
-	var ?didChangeConfiguration:{
-		/**
-			Did change configuration notification supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-	};
+	var ?didChangeConfiguration:DidChangeConfigurationClientCapabilities;
 
 	/**
 		Capabilities specific to the `workspace/didChangeWatchedFiles` notification.
 	**/
-	var ?didChangeWatchedFiles:{
-		/**
-			Did change watched files notification supports dynamic registration. Please note
-			that the current protocol doesn't support static configuration for file changes
-			from the server side.
-		**/
-		var ?dynamicRegistration:Bool;
-	};
+	var ?didChangeWatchedFiles:DidChangeWatchedFilesClientCapabilities;
 
 	/**
 		Capabilities specific to the `workspace/symbol` request.
 	**/
-	var ?symbol:{
-		/**
-			Symbol request supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-
-		/**
-			Specific capabilities for the `SymbolKind` in the `workspace/symbol` request.
-		**/
-		var ?symbolKind:{
-			/**
-				The symbol kind values the client supports. When this
-				property exists the client also guarantees that it will
-				handle values outside its set gracefully and falls back
-				to a default value when unknown.
-
-				If this property is not present the client only supports
-				the symbol kinds from `File` to `Array` as defined in
-				the initial version of the protocol.
-			**/
-			var ?valueSet:Array<SymbolKind>;
-		};
-	};
+	var ?symbol:WorkspaceSymbolClientCapabilities;
 
 	/**
 		Capabilities specific to the `workspace/executeCommand` request.
 	**/
-	var ?executeCommand:{
-		/**
-			Execute command supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-	};
+	var ?executeCommand:ExecuteCommandClientCapabilities;
 }
 
 /**
 	Text document specific client capabilities.
 **/
-typedef TextDocumentClientCapabilities = ImplementationClientCapabilities &
-	TypeDefinitionClientCapabilities &
-	/* ColorClientCapabilities & */
-	FoldingRangeClientCapabilities &
-	DeclarationClientCapabilities &
-	SelectionRangeClientCapabilities &
-	CallHierarchyClientCapabilities &
-	/* ProgressClientCapabilities & */ {
+typedef TextDocumentClientCapabilities = {
 	/**
 		Defines which synchronization capabilities the client supports.
 	**/
-	var ?synchronization:{
-		/**
-			Whether text document synchronization supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-
-		/**
-			The client supports sending will save notifications.
-		**/
-		var ?willSave:Bool;
-
-		/**
-			The client supports sending a will save request and
-			waits for a response providing text edits which will
-			be applied to the document before it is saved.
-		**/
-		var ?willSaveWaitUntil:Bool;
-
-		/**
-			The client supports did save notifications.
-		**/
-		var ?didSave:Bool;
-	};
+	var ?synchronization:TextDocumentSyncClientCapabilities;
 
 	/**
 		Capabilities specific to the `textDocument/completion`
 	**/
-	var ?completion:{
-		/**
-			Whether completion supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-
-		/**
-			The client supports the following `CompletionItem` specific
-			capabilities.
-		**/
-		var ?completionItem:{
-			/**
-				Client supports snippets as insert text.
-
-				A snippet can define tab stops and placeholders with `$1`, `$2`
-				and `${3:foo}`. `$0` defines the final tab stop, it defaults to
-				the end of the snippet. Placeholders with equal identifiers are linked,
-				that is typing in one will update others too.
-			**/
-			var ?snippetSupport:Bool;
-
-			/**
-				Client supports commit characters on a completion item.
-			**/
-			var ?commitCharactersSupport:Bool;
-
-			/**
-				Client supports the follow content formats for the documentation
-				property. The order describes the preferred format of the client.
-			**/
-			var ?documentationFormat:Array<MarkupKind>;
-
-			/**
-				Client supports the deprecated property on a completion item.
-			**/
-			var ?deprecatedSupport:Bool;
-
-			/**
-				Client supports the preselect property on a completion item.
-			**/
-			var ?preselectSupport:Bool;
-		};
-
-		var ?completionItemKind:{
-			/**
-				The completion item kind values the client supports. When this
-				property exists the client also guarantees that it will
-				handle values outside its set gracefully and falls back
-				to a default value when unknown.
-
-				If this property is not present the client only supports
-				the completion items kinds from `Text` to `Reference` as defined in
-				the initial version of the protocol.
-			**/
-			var ?valueSet:Array<CompletionItemKind>;
-		};
-
-		/**
-			The client supports to send additional context information for a
-			`textDocument/completion` requestion.
-		**/
-		var ?contextSupport:Bool;
-	};
+	var ?completion:CompletionClientCapabilities;
 
 	/**
 		Capabilities specific to the `textDocument/hover`
 	**/
-	var ?hover:{
-		/**
-			Whether hover supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-
-		/**
-			Client supports the follow content formats for the content
-			property. The order describes the preferred format of the client.
-		**/
-		var ?contentFormat:Array<MarkupKind>;
-	};
+	var ?hover:HoverClientCapabilities;
 
 	/**
 		Capabilities specific to the `textDocument/signatureHelp`
 	**/
-	var ?signatureHelp:{
-		/**
-			Whether signature help supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-
-		/**
-			The client supports the following `SignatureInformation`
-			specific properties.
-		**/
-		var ?signatureInformation:{
-			/**
-				Client supports the follow content formats for the documentation
-				property. The order describes the preferred format of the client.
-			**/
-			var ?documentationFormat:Array<MarkupKind>;
-
-			/**
-				Client capabilities specific to parameter information.
-			**/
-			var ?parameterInformation:{
-				/**
-					The client supports processing label offsets instead of a
-					simple label string.
-				**/
-				var ?labelOffsetSupport:Bool;
-			}
-		};
-	};
+	var ?signatureHelp:SignatureHelpClientCapabilities;
 
 	/**
-		Capabilities specific to the `textDocument/references`
+		Capabilities specific to the `textDocument/declaration`
+
+		@since 3.14.0
 	**/
-	var ?references:{
-		/**
-			Whether references supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-	};
-
-	/**
-		Capabilities specific to the `textDocument/documentHighlight`
-	**/
-	var ?documentHighlight:{
-		/**
-			Whether document highlight supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-	};
-
-	/**
-		Capabilities specific to the `textDocument/documentSymbol`
-	**/
-	var ?documentSymbol:{
-		/**
-			Whether document symbol supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-
-		/**
-			Specific capabilities for the `SymbolKind`.
-		**/
-		var ?symbolKind:{
-			/**
-				The symbol kind values the client supports. When this
-				property exists the client also guarantees that it will
-				handle values outside its set gracefully and falls back
-				to a default value when unknown.
-
-				If this property is not present the client only supports
-				the symbol kinds from `File` to `Array` as defined in
-				the initial version of the protocol.
-			**/
-			var ?valueSet:Array<SymbolKind>;
-		};
-
-		/**
-			The client support hierarchical document symbols.
-		**/
-		var ?hierarchicalDocumentSymbolSupport:Bool;
-	};
-
-	/**
-		Capabilities specific to the `textDocument/formatting`
-	**/
-	var ?formatting:{
-		/**
-			Whether formatting supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-	};
-
-	/**
-		Capabilities specific to the `textDocument/rangeFormatting`
-	**/
-	var ?rangeFormatting:{
-		/**
-			Whether range formatting supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-	};
-
-	/**
-		Capabilities specific to the `textDocument/onTypeFormatting`
-	**/
-	var ?onTypeFormatting:{
-		/**
-			Whether on type formatting supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-	};
+	var ?declaration:DeclarationClientCapabilities;
 
 	/**
 		Capabilities specific to the `textDocument/definition`
 	**/
-	var ?definition:{
-		/**
-			Whether definition supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
+	var ?definition:DefinitionClientCapabilities;
 
-		/**
-			The client supports additional metadata in the form of definition links.
-		**/
-		var ?linkSupport:Bool;
-	};
+	/**
+		Capabilities specific to the `textDocument/typeDefinition`
+
+		@since 3.6.0
+	**/
+	var ?typeDefinition:TypeDefinitionClientCapabilities;
+
+	/**
+		Capabilities specific to the `textDocument/implementation`
+
+		@since 3.6.0
+	**/
+	var ?implementation:ImplementationClientCapabilities;
+
+	/**
+		Capabilities specific to the `textDocument/references`
+	**/
+	var ?references:ReferenceClientCapabilities;
+
+	/**
+		Capabilities specific to the `textDocument/documentHighlight`
+	**/
+	var ?documentHighlight:DocumentHighlightClientCapabilities;
+
+	/**
+		Capabilities specific to the `textDocument/documentSymbol`
+	**/
+	var ?documentSymbol:DocumentSymbolClientCapabilities;
 
 	/**
 		Capabilities specific to the `textDocument/codeAction`
 	**/
-	var ?codeAction:{
-		/**
-			Whether code action supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-
-		/**
-			The client support code action literals as a valid
-			response of the `textDocument/codeAction` request.
-		**/
-		var ?codeActionLiteralSupport:{
-			/**
-				The code action kind is support with the following value
-				set.
-			**/
-			var codeActionKind:{
-				/**
-					The code action kind values the client supports. When this
-					property exists the client also guarantees that it will
-					handle values outside its set gracefully and falls back
-					to a default value when unknown.
-				**/
-				var valueSet:Array<CodeActionKind>;
-			};
-		};
-	};
+	var ?codeAction:CodeActionClientCapabilities;
 
 	/**
 		Capabilities specific to the `textDocument/codeLens`
 	**/
-	var ?codeLens:{
-		/**
-			Whether code lens supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-	};
+	var ?codeLens:CodeLensClientCapabilities;
 
 	/**
 		Capabilities specific to the `textDocument/documentLink`
 	**/
-	var ?documentLink:{
-		/**
-			Whether document link supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
-	};
+	var ?documentLink:DocumentLinkClientCapabilities;
+
+	/**
+		Capabilities specific to the `textDocument/documentColor`
+	**/
+	var ?colorProvider:DocumentColorClientCapabilities;
+
+	/**
+		Capabilities specific to the `textDocument/formatting`
+	**/
+	var ?formatting:DocumentFormattingClientCapabilities;
+
+	/**
+		Capabilities specific to the `textDocument/rangeFormatting`
+	**/
+	var ?rangeFormatting:DocumentRangeFormattingClientCapabilities;
+
+	/**
+		Capabilities specific to the `textDocument/onTypeFormatting`
+	**/
+	var ?onTypeFormatting:DocumentOnTypeFormattingClientCapabilities;
 
 	/**
 		Capabilities specific to the `textDocument/rename`
 	**/
-	var ?rename:{
-		/**
-			Whether rename supports dynamic registration.
-		**/
-		var ?dynamicRegistration:Bool;
+	var ?rename:RenameClientCapabilities;
 
-		/**
-			Client supports testing for validity of rename operations
-			before execution.
-		**/
-		var ?prepareSupport:Bool;
-	};
+	/**
+		Capabilities specific to `textDocument/foldingRange` requests.
+
+		@since 3.10.0
+	**/
+	var ?foldingRange:FoldingRangeClientCapabilities;
+
+	/**
+		Capabilities specific to `textDocument/selectionRange` requests
+
+		@since 3.15.0
+	**/
+	var ?selectionRange:SelectionRangeClientCapabilities;
 
 	/**
 		Capabilities specific to `textDocument/publishDiagnostics`.
 	**/
-	var ?publishDiagnostics:{
-		/**
-			Whether the clients accepts diagnostics with related information.
-		**/
-		var ?relatedInformation:Bool;
-
-		/**
-			Client supports the tag property to provide meta data about a diagnostic.
-		**/
-		var ?tagSupport:Bool;
-	};
+	var ?publishDiagnostics:PublishDiagnosticsClientCapabilities;
 }
 
 /**
@@ -657,27 +395,6 @@ typedef ClientCapabilities = {
 }
 
 /**
-	Defines how the host (editor) should sync document changes to the language server.
-**/
-enum abstract TextDocumentSyncKind(Int) {
-	/**
-		Documents should not be synced at all.
-	**/
-	var None;
-
-	/**
-		Documents are synced by always sending the full content of the document.
-	**/
-	var Full;
-
-	/**
-		Documents are synced by sending the full content on open.
-		After that only incremental updates to the document are send.
-	**/
-	var Incremental;
-}
-
-/**
 	Static registration options to be returned in the initialize
 	request.
 **/
@@ -701,153 +418,6 @@ typedef TextDocumentRegistrationOptions = {
 }
 
 /**
-	Completion options.
-**/
-typedef CompletionOptions = WorkDoneProgressOptions & {
-	/**
-		Most tools trigger completion request automatically without explicitly requesting
-		it using a keyboard shortcut (e.g. Ctrl+Space). Typically they do so when the user
-		starts to type an identifier. For example if the user types `c` in a JavaScript file
-		code complete will automatically pop up present `console` besides others as a
-		completion item. Characters that make up identifiers don't need to be listed here.
-
-		If code complete should automatically be trigger on characters not being valid inside
-		an identifier (for example `.` in JavaScript) list them in `triggerCharacters`.
-	**/
-	var ?triggerCharacters:Array<String>;
-
-	/**
-		The list of all possible characters that commit a completion. This field can be used
-		if clients don't support individual commmit characters per completion item. See
-		`ClientCapabilities.textDocument.completion.completionItem.commitCharactersSupport`
-	**/
-	var ?allCommitCharacters:Array<String>;
-
-	/**
-		The server provides support to resolve additional information for a completion item.
-	**/
-	var ?resolveProvider:Bool;
-}
-
-/**
-	Hover options.
-**/
-typedef HoverOptions = WorkDoneProgressOptions;
-
-/**
-	Signature help options.
-**/
-typedef SignatureHelpOptions = WorkDoneProgressOptions & {
-	/**
-		The characters that trigger signature help automatically.
-	**/
-	var ?triggerCharacters:Array<String>;
-}
-
-/**
-	Definition options.
-**/
-typedef DefinitionOptions = WorkDoneProgressOptions;
-
-/**
-	Reference options.
-**/
-typedef ReferenceOptions = WorkDoneProgressOptions;
-
-/**
-	Document highlight options.
-**/
-typedef DocumentHighlightOptions = WorkDoneProgressOptions;
-
-/**
-	Document symbol options.
-**/
-typedef DocumentSymbolOptions = WorkDoneProgressOptions;
-
-/**
-	Workspace symbol options.
-**/
-typedef WorkspaceSymbolOptions = WorkDoneProgressOptions;
-
-/**
-	Code Action options.
-**/
-typedef CodeActionOptions = WorkDoneProgressOptions & {
-	/**
-		CodeActionKinds that this server may return.
-
-		The list of kinds may be generic, such as `CodeActionKind.Refactor`, or the server
-		may list out every specific kind they provide.
-	**/
-	var ?codeActionKinds:Array<CodeActionKind>;
-}
-
-/**
-	Code Lens options.
-**/
-typedef CodeLensOptions = WorkDoneProgressOptions & {
-	/**
-		Code lens has a resolve provider as well.
-	**/
-	var ?resolveProvider:Bool;
-}
-
-/**
-	Document formatting options.
-**/
-typedef DocumentFormattingOptions = WorkDoneProgressOptions;
-
-/**
-	Document range formatting options.
-**/
-typedef DocumentRangeFormattingOptions = WorkDoneProgressOptions;
-
-/**
-	Format document on type options
-**/
-typedef DocumentOnTypeFormattingOptions = {
-	/**
-		A character on which formatting should be triggered, like `}`.
-	**/
-	var firstTriggerCharacter:String;
-
-	/**
-		More trigger characters.
-	**/
-	var ?moreTriggerCharacter:Array<String>;
-}
-
-/**
-	Rename options
-**/
-typedef RenameOptions = WorkDoneProgressOptions & {
-	/**
-		Renames should be checked and tested before being executed.
-	**/
-	var ?prepareProvider:Bool;
-}
-
-/**
-	Document link options
-**/
-typedef DocumentLinkOptions = WorkDoneProgressOptions & {
-	/**
-		Document links have a resolve provider as well.
-	**/
-	var ?resolveProvider:Bool;
-}
-
-/**
-	Execute command options.
-**/
-typedef ExecuteCommandOptions = WorkDoneProgressOptions & {
-	/**
-		The commands to be executed on the server
-	**/
-	var commands:Array<String>;
-}
-
-/**
 	Save options.
 **/
 typedef SaveOptions = {
@@ -855,38 +425,6 @@ typedef SaveOptions = {
 		The client is supposed to include the content on save.
 	**/
 	var ?includeText:Bool;
-}
-
-typedef TextDocumentSyncOptions = {
-	/**
-		Open and close notifications are sent to the server. If omitted open close notification should not
-		be sent.
-	**/
-	var ?openClose:Bool;
-
-	/**
-		Change notifications are sent to the server. See TextDocumentSyncKind.None, TextDocumentSyncKind.Full
-		and TextDocumentSyncKind.Incremental. If omitted it defaults to TextDocumentSyncKind.None.
-	**/
-	var ?change:TextDocumentSyncKind;
-
-	/**
-		If present will save notifications are sent to the server. If omitted the notification should not be
-		sent.
-	**/
-	var ?willSave:Bool;
-
-	/**
-		If present will save wait until requests are sent to the server. If omitted the request should not be
-		sent.
-	**/
-	var ?willSaveWaitUntil:Bool;
-
-	/**
-		If present save notifications are sent to the server. If omitted the notification should not be
-		sent.
-	**/
-	var ?save:SaveOptions;
 }
 
 typedef WorkDoneProgressOptions = {
@@ -897,14 +435,7 @@ typedef WorkDoneProgressOptions = {
 	Defines the capabilities provided by a language
 	server.
 **/
-typedef ServerCapabilities = ImplementationServerCapabilities &
-	TypeDefinitionServerCapabilities &
-	WorkspaceFoldersServerCapabilities &
-	ColorServerCapabilities &
-	FoldingRangeServerCapabilities &
-	DeclarationServerCapabilities &
-	SelectionRangeServerCapabilities &
-	CallHierarchyServerCapabilities & {
+typedef ServerCapabilities = WorkspaceFoldersServerCapabilities & {
 	/**
 		Defines how text documents are synced.
 		Is either a detailed structure defining each notification or for backwards compatibility the TextDocumentSyncKind number.
@@ -927,9 +458,24 @@ typedef ServerCapabilities = ImplementationServerCapabilities &
 	var ?signatureHelpProvider:SignatureHelpOptions;
 
 	/**
+		The server provides Goto Declaration support.
+	**/
+	var ?declarationProvider:EitherType<Bool, EitherType<DeclarationOptions, DeclarationRegistrationOptions>>;
+
+	/**
 		The server provides goto definition support.
 	**/
 	var ?definitionProvider:EitherType<Bool, DefinitionOptions>;
+
+	/**
+		The server provides Goto Type Definition support.
+	**/
+	var ?typeDefinitionProvider:EitherType<Bool, EitherType<TypeDefinitionOptions, TypeDefinitionRegistrationOptions>>;
+
+	/**
+		The server provides Goto Implementation support.
+	**/
+	var ?implementationProvider:EitherType<Bool, EitherType<ImplementationOptions, ImplementationRegistrationOptions>>;
 
 	/**
 		The server provides find references support.
@@ -964,6 +510,16 @@ typedef ServerCapabilities = ImplementationServerCapabilities &
 	var ?codeLensProvider:CodeLensOptions;
 
 	/**
+		The server provides document link support.
+	**/
+	var ?documentLinkProvider:DocumentLinkOptions;
+
+	/**
+		The server provides color provider support.
+	**/
+	var ?colorProvider:EitherType<Bool, EitherType<DocumentColorOptions, DocumentColorRegistrationOptions>>;
+
+	/**
 		The server provides document formatting.
 	**/
 	var ?documentFormattingProvider:EitherType<Bool, DocumentFormattingOptions>;
@@ -986,9 +542,14 @@ typedef ServerCapabilities = ImplementationServerCapabilities &
 	var ?renameProvider:EitherType<Bool, RenameOptions>;
 
 	/**
-		The server provides document link support.
+		The server provides folding provider support.
 	**/
-	var ?documentLinkProvider:DocumentLinkOptions;
+	var ?foldingRangeProvider:EitherType<Bool, EitherType<FoldingRangeOptions, FoldingRangeRegistrationOptions>>;
+
+	/**
+		The server provides selection range support.
+	**/
+	var ?selectionRangeProvider:EitherType<Bool, EitherType<SelectionRangeOptions, SelectionRangeRegistrationOptions>>;
 
 	/**
 		The server provides execute command support.
@@ -1022,6 +583,23 @@ typedef InitializeParams = WorkspaceFoldersInitializeParams & {
 		If the parent process is not alive then the server should exit (see exit notification) its process.
 	**/
 	var processId:Null<Int>;
+
+	/**
+		Information about the client
+
+		@since 3.15.0
+	**/
+	var ?clientInfo:{
+		/**
+			The name of the client as defined by the client.
+		**/
+		var name:String;
+
+		/**
+			The client's version as defined by the client.
+		**/
+		var ?version:String;
+	};
 
 	/**
 		The rootPath of the workspace.
@@ -1070,6 +648,23 @@ typedef InitializeResult = {
 		The capabilities the language server provides.
 	**/
 	var capabilities:ServerCapabilities;
+
+	/**
+		Information about the server.
+
+		@since 3.15.0
+	**/
+	var ?serverInfo:{
+		/**
+			The name of the server as defined by the server.
+		**/
+		var name:String;
+
+		/**
+			The servers's version as defined by the server.
+		**/
+		var ?version:String;
+	};
 }
 
 /**
@@ -1120,6 +715,13 @@ class ExitNotification {
 }
 
 //---- Configuration notification ----
+
+typedef DidChangeConfigurationClientCapabilities = {
+	/**
+		Did change configuration notification supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+}
 
 /**
 	The configuration change notification is sent from the client to the server
@@ -1255,6 +857,83 @@ class TelemetryEventNotification {
 }
 
 //---- Text document notifications ----
+
+typedef TextDocumentSyncClientCapabilities = {
+	/**
+		Whether text document synchronization supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+
+	/**
+		The client supports sending will save notifications.
+	**/
+	var ?willSave:Bool;
+
+	/**
+		The client supports sending a will save request and
+		waits for a response providing text edits which will
+		be applied to the document before it is saved.
+	**/
+	var ?willSaveWaitUntil:Bool;
+
+	/**
+		The client supports did save notifications.
+	**/
+	var ?didSave:Bool;
+}
+
+/**
+	Defines how the host (editor) should sync document changes to the language server.
+**/
+enum abstract TextDocumentSyncKind(Int) {
+	/**
+		Documents should not be synced at all.
+	**/
+	var None;
+
+	/**
+		Documents are synced by always sending the full content of the document.
+	**/
+	var Full;
+
+	/**
+		Documents are synced by sending the full content on open.
+		After that only incremental updates to the document are send.
+	**/
+	var Incremental;
+}
+
+typedef TextDocumentSyncOptions = {
+	/**
+		Open and close notifications are sent to the server. If omitted open close notification should not
+		be sent.
+	**/
+	var ?openClose:Bool;
+
+	/**
+		Change notifications are sent to the server. See TextDocumentSyncKind.None, TextDocumentSyncKind.Full
+		and TextDocumentSyncKind.Incremental. If omitted it defaults to TextDocumentSyncKind.None.
+	**/
+	var ?change:TextDocumentSyncKind;
+
+	/**
+		If present will save notifications are sent to the server. If omitted the notification should not be
+		sent.
+	**/
+	var ?willSave:Bool;
+
+	/**
+		If present will save wait until requests are sent to the server. If omitted the request should not be
+		sent.
+	**/
+	var ?willSaveWaitUntil:Bool;
+
+	/**
+		If present save notifications are sent to the server. If omitted the notification should not be
+		sent.
+	**/
+	var ?save:SaveOptions;
+}
 
 /**
 	The parameters send in a open text document notification
@@ -1405,6 +1084,15 @@ class WillSaveTextDocumentWaitUntilRequest {
 
 //---- File eventing ----
 
+typedef DidChangeWatchedFilesClientCapabilities = {
+	/**
+		Did change watched files notification supports dynamic registration. Please note
+		that the current protocol doesn't support static configuration for file changes
+		from the server side.
+	**/
+	var ?dynamicRegistration:Bool;
+}
+
 /**
 	The watched files notification is sent from the client to the server when
 	the client detects changes to file watched by the language client.
@@ -1509,11 +1197,26 @@ enum abstract WatchKind(Int) to Int {
 //---- Diagnostic notification ----
 
 /**
-	Diagnostics notification are sent from the server to the client to signal
-	results of validation runs.
+	The publish diagnostic client capabilities.
 **/
-class PublishDiagnosticsNotification {
-	public static inline var type = new NotificationType<PublishDiagnosticsParams, NoData>("textDocument/publishDiagnostics");
+typedef PublishDiagnosticsClientCapabilities = {
+	/**
+		Whether the clients accepts diagnostics with related information.
+	**/
+	var ?relatedInformation:Bool;
+
+	/**
+		Client supports the tag property to provide meta data about a diagnostic.
+		Clients supporting tags have to handle unknown tags gracefully.
+
+		@since 3.15.0
+	**/
+	var ?tagSupport:{
+		/**
+			The tags supported by the client.
+		**/
+		var valueSet:Array<DiagnosticTag>;
+	};
 }
 
 /**
@@ -1528,7 +1231,7 @@ typedef PublishDiagnosticsParams = {
 	/**
 		Optional the version number of the document the diagnostics are published for.
 
-		@since 3.15
+		@since 3.15.0
 	**/
 	var ?version:Int;
 
@@ -1538,7 +1241,97 @@ typedef PublishDiagnosticsParams = {
 	var diagnostics:Array<Diagnostic>;
 }
 
+/**
+	Diagnostics notification are sent from the server to the client to signal
+	results of validation runs.
+**/
+class PublishDiagnosticsNotification {
+	public static inline var type = new NotificationType<PublishDiagnosticsParams, NoData>("textDocument/publishDiagnostics");
+}
+
 //---- Completion Support --------------------------
+
+/**
+	Completion client capabilities
+**/
+typedef CompletionClientCapabilities = {
+	/**
+		Whether completion supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+
+	/**
+		The client supports the following `CompletionItem` specific
+		capabilities.
+	**/
+	var ?completionItem:{
+		/**
+			Client supports snippets as insert text.
+
+			A snippet can define tab stops and placeholders with `$1`, `$2`
+			and `${3:foo}`. `$0` defines the final tab stop, it defaults to
+			the end of the snippet. Placeholders with equal identifiers are linked,
+			that is typing in one will update others too.
+		**/
+		var ?snippetSupport:Bool;
+
+		/**
+			Client supports commit characters on a completion item.
+		**/
+		var ?commitCharactersSupport:Bool;
+
+		/**
+			Client supports the follow content formats for the documentation
+			property. The order describes the preferred format of the client.
+		**/
+		var ?documentationFormat:Array<MarkupKind>;
+
+		/**
+			Client supports the deprecated property on a completion item.
+		**/
+		var ?deprecatedSupport:Bool;
+
+		/**
+			Client supports the preselect property on a completion item.
+		**/
+		var ?preselectSupport:Bool;
+
+		/**
+			Client supports the tag property on a completion item. Clients supporting
+			tags have to handle unknown tags gracefully. Clients especially need to
+			preserve unknown tags when sending a completion item back to the server in
+			a resolve call.
+
+			@since 3.15.0
+		**/
+		var ?tagSupport:{
+			/**
+				The tags supported by the client.
+			**/
+			var valueSet:Array<CompletionItemTag>;
+		}
+	};
+
+	var ?completionItemKind:{
+		/**
+			The completion item kind values the client supports. When this
+			property exists the client also guarantees that it will
+			handle values outside its set gracefully and falls back
+			to a default value when unknown.
+
+			If this property is not present the client only supports
+			the completion items kinds from `Text` to `Reference` as defined in
+			the initial version of the protocol.
+		**/
+		var ?valueSet:Array<CompletionItemKind>;
+	};
+
+	/**
+		The client supports to send additional context information for a
+		`textDocument/completion` requestion.
+	**/
+	var ?contextSupport:Bool;
+}
 
 /**
 	How a completion was triggered
@@ -1586,9 +1379,40 @@ typedef CompletionParams = TextDocumentPositionParams &
 	PartialResultParams & {
 	/**
 		The completion context. This is only available it the client specifies
-		to send this using `ClientCapabilities.textDocument.completion.contextSupport === true`
+		to send this using the client capability `textDocument.completion.contextSupport === true`
 	**/
 	var ?context:CompletionContext;
+}
+
+/**
+	Completion options.
+**/
+typedef CompletionOptions = WorkDoneProgressOptions & {
+	/**
+		Most tools trigger completion request automatically without explicitly requesting
+		it using a keyboard shortcut (e.g. Ctrl+Space). Typically they do so when the user
+		starts to type an identifier. For example if the user types `c` in a JavaScript file
+		code complete will automatically pop up present `console` besides others as a
+		completion item. Characters that make up identifiers don't need to be listed here.
+
+		If code complete should automatically be trigger on characters not being valid inside
+		an identifier (for example `.` in JavaScript) list them in `triggerCharacters`.
+	**/
+	var ?triggerCharacters:Array<String>;
+
+	/**
+		The list of all possible characters that commit a completion. This field can be used
+		if clients don't support individual commmit characters per completion item. See
+		`ClientCapabilities.textDocument.completion.completionItem.commitCharactersSupport`
+
+		@since 3.2.0
+	**/
+	var ?allCommitCharacters:Array<String>;
+
+	/**
+		The server provides support to resolve additional information for a completion item.
+	**/
+	var ?resolveProvider:Bool;
 }
 
 /**
@@ -1625,6 +1449,24 @@ class CompletionResolveRequest {
 
 //---- Hover Support -------------------------------
 
+typedef HoverClientCapabilities = {
+	/**
+		Whether hover supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+
+	/**
+		Client supports the follow content formats for the content
+		property. The order describes the preferred format of the client.
+	**/
+	var ?contentFormat:Array<MarkupKind>;
+}
+
+/**
+	Hover options.
+**/
+typedef HoverOptions = WorkDoneProgressOptions;
+
 /**
 	Parameters for a [HoverRequest](#HoverRequest).
 **/
@@ -1647,9 +1489,140 @@ class HoverRequest {
 //---- SignatureHelp ----------------------------------
 
 /**
+	Client Capabilities for a [SignatureHelpRequest](#SignatureHelpRequest).
+**/
+typedef SignatureHelpClientCapabilities = {
+	/**
+		Whether signature help supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+
+	/**
+		The client supports the following `SignatureInformation`
+		specific properties.
+	**/
+	var ?signatureInformation:{
+		/**
+			Client supports the follow content formats for the documentation
+			property. The order describes the preferred format of the client.
+		**/
+		var ?documentationFormat:Array<MarkupKind>;
+
+		/**
+			Client capabilities specific to parameter information.
+		**/
+		var ?parameterInformation:{
+			/**
+				The client supports processing label offsets instead of a
+				simple label string.
+
+				@since 3.14.0
+			**/
+			var ?labelOffsetSupport:Bool;
+		}
+	};
+
+	/**
+		The client supports to send additional context information for a
+		`textDocument/signatureHelp` request. A client that opts into
+		contextSupport will also support the `retriggerCharacters` on
+		`SignatureHelpOptions`.
+
+		@since 3.15.0
+	**/
+	var ?contextSupport:Bool;
+}
+
+/**
+	Signature help options.
+**/
+typedef SignatureHelpOptions = WorkDoneProgressOptions & {
+	/**
+		The characters that trigger signature help automatically.
+	**/
+	var ?triggerCharacters:Array<String>;
+
+	/**
+		List of characters that re-trigger signature help.
+
+		These trigger characters are only active when signature help is already showing. All trigger characters
+		are also counted as re-trigger characters.
+
+		@since 3.15.0
+	**/
+	var ?retriggerCharacters:Array<String>;
+}
+
+/**
+	How a signature help was triggered.
+
+	@since 3.15.0
+**/
+enum abstract SignatureHelpTriggerKind(Int) {
+	/**
+		Signature help was invoked manually by the user or by a command.
+	**/
+	var Invoked = 1;
+
+	/**
+		Signature help was triggered by a trigger character.
+	**/
+	var TriggerCharacter;
+
+	/**
+		Signature help was triggered by the cursor moving or by the document content changing.
+	**/
+	var ContentChange;
+}
+
+/**
+	Additional information about the context in which a signature help request was triggered.
+
+	@since 3.15.0
+**/
+typedef SignatureHelpContext = {
+	/**
+		Action that caused signature help to be triggered.
+	**/
+	var triggerKind:SignatureHelpTriggerKind;
+
+	/**
+		Character that caused signature help to be triggered.
+
+		This is undefined when `triggerKind !== SignatureHelpTriggerKind.TriggerCharacter`
+	**/
+	var ?triggerCharacter:String;
+
+	/**
+		`true` if signature help was already showing when it was triggered.
+
+		Retriggers occur when the signature help is already active and can be caused by actions such as
+		typing a trigger character, a cursor move, or document content changes.
+	**/
+	var isRetrigger:Bool;
+
+	/**
+		The currently active `SignatureHelp`.
+
+		The `activeSignatureHelp` has its `SignatureHelp.activeSignature` field updated based on
+		the user navigating through available signatures.
+	**/
+	var ?activeSignatureHelp:SignatureHelp;
+}
+
+/**
 	Parameters for a [SignatureHelpRequest](#SignatureHelpRequest).
 **/
-typedef SignatureHelpParams = TextDocumentPositionParams & WorkDoneProgressParams;
+typedef SignatureHelpParams = TextDocumentPositionParams &
+	WorkDoneProgressParams & {
+	/**
+		The signature help context. This is only available if the client specifies
+		to send this using the client capability `textDocument.signatureHelp.contextSupport === true`
+
+		@since 3.15.0
+	**/
+	var ?context:SignatureHelpContext;
+}
 
 /**
 	Registration options for a [SignatureHelpRequest](#SignatureHelpRequest).
@@ -1662,6 +1635,28 @@ class SignatureHelpRequest {
 }
 
 //---- Goto Definition -------------------------------------
+
+/**
+	Client Capabilities for a [DefinitionRequest](#DefinitionRequest).
+**/
+typedef DefinitionClientCapabilities = {
+	/**
+		Whether definition supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+
+	/**
+		The client supports additional metadata in the form of definition links.
+
+		@since 3.14.0
+	**/
+	var ?linkSupport:Bool;
+}
+
+/**
+	Server Capabilities for a [DefinitionRequest](#DefinitionRequest).
+**/
+typedef DefinitionOptions = WorkDoneProgressOptions;
 
 /**
 	Parameters for a [DefinitionParams](#DefinitionParams).
@@ -1690,6 +1685,16 @@ class DefinitionRequest {
 //---- Reference Provider ----------------------------------
 
 /**
+	Client Capabilities for a [ReferencesRequest](#ReferencesRequest).
+**/
+typedef ReferenceClientCapabilities = {
+	/**
+		Whether references supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+}
+
+/**
 	Parameters for a [ReferencesRequest](#ReferencesRequest).
 **/
 typedef ReferenceParams = TextDocumentPositionParams &
@@ -1697,6 +1702,11 @@ typedef ReferenceParams = TextDocumentPositionParams &
 	PartialResultParams & {
 	var context:ReferenceContext;
 }
+
+/**
+	Reference options.
+**/
+typedef ReferenceOptions = WorkDoneProgressOptions;
 
 /** 
 	Registration options for a [ReferencesRequest](#ReferencesRequest).
@@ -1718,9 +1728,24 @@ class ReferencesRequest {
 //---- Document Highlight ----------------------------------
 
 /**
+	Client Capabilities for a [DocumentHighlightRequest](#DocumentHighlightRequest).
+**/
+typedef DocumentHighlightClientCapabilities = {
+	/**
+		Whether document highlight supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+}
+
+/**
 	Parameters for a [DocumentHighlightRequest](#DocumentHighlightRequest).
 **/
 typedef DocumentHighlightParams = TextDocumentPositionParams & WorkDoneProgressParams & PartialResultParams;
+
+/**
+	Provider options for a [DocumentHighlightRequest](#DocumentHighlightRequest).
+**/
+typedef DocumentHighlightOptions = WorkDoneProgressOptions;
 
 /**
 	Registration options for a [DocumentHighlightRequest](#DocumentHighlightRequest).
@@ -1743,6 +1768,38 @@ class DocumentHighlightRequest {
 //---- Document Symbol Provider ---------------------------
 
 /**
+	Client Capabilities for a [DocumentSymbolRequest](#DocumentSymbolRequest).
+**/
+typedef DocumentSymbolClientCapabilities = {
+	/**
+		Whether document symbol supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+
+	/**
+		Specific capabilities for the `SymbolKind`.
+	**/
+	var ?symbolKind:{
+		/**
+			The symbol kind values the client supports. When this
+			property exists the client also guarantees that it will
+			handle values outside its set gracefully and falls back
+			to a default value when unknown.
+
+			If this property is not present the client only supports
+			the symbol kinds from `File` to `Array` as defined in
+			the initial version of the protocol.
+		**/
+		var ?valueSet:Array<SymbolKind>;
+	};
+
+	/**
+		The client support hierarchical document symbols.
+	**/
+	var ?hierarchicalDocumentSymbolSupport:Bool;
+}
+
+/**
 	Parameters for a [DocumentSymbolRequest](#DocumentSymbolRequest).
 **/
 typedef DocumentSymbolParams = WorkDoneProgressParams &
@@ -1752,6 +1809,11 @@ typedef DocumentSymbolParams = WorkDoneProgressParams &
 	**/
 	var textDocument:TextDocumentIdentifier;
 }
+
+/**
+	Provider options for a [DocumentSymbolRequest](#DocumentSymbolRequest).
+**/
+typedef DocumentSymbolOptions = WorkDoneProgressOptions;
 
 /**
 	Registration options for a [DocumentSymbolRequest](#DocumentSymbolRequest).
@@ -1771,38 +1833,45 @@ class DocumentSymbolRequest {
 	public static final resultType = new ProgressType<EitherType<Array<SymbolInformation>, Array<DocumentSymbol>>>();
 }
 
-//---- Workspace Symbol Provider ---------------------------
-
-/**
-	The parameters of a [WorkspaceSymbolRequest](#WorkspaceSymbolRequest).
-**/
-typedef WorkspaceSymbolParams = WorkDoneProgressParams &
-	PartialResultParams & {
-	/**
-		A non-empty query string
-	**/
-	var query:String;
-}
-
-/**
-	Registration options for a [WorkspaceSymbolRequest](#WorkspaceSymbolRequest).
-**/
-typedef WorkspaceSymbolRegistrationOptions = WorkspaceSymbolOptions;
-
-/**
-	A request to list project-wide symbols matching the query string given
-	by the [WorkspaceSymbolParams](#WorkspaceSymbolParams). The response is
-	of type [SymbolInformation[]](#SymbolInformation) or a Thenable that
-	resolves to such.
-**/
-class WorkspaceSymbolRequest {
-	public static inline var type = new RequestType<WorkspaceSymbolParams, Null<Array<SymbolInformation>>, NoData,
-		WorkspaceSymbolRegistrationOptions>("workspace/symbol");
-
-	public static final resultType = new ProgressType<Array<SymbolInformation>>();
-}
-
 //---- Code Action Provider ----------------------------------
+
+/**
+	The Client Capabilities of a [CodeActionRequest](#CodeActionRequest).
+**/
+typedef CodeActionClientCapabilities = {
+	/**
+		Whether code action supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+
+	/**
+		The client support code action literals as a valid
+		response of the `textDocument/codeAction` request.
+
+		@since 3.8.0
+	**/
+	var ?codeActionLiteralSupport:{
+		/**
+			The code action kind is support with the following value
+			set.
+		**/
+		var codeActionKind:{
+			/**
+				The code action kind values the client supports. When this
+				property exists the client also guarantees that it will
+				handle values outside its set gracefully and falls back
+				to a default value when unknown.
+			**/
+			var valueSet:Array<CodeActionKind>;
+		};
+	};
+
+	/**
+		Whether code action supports the `isPreferred` property.
+		@since 3.15.0
+	**/
+	var ?isPreferredSupport:Bool;
+}
 
 /**
 	The parameters of a [CodeActionRequest](#CodeActionRequest).
@@ -1826,6 +1895,19 @@ typedef CodeActionParams = WorkDoneProgressParams &
 }
 
 /**
+	Provider options for a [CodeActionRequest](#CodeActionRequest).
+**/
+typedef CodeActionOptions = WorkDoneProgressOptions & {
+	/**
+		CodeActionKinds that this server may return.
+
+		The list of kinds may be generic, such as `CodeActionKind.Refactor`, or the server
+		may list out every specific kind they provide.
+	**/
+	var ?codeActionKinds:Array<CodeActionKind>;
+}
+
+/**
 	Registration options for a [CodeActionRequest](#CodeActionRequest).
 **/
 typedef CodeActionRegistrationOptions = TextDocumentRegistrationOptions & CodeActionOptions;
@@ -1840,7 +1922,81 @@ class CodeActionRequest {
 	public static final resultType = new ProgressType<Array<EitherType<Command, CodeAction>>>();
 }
 
+//---- Workspace Symbol Provider ---------------------------
+
+/**
+	Client capabilities for a [WorkspaceSymbolRequest](#WorkspaceSymbolRequest).
+**/
+typedef WorkspaceSymbolClientCapabilities = {
+	/**
+		Symbol request supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+
+	/**
+		Specific capabilities for the `SymbolKind` in the `workspace/symbol` request.
+	**/
+	var ?symbolKind:{
+		/**
+			The symbol kind values the client supports. When this
+			property exists the client also guarantees that it will
+			handle values outside its set gracefully and falls back
+			to a default value when unknown.
+
+			If this property is not present the client only supports
+			the symbol kinds from `File` to `Array` as defined in
+			the initial version of the protocol.
+		**/
+		var ?valueSet:Array<SymbolKind>;
+	};
+}
+
+/**
+	The parameters of a [WorkspaceSymbolRequest](#WorkspaceSymbolRequest).
+**/
+typedef WorkspaceSymbolParams = WorkDoneProgressParams &
+	PartialResultParams & {
+	/**
+		A query string to filter symbols by. Clients may send an empty
+		string here to request all symbols.
+	**/
+	var query:String;
+}
+
+/**
+	Server capabilities for a [WorkspaceSymbolRequest](#WorkspaceSymbolRequest).
+**/
+typedef WorkspaceSymbolOptions = WorkDoneProgressOptions;
+
+/**
+	Registration options for a [WorkspaceSymbolRequest](#WorkspaceSymbolRequest).
+**/
+typedef WorkspaceSymbolRegistrationOptions = WorkspaceSymbolOptions;
+
+/**
+	A request to list project-wide symbols matching the query string given
+	by the [WorkspaceSymbolParams](#WorkspaceSymbolParams). The response is
+	of type [SymbolInformation[]](#SymbolInformation) or a Thenable that
+	resolves to such.
+**/
+class WorkspaceSymbolRequest {
+	public static inline var type = new RequestType<WorkspaceSymbolParams, Null<Array<SymbolInformation>>, NoData,
+		WorkspaceSymbolRegistrationOptions>("workspace/symbol");
+
+	public static final resultType = new ProgressType<Array<SymbolInformation>>();
+}
+
 //---- Code Lens Provider -------------------------------------------
+
+/**
+	The client capabilities  of a [CodeLensRequest](#CodeLensRequest).
+**/
+typedef CodeLensClientCapabilities = {
+	/**
+		Whether code lens supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+}
 
 /**
 	The parameters of a [CodeLensRequest](#CodeLensRequest).
@@ -1850,6 +2006,16 @@ typedef CodeLensParams = {
 		The document to request code lens for.
 	**/
 	var textDocument:TextDocumentIdentifier;
+}
+
+/**
+	Code Lens provider options of a [CodeLensRequest](#CodeLensRequest).
+**/
+typedef CodeLensOptions = WorkDoneProgressOptions & {
+	/**
+		Code lens has a resolve provider as well.
+	**/
+	var ?resolveProvider:Bool;
 }
 
 /**
@@ -1873,7 +2039,80 @@ class CodeLensResolveRequest {
 	public static inline var type = new RequestType<CodeLens, CodeLens, NoData, NoData>("codeLens/resolve");
 }
 
+//---- Document Links ----------------------------------------------
+
+/**
+	The client capabilities of a [DocumentLinkRequest](#DocumentLinkRequest).
+**/
+typedef DocumentLinkClientCapabilities = {
+	/**
+		Whether document link supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+
+	/**
+		Whether the client support the `tooltip` property on `DocumentLink`.
+
+		@since 3.15.0
+	**/
+	var ?tooltipSupport:Bool;
+}
+
+/**
+	The parameters of a [DocumentLinkRequest](#DocumentLinkRequest).
+**/
+typedef DocumentLinkParams = {
+	/**
+		The document to provide document links for.
+	**/
+	var textDocument:TextDocumentIdentifier;
+}
+
+/**
+	Provider options for a [DocumentLinkRequest](#DocumentLinkRequest).
+**/
+typedef DocumentLinkOptions = WorkDoneProgressOptions & {
+	/**
+		Document links have a resolve provider as well.
+	**/
+	var ?resolveProvider:Bool;
+}
+
+/**
+	Registration options for a [DocumentLinkRequest](#DocumentLinkRequest).
+**/
+typedef DocumentLinkRegistrationOptions = TextDocumentRegistrationOptions & DocumentLinkOptions;
+
+/**
+	A request to provide document links
+**/
+class DocumentLinkRequest {
+	public static inline var type = new RequestType<DocumentLinkParams, Null<Array<DocumentLink>>, NoData,
+		DocumentLinkRegistrationOptions>("textDocument/documentLink");
+
+	public static final resultType = new ProgressType<Array<DocumentLink>>();
+}
+
+/**
+	Request to resolve additional information for a given document link. The request's
+	parameter is of type [DocumentLink](#DocumentLink) the response
+	is of type [DocumentLink](#DocumentLink) or a Thenable that resolves to such.
+**/
+class DocumentLinkResolveRequest {
+	public static inline var type = new RequestType<DocumentLink, DocumentLink, NoData, NoData>("documentLink/resolve");
+}
+
 //---- Formatting ----------------------------------------------
+
+/**
+	Client capabilities of a [DocumentFormattingRequest](#DocumentFormattingRequest).
+**/
+typedef DocumentFormattingClientCapabilities = {
+	/**
+		Whether formatting supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+}
 
 /**
 	The parameters of a [DocumentFormattingRequest](#DocumentFormattingRequest).
@@ -1891,6 +2130,11 @@ typedef DocumentFormattingParams = {
 }
 
 /**
+	Provider options for a [DocumentFormattingRequest](#DocumentFormattingRequest).
+**/
+typedef DocumentFormattingOptions = WorkDoneProgressOptions;
+
+/**
 	Registration options for a [DocumentFormattingRequest](#DocumentFormattingRequest).
 **/
 typedef DocumentFormattingRegistrationOptions = TextDocumentRegistrationOptions & DocumentFormattingOptions;
@@ -1901,6 +2145,16 @@ typedef DocumentFormattingRegistrationOptions = TextDocumentRegistrationOptions 
 class DocumentFormattingRequest {
 	public static inline var type = new RequestType<DocumentFormattingParams, Null<Array<TextEdit>>, NoData,
 		DocumentFormattingRegistrationOptions>("textDocument/formatting");
+}
+
+/**
+	Client capabilities of a [DocumentRangeFormattingRequest](#DocumentRangeFormattingRequest).
+**/
+typedef DocumentRangeFormattingClientCapabilities = {
+	/**
+		Whether range formatting supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
 }
 
 /**
@@ -1924,6 +2178,11 @@ typedef DocumentRangeFormattingParams = {
 }
 
 /**
+	Provider options for a [DocumentRangeFormattingRequest](#DocumentRangeFormattingRequest).
+**/
+typedef DocumentRangeFormattingOptions = WorkDoneProgressOptions;
+
+/**
 	Registration options for a [DocumentRangeFormattingRequest](#DocumentRangeFormattingRequest).
 **/
 typedef DocumentRangeFormattingRegistrationOptions = TextDocumentRegistrationOptions & DocumentRangeFormattingOptions;
@@ -1934,6 +2193,16 @@ typedef DocumentRangeFormattingRegistrationOptions = TextDocumentRegistrationOpt
 class DocumentRangeFormattingRequest {
 	public static inline var type = new RequestType<DocumentRangeFormattingParams, Null<Array<TextEdit>>, NoData,
 		DocumentRangeFormattingRegistrationOptions>("textDocument/rangeFormatting");
+}
+
+/**
+	Client capabilities of a [DocumentOnTypeFormattingRequest](#DocumentOnTypeFormattingRequest).
+**/
+typedef DocumentOnTypeFormattingClientCapabilities = {
+	/**
+		Whether on type formatting supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
 }
 
 /**
@@ -1962,6 +2231,21 @@ typedef DocumentOnTypeFormattingParams = {
 }
 
 /**
+	Provider options for a [DocumentOnTypeFormattingRequest](#DocumentOnTypeFormattingRequest).
+**/
+typedef DocumentOnTypeFormattingOptions = {
+	/**
+		A character on which formatting should be triggered, like `}`.
+	**/
+	var firstTriggerCharacter:String;
+
+	/**
+		More trigger characters.
+	**/
+	var ?moreTriggerCharacter:Array<String>;
+}
+
+/**
 	Registration options for a [DocumentOnTypeFormattingRequest](#DocumentOnTypeFormattingRequest).
 **/
 typedef DocumentOnTypeFormattingRegistrationOptions = TextDocumentRegistrationOptions & DocumentOnTypeFormattingOptions;
@@ -1975,6 +2259,21 @@ class DocumentOnTypeFormattingRequest {
 }
 
 //---- Rename ----------------------------------------------
+
+typedef RenameClientCapabilities = {
+	/**
+		Whether rename supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+
+	/**
+		Client supports testing for validity of rename operations
+		before execution.
+
+		@since version 3.12.0
+	**/
+	var ?prepareSupport:Bool;
+}
 
 /**
 	The parameters of a [RenameRequest](#RenameRequest).
@@ -1995,6 +2294,18 @@ typedef RenameParams = {
 		If the given name is not valid the request must return a `ResponseError` with an appropriate message set.
 	**/
 	var newName:String;
+}
+
+/**
+	Provider options for a [RenameRequest](#RenameRequest).
+**/
+typedef RenameOptions = WorkDoneProgressOptions & {
+	/**
+		Renames should be checked and tested before being executed.
+
+		@since version 3.12.0
+	**/
+	var ?prepareProvider:Bool;
 }
 
 /**
@@ -2019,43 +2330,17 @@ class PrepareRenameRequest {
 		NoData>("textDocument/prepareRename");
 }
 
-//---- Document Links ----------------------------------------------
-
-/**
-	The parameters of a [DocumentLinkRequest](#DocumentLinkRequest).
-**/
-typedef DocumentLinkParams = {
-	/**
-		The document to provide document links for.
-	**/
-	var textDocument:TextDocumentIdentifier;
-}
-
-/**
-	Registration options for a [DocumentLinkRequest](#DocumentLinkRequest).
-**/
-typedef DocumentLinkRegistrationOptions = TextDocumentRegistrationOptions & DocumentLinkOptions;
-
-/**
-	A request to provide document links
-**/
-class DocumentLinkRequest {
-	public static inline var type = new RequestType<DocumentLinkParams, Null<Array<DocumentLink>>, NoData,
-		DocumentLinkRegistrationOptions>("textDocument/documentLink");
-
-	public static final resultType = new ProgressType<Array<DocumentLink>>();
-}
-
-/**
-	Request to resolve additional information for a given document link. The request's
-	parameter is of type [DocumentLink](#DocumentLink) the response
-	is of type [DocumentLink](#DocumentLink) or a Thenable that resolves to such.
-**/
-class DocumentLinkResolveRequest {
-	public static inline var type = new RequestType<DocumentLink, DocumentLink, NoData, NoData>("documentLink/resolve");
-}
-
 //---- Command Execution -------------------------------------------
+
+/**
+	The client capabilities of a [ExecuteCommandRequest](#ExecuteCommandRequest).
+**/
+typedef ExecuteCommandClientCapabilities = {
+	/**
+		Execute command supports dynamic registration.
+	**/
+	var ?dynamicRegistration:Bool;
+}
 
 /**
 	The parameters of a [ExecuteCommandRequest](#ExecuteCommandRequest).
@@ -2073,6 +2358,16 @@ typedef ExecuteCommandParams = {
 }
 
 /**
+	The server capabilities of a [ExecuteCommandRequest](#ExecuteCommandRequest).
+**/
+typedef ExecuteCommandOptions = WorkDoneProgressOptions & {
+	/**
+		The commands to be executed on the server
+	**/
+	var commands:Array<String>;
+}
+
+/**
 	Registration options for a [ExecuteCommandRequest](#ExecuteCommandRequest).
 **/
 typedef ExecuteCommandRegistrationOptions = ExecuteCommandOptions;
@@ -2087,6 +2382,29 @@ class ExecuteCommandRequest {
 }
 
 //---- Apply Edit request ----------------------------------------
+
+typedef WorkspaceEditClientCapabilities = {
+	/**
+		The client supports versioned document changes in `WorkspaceEdit`s
+	**/
+	var ?documentChanges:Bool;
+
+	/**
+		The resource operations the client supports. Clients should at least
+		support 'create', 'rename' and 'delete' files and folders.
+
+		@since 3.13.0
+	**/
+	var ?resourceOperations:Array<ResourceOperationKind>;
+
+	/**
+		The failure handling strategy of a client if applying the workspace edit
+		failes.
+
+		@since 3.13.0
+	**/
+	var ?failureHandling:FailureHandlingKind;
+}
 
 /**
 	The parameters passed via a apply workspace edit request.

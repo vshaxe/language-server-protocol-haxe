@@ -3,35 +3,25 @@ package languageServerProtocol.protocol;
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
 
+/**
+	Since 3.14.0
+**/
 typedef DeclarationClientCapabilities = {
 	/**
-		Capabilities specific to the `textDocument/declaration`
+		Whether declaration supports dynamic registration. If this is set to `true`
+		the client supports the new `DeclarationRegistrationOptions` return value
+		for the corresponding server capability as well.
 	**/
-	var ?declaration:{
-		/**
-			 Whether declaration supports dynamic registration. If this is set to `true`
-			 the client supports the new `(TextDocumentRegistrationOptions & StaticRegistrationOptions)`
-			return value for the corresponding server capability as well.
-		**/
-		var ?dynamicRegistration:Bool;
+	var ?dynamicRegistration:Bool;
 
-		/**
-			The client supports additional metadata in the form of declaration links.
-		**/
-		var ?linkSupport:Bool;
-	};
-}
-
-typedef DeclarationOptions = WorkDoneProgressOptions;
-typedef DeclarationRegistrationOptions = TextDocumentRegistrationOptions & DeclarationOptions;
-
-typedef DeclarationServerCapabilities = {
 	/**
-		The server provides Goto Type Definition support.
+		The client supports additional metadata in the form of declaration links.
 	**/
-	var ?declarationProvider:EitherType<Bool, EitherType<DeclarationOptions, DeclarationRegistrationOptions & StaticRegistrationOptions>>;
+	var ?linkSupport:Bool;
 }
 
+typedef DeclarationOptions = WorkDoneProgressOptions & {};
+typedef DeclarationRegistrationOptions = DeclarationOptions & TextDocumentRegistrationOptions & StaticRegistrationOptions;
 typedef DeclarationParams = TextDocumentPositionParams & WorkDoneProgressParams & PartialResultParams;
 
 /**

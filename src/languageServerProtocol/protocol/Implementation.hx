@@ -3,35 +3,27 @@ package languageServerProtocol.protocol;
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
 
+/**
+	Since 3.6.0
+**/
 typedef ImplementationClientCapabilities = {
 	/**
-		Capabilities specific to the `textDocument/implementation`
+		Whether implementation supports dynamic registration. If this is set to `true`
+		the client supports the new `ImplementationRegistrationOptions` return value
+		for the corresponding server capability as well.
 	**/
-	var ?implementation:{
-		/**
-			Whether implementation supports dynamic registration. If this is set to `true`
-			the client supports the new `(TextDocumentRegistrationOptions & StaticRegistrationOptions)`
-			return value for the corresponding server capability as well.
-		**/
-		var ?dynamicRegistration:Bool;
+	var ?dynamicRegistration:Bool;
 
-		/**
-			The client supports additional metadata in the form of definition links.
-		**/
-		var ?linkSupport:Bool;
-	};
-}
-
-typedef ImplementationOptions = WorkDoneProgressOptions;
-typedef ImplementationRegistrationOptions = TextDocumentRegistrationOptions & ImplementationOptions;
-
-typedef ImplementationServerCapabilities = {
 	/**
-		The server provides Goto Implementation support.
+		The client supports additional metadata in the form of definition links.
+
+		Since 3.14.0
 	**/
-	var ?implementationProvider:EitherType<Bool, EitherType<ImplementationOptions, ImplementationRegistrationOptions & StaticRegistrationOptions>>;
+	var ?linkSupport:Bool;
 }
 
+typedef ImplementationOptions = WorkDoneProgressOptions & {};
+typedef ImplementationRegistrationOptions = TextDocumentRegistrationOptions & ImplementationOptions & StaticRegistrationOptions;
 typedef ImplementationParams = TextDocumentPositionParams & WorkDoneProgressParams & PartialResultParams;
 
 /**

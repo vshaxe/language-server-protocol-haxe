@@ -3,29 +3,27 @@ package languageServerProtocol.protocol;
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
 
-typedef ColorClientCapabilities = {
+//---- Client capability ----
+
+typedef DocumentColorClientCapabilities = {
 	/**
-		Capabilities specific to the colorProvider
+		Whether implementation supports dynamic registration. If this is set to `true`
+		the client supports the new `DocumentColorRegistrationOptions` return value
+		for the corresponding server capability as well.
 	**/
-	var ?colorProvider:{
-		/**
-			Whether implementation supports dynamic registration. If this is set to `true`
-			the client supports the new `(ColorRegistrationOptions & StaticRegistrationOptions)`
-			return value for the corresponding server capability as well.
-		**/
-		var ?dynamicRegistration:Bool;
-	};
+	var ?dynamicRegistration:Bool;
 }
 
-typedef ColorOptions = {}
-typedef ColorRegistrationOptions = TextDocumentRegistrationOptions & ColorOptions;
-
-typedef ColorServerCapabilities = {
+typedef DocumentColorOptions = {
 	/**
-		The server provides color provider support.
+		Code lens has a resolve provider as well.
 	**/
-	var ?colorProvider:EitherType<ColorOptions, ColorRegistrationOptions & StaticRegistrationOptions>;
+	var ?resolveProvider:Bool;
 }
+
+typedef DocumentColorRegistrationOptions = TextDocumentRegistrationOptions & StaticRegistrationOptions & DocumentColorOptions;
+
+//---- Color Symbol Provider ---------------------------
 
 /**
 	Parameters for a `DocumentColor` request.
@@ -45,7 +43,7 @@ typedef DocumentColorParams = {
 **/
 class DocumentColorRequest {
 	public static inline var type = new RequestType<DocumentColorParams, Array<ColorInformation>, NoData,
-		ColorRegistrationOptions>("textDocument/documentColor");
+		DocumentColorRegistrationOptions>("textDocument/documentColor");
 
 	public static final resultType = new ProgressType<Array<ColorInformation>>();
 }
