@@ -780,7 +780,8 @@ typedef CompletionItem = {
 
 	/**
 		The format of the insert text. The format applies to both the `insertText` property
-		and the `newText` property of a provided `textEdit`.
+		and the `newText` property of a provided `textEdit`. If ommitted defaults to
+		`InsertTextFormat.PlainText`.
 	**/
 	var ?insertTextFormat:InsertTextFormat;
 
@@ -1055,6 +1056,17 @@ enum abstract SymbolKind(Int) to Int {
 }
 
 /**
+	Symbol tags are extra annotations that tweak the rendering of a symbol.
+	@since 3.15
+**/
+enum abstract SymbolTag(Int) {
+	/**
+		Render a symbol as obsolete, usually using a strike-out.
+	**/
+	var Deprecated = 1;
+}
+
+/**
 	Represents information about programming constructs like variables, classes, interfaces etc.
 **/
 typedef SymbolInformation = {
@@ -1218,6 +1230,16 @@ enum abstract CodeActionKind(String) from String to String {
 		Base kind for an organize imports source action: `source.organizeImports`
 	**/
 	var SourceOrganizeImports = 'source.organizeImports';
+
+	/**
+		Base kind for auto-fix source actions: `source.fixAll`.
+
+		Fix all actions automatically fix errors that have a clear fix that do not require user input.
+		They should not suppress errors or perform unsafe fixes such as generating new types or classes.
+
+		@since 3.15.0
+	**/
+	var SourceFixAll = 'source.fixAll';
 }
 
 /**
@@ -1422,8 +1444,8 @@ enum abstract TextDocumentSaveReason(Int) {
 }
 
 /**
-	An event describing a change to a text document.
-	If `range` and `rangeLength` are omitted the new text is considered to be the full content of the document.
+	An event describing a change to a text document. If range and rangeLength are omitted
+	the new text is considered to be the full content of the document.
 **/
 typedef TextDocumentContentChangeEvent = {
 	/**
@@ -1432,7 +1454,9 @@ typedef TextDocumentContentChangeEvent = {
 	var ?range:Range;
 
 	/**
-		The length of the range that got replaced.
+		The optional length of the range that got replaced.
+
+		@deprecated use range instead.
 	**/
 	var ?rangeLength:Int;
 

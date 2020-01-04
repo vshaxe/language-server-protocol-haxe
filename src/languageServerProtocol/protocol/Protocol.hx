@@ -1405,6 +1405,9 @@ typedef CompletionOptions = WorkDoneProgressOptions & {
 		if clients don't support individual commmit characters per completion item. See
 		`ClientCapabilities.textDocument.completion.completionItem.commitCharactersSupport`
 
+		If a server provides both `allCommitCharacters` and commit characters on an individual
+		completion item the ones on the completion item win.
+
 		@since 3.2.0
 	**/
 	var ?allCommitCharacters:Array<String>;
