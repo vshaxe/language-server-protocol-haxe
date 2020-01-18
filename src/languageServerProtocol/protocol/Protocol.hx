@@ -3,12 +3,13 @@ package languageServerProtocol.protocol;
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.ColorProvider;
 import languageServerProtocol.protocol.Configuration;
+import languageServerProtocol.protocol.Declaration;
+import languageServerProtocol.protocol.FoldingRange;
 import languageServerProtocol.protocol.Implementation;
+import languageServerProtocol.protocol.Progress;
+import languageServerProtocol.protocol.SelectionRange;
 import languageServerProtocol.protocol.TypeDefinition;
 import languageServerProtocol.protocol.WorkspaceFolders;
-import languageServerProtocol.protocol.FoldingRange;
-import languageServerProtocol.protocol.Declaration;
-import languageServerProtocol.protocol.proposed.SelectionRange;
 
 typedef RequestType<TParams, TResponse, TError, TRegistrationOptions> = jsonrpc.Types.RequestType<TParams, TResponse, TError>;
 typedef NotificationType<TParams, TRegistrationOptions> = jsonrpc.Types.NotificationType<TParams>;
@@ -386,7 +387,7 @@ typedef ClientCapabilities = {
 	/**
 		Window specific client capabilities.
 	**/
-	var ?window:{};
+	var ?window:WorkDoneProgressClientCapabilities;
 
 	/**
 		Experimental client capabilities.
@@ -971,8 +972,16 @@ typedef DidChangeTextDocumentParams = {
 
 	/**
 		The actual content changes. The content changes describe single state changes
-		to the document. So if there are two content changes c1 and c2 for a document
-		in state S then c1 move the document to S' and c2 to S''.
+		to the document. So if there are two content changes c1 (at array index 0) and
+		c2 (at array index 1) for a document in state S then c1 moves the document from
+		S to S' and c2 from S' to S''. So c1 is computed on the state S and c2 is computed
+		on the state S'.
+
+		To mirror the content of a document using change events use the following approach:
+		- start with the same initial content
+		- apply the 'textDocument/didChange' notifications in the order you recevie them.
+		- apply the `TextDocumentContentChangeEvent`s in a single notification in the order
+		  you receive them.
 	**/
 	var contentChanges:Array<TextDocumentContentChangeEvent>;
 }
@@ -1217,6 +1226,14 @@ typedef PublishDiagnosticsClientCapabilities = {
 		**/
 		var valueSet:Array<DiagnosticTag>;
 	};
+
+	/**
+		Whether the client interprets the version property of the
+		`textDocument/publishDiagnostics` notification`s parameter.
+
+		@since 3.15.0
+	**/
+	var ?versionSupport:Bool;
 }
 
 /**

@@ -1,20 +1,15 @@
-package languageServerProtocol.protocol.proposed;
+package languageServerProtocol.protocol;
 
 import languageServerProtocol.protocol.Protocol;
 
 typedef WorkDoneProgressClientCapabilities = {
 	/**
-		Window specific client capabilities.
-	**/
-	var ?window:{
-		/**
-			Whether client supports handling progress notifications. If set servers are allowed to
-			report in `workDoneProgress` property in the request specific server capabilities.
+		Whether client supports handling progress notifications. If set servers are allowed to
+		report in `workDoneProgress` property in the request specific server capabilities.
 
-			Since 3.15.0
-		**/
-		var ?workDoneProgress:Bool;
-	}
+		Since 3.15.0
+	**/
+	var ?workDoneProgress:Bool;
 }
 
 enum abstract WorkDoneProgressBeginKind(String) {

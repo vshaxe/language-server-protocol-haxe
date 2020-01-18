@@ -1,4 +1,4 @@
-package languageServerProtocol.protocol.proposed;
+package languageServerProtocol.protocol;
 
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
