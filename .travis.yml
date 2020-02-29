@@ -3,14 +3,6 @@ dist: xenial
 haxe:
  - development
 
-env:
-  global:
-   - ENCRYPTION_LABEL: "e127d89e9615"
-   - COMMIT_AUTHOR_EMAIL: "nadako@gmail.com"
-
-before_install:
- - openssl aes-256-cbc -K $encrypted_e127d89e9615_key -iv $encrypted_e127d89e9615_iv -in deploy_key.enc -out deploy_key -d
-
 install:
  - haxelib install hxnodejs
  - haxelib git vscode-json-rpc https://github.com/vshaxe/vscode-json-rpc
@@ -18,4 +10,12 @@ install:
 
 script:
  - haxe build.hxml
- - bash ./doc-deploy.sh
+ - haxe doc.hxml
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  local-dir: out
+  on:
+    branch: master
