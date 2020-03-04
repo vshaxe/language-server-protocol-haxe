@@ -22,7 +22,7 @@ typedef ConfigurationClientCapabilities = {
 	change event and empty the cache if such an event is received.
 **/
 class ConfigurationRequest {
-	public static inline var type = new ProtocolRequestType<ConfigurationParams & PartialResultParams, Array<Any>, Never, NoData,
+	public static inline final type = new ProtocolRequestType<ConfigurationParams & PartialResultParams, Array<Any>, Never, NoData,
 		NoData>("workspace/configuration");
 }
 

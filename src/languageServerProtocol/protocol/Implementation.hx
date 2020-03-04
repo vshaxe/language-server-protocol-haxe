@@ -33,7 +33,7 @@ typedef ImplementationParams = TextDocumentPositionParams & WorkDoneProgressPara
 	Thenable that resolves to such.
 **/
 class ImplementationRequest {
-	public static inline var type = new RequestType<ImplementationParams, Null<Definition>, NoData,
+	public static inline final type = new RequestType<ImplementationParams, Null<Definition>, NoData,
 		TextDocumentRegistrationOptions>("textDocument/implementation");
 
 	public static final resultType = new ProgressType<EitherType<Array<Location>, Array<DefinitionLink>>>();

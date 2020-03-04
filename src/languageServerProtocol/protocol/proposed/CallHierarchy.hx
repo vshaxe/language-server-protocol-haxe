@@ -143,7 +143,7 @@ typedef CallHierarchyPrepareParams = TextDocumentPositionParams & WorkDoneProgre
 	@since 3.16.0 - Proposed state
 **/
 class CallHierarchyPrepareRequest {
-	public static inline var type = new ProtocolRequestType<CallHierarchyPrepareParams, Null<Array<CallHierarchyItem>>, Never, NoData,
+	public static inline final type = new ProtocolRequestType<CallHierarchyPrepareParams, Null<Array<CallHierarchyItem>>, Never, NoData,
 		CallHierarchyRegistrationOptions>("textDocument/prepareCallHierarchy");
 }
 
@@ -163,7 +163,7 @@ typedef CallHierarchyIncomingCallsParams = WorkDoneProgressParams &
 	@since 3.16.0 - Proposed state
 **/
 class CallHierarchyIncomingCallsRequest {
-	public static inline var type = new ProtocolRequestType<CallHierarchyIncomingCallsParams, Null<Array<CallHierarchyIncomingCall>>,
+	public static inline final type = new ProtocolRequestType<CallHierarchyIncomingCallsParams, Null<Array<CallHierarchyIncomingCall>>,
 		Array<CallHierarchyIncomingCall>, NoData, NoData>("callHierarchy/incomingCalls");
 }
 
@@ -183,6 +183,6 @@ typedef CallHierarchyOutgoingCallsParams = WorkDoneProgressParams &
 	@since 3.16.0 - Proposed state
 **/
 class CallHierarchyOutgoingCallsRequest {
-	public static inline var type = new ProtocolRequestType<CallHierarchyOutgoingCallsParams, Null<Array<CallHierarchyOutgoingCall>>,
+	public static inline final type = new ProtocolRequestType<CallHierarchyOutgoingCallsParams, Null<Array<CallHierarchyOutgoingCall>>,
 		Array<CallHierarchyOutgoingCall>, NoData, NoData>("callHierarchy/outgoingCalls");
 }

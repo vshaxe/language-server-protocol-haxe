@@ -40,7 +40,7 @@ typedef SelectionRangeParams = WorkDoneProgressParams &
 	that resolves to such.
 **/
 class SelectionRangeRequest {
-	public static inline var type = new ProtocolRequestType<SelectionRangeParams, Null<Array<SelectionRange>>, Array<SelectionRange>, NoData,
+	public static inline final type = new ProtocolRequestType<SelectionRangeParams, Null<Array<SelectionRange>>, Array<SelectionRange>, NoData,
 		SelectionRangeRegistrationOptions>("textDocument/selectionRange");
 
 	/** @deprecated  Use SelectionRangeRequest.type */

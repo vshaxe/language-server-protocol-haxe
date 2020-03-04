@@ -168,7 +168,7 @@ typedef SemanticTokensParams = WorkDoneProgressParams &
 }
 
 class SemanticTokensRequest {
-	public static inline var type = new ProtocolRequestType<SemanticTokensParams, Null<SemanticTokens>, SemanticTokensPartialResult, NoData,
+	public static inline final type = new ProtocolRequestType<SemanticTokensParams, Null<SemanticTokens>, SemanticTokensPartialResult, NoData,
 		SemanticTokensRegistrationOptions>("textDocument/semanticTokens");
 }
 
@@ -188,7 +188,7 @@ typedef SemanticTokensEditsParams = WorkDoneProgressParams &
 }
 
 class SemanticTokensEditsRequest {
-	public static inline var type = new ProtocolRequestType<SemanticTokensEditsParams, Null<EitherType<SemanticTokens, SemanticTokensEdits>>,
+	public static inline final type = new ProtocolRequestType<SemanticTokensEditsParams, Null<EitherType<SemanticTokens, SemanticTokensEdits>>,
 		EitherType<SemanticTokensPartialResult, SemanticTokensEditsPartialResult>, NoData,
 		SemanticTokensRegistrationOptions>("textDocument/semanticTokens/edits");
 }
@@ -209,6 +209,6 @@ typedef SemanticTokensRangeParams = WorkDoneProgressParams &
 }
 
 class SemanticTokensRangeRequest {
-	public static inline var type = new ProtocolRequestType<SemanticTokensRangeParams, Null<SemanticTokens>, SemanticTokensPartialResult, NoData,
+	public static inline final type = new ProtocolRequestType<SemanticTokensRangeParams, Null<SemanticTokens>, SemanticTokensPartialResult, NoData,
 		NoData>("textDocument/semanticTokens/range");
 }

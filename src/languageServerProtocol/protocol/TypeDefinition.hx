@@ -33,7 +33,7 @@ typedef TypeDefinitionParams = TextDocumentPositionParams & WorkDoneProgressPara
 	Thenable that resolves to such.
 **/
 class TypeDefinitionRequest {
-	public static inline var type = new RequestType<TypeDefinitionParams, Null<EitherType<Definition, Array<DefinitionLink>>>, NoData,
+	public static inline final type = new RequestType<TypeDefinitionParams, Null<EitherType<Definition, Array<DefinitionLink>>>, NoData,
 		TypeDefinitionRegistrationOptions>("textDocument/typeDefinition");
 
 	public static final resultType = new ProgressType<EitherType<Array<Location>, Array<DefinitionLink>>>();

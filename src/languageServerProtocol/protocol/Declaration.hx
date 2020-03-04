@@ -32,7 +32,7 @@ typedef DeclarationParams = TextDocumentPositionParams & WorkDoneProgressParams 
 	to such.
 **/
 class DeclarationRequest {
-	public static inline var type = new RequestType<DeclarationParams, Null<EitherType<Declaration, Array<DeclarationLink>>>, NoData,
+	public static inline final type = new RequestType<DeclarationParams, Null<EitherType<Declaration, Array<DeclarationLink>>>, NoData,
 		DeclarationRegistrationOptions>("textDocument/declaration");
 
 	public static final resultType = new ProgressType<EitherType<Array<Location>, Array<DeclarationLink>>>();

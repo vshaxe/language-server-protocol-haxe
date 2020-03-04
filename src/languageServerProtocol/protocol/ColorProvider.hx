@@ -42,7 +42,7 @@ typedef DocumentColorParams = {
 	that resolves to such.
 **/
 class DocumentColorRequest {
-	public static inline var type = new ProtocolRequestType<DocumentColorParams, Array<ColorInformation>, Array<ColorInformation>, NoData,
+	public static inline final type = new ProtocolRequestType<DocumentColorParams, Array<ColorInformation>, Array<ColorInformation>, NoData,
 		DocumentColorRegistrationOptions>("textDocument/documentColor");
 
 	/** @deprecated Use DocumentColorRequest.type */
@@ -77,6 +77,6 @@ typedef ColorPresentationParams = WorkDoneProgressParams &
 	that resolves to such.
 **/
 class ColorPresentationRequest {
-	public static inline var type = new ProtocolRequestType<ColorPresentationParams, Array<ColorPresentation>, Array<ColorPresentation>, NoData,
+	public static inline final type = new ProtocolRequestType<ColorPresentationParams, Array<ColorPresentation>, Array<ColorPresentation>, NoData,
 		WorkDoneProgressOptions & TextDocumentRegistrationOptions>("textDocument/colorPresentation");
 }
