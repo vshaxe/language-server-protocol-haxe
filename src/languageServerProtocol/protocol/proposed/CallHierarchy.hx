@@ -3,6 +3,12 @@ package languageServerProtocol.protocol.proposed;
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
 
+/**
+	Represents programming constructs like functions or constructors in the context
+	of call hierarchy.
+
+	@since 3.16.0 - Proposed state
+**/
 typedef CallHierarchyItem = {
 	/**
 		The name of this item.
@@ -43,6 +49,8 @@ typedef CallHierarchyItem = {
 
 /**
 	Represents an incoming call, e.g. a caller of a method or constructor.
+
+	@since 3.16.0 - Proposed state
 **/
 typedef CallHierarchyIncomingCall = {
 	/**
@@ -59,6 +67,8 @@ typedef CallHierarchyIncomingCall = {
 
 /**
 	Represents an outgoing call, e.g. calling a getter from a method or a method from a constructor etc.
+
+	@since 3.16.0 - Proposed state
 **/
 typedef CallHierarchyOutgoingCall = {
 	/**
@@ -74,9 +84,14 @@ typedef CallHierarchyOutgoingCall = {
 	var fromRanges:Array<Range>;
 }
 
+/**
+	@since 3.16.0 - Proposed state
+**/
 typedef CallHierarchyClientCapabilities = {
 	/**
 		Capabilities specific to the `textDocument/callHierarchy`
+
+		@since 3.16.0 - Proposed state
 	**/
 	var ?callHierarchy:{
 		/**
@@ -88,9 +103,25 @@ typedef CallHierarchyClientCapabilities = {
 	};
 }
 
+/**
+	Call hierarchy options used during static registration.
+
+	@since 3.16.0 - Proposed state
+**/
 typedef CallHierarchyOptions = WorkDoneProgressOptions;
+
+/**
+	Call hierarchy options used during static or dynamic registration.
+
+	@since 3.16.0 - Proposed state
+**/
 typedef CallHierarchyRegistrationOptions = TextDocumentRegistrationOptions & CallHierarchyOptions;
 
+/**
+	The call hierarchy server capabilities.
+
+	@since 3.16.0 - Proposed state
+**/
 typedef CallHierarchyServerCapabilities = {
 	/**
 		The server provides Call Hierarchy support.
@@ -100,34 +131,58 @@ typedef CallHierarchyServerCapabilities = {
 
 /**
 	The parameter of a `textDocument/prepareCallHierarchy` request.
+
+	@since 3.16.0 - Proposed state
 **/
 typedef CallHierarchyPrepareParams = TextDocumentPositionParams & WorkDoneProgressParams;
 
+/**
+	A request to result a `CallHierarchyItem` in a document at a given position.
+	Can be used as an input to a incoming or outgoing call hierarchy.
+
+	@since 3.16.0 - Proposed state
+**/
 class CallHierarchyPrepareRequest {
-	public static inline var type = new RequestType<CallHierarchyPrepareParams, Null<Array<CallHierarchyItem>>, NoData,
+	public static inline var type = new ProtocolRequestType<CallHierarchyPrepareParams, Null<Array<CallHierarchyItem>>, Never, NoData,
 		CallHierarchyRegistrationOptions>("textDocument/prepareCallHierarchy");
 }
 
+/**
+	The parameter of a `callHierarchy/incomingCalls` request.
+
+	@since 3.16.0 - Proposed state
+**/
 typedef CallHierarchyIncomingCallsParams = WorkDoneProgressParams &
 	PartialResultParams & {
 	var item:CallHierarchyItem;
 }
 
-class CallHierarchyIncomingCallsRequest {
-	public static inline var type = new RequestType<CallHierarchyIncomingCallsParams, Null<Array<CallHierarchyIncomingCall>>, NoData,
-		NoData>("callHierarchy/incomingCalls");
+/**
+	A request to resolve the incoming calls for a given `CallHierarchyItem`.
 
-	public static final resultType = new ProgressType<Array<CallHierarchyIncomingCall>>();
+	@since 3.16.0 - Proposed state
+**/
+class CallHierarchyIncomingCallsRequest {
+	public static inline var type = new ProtocolRequestType<CallHierarchyIncomingCallsParams, Null<Array<CallHierarchyIncomingCall>>,
+		Array<CallHierarchyIncomingCall>, NoData, NoData>("callHierarchy/incomingCalls");
 }
 
+/**
+	The parameter of a `callHierarchy/outgoingCalls` request.
+
+	@since 3.16.0 - Proposed state
+**/
 typedef CallHierarchyOutgoingCallsParams = WorkDoneProgressParams &
 	PartialResultParams & {
 	var item:CallHierarchyItem;
 }
 
-class CallHierarchyOutgoingCallsRequest {
-	public static inline var type = new RequestType<CallHierarchyOutgoingCallsParams, Null<Array<CallHierarchyOutgoingCall>>, NoData,
-		NoData>("callHierarchy/outgoingCalls");
+/**
+	A request to resolve the outgoing calls for a given `CallHierarchyItem`.
 
-	public static final resultType = new ProgressType<Array<CallHierarchyOutgoingCall>>();
+	@since 3.16.0 - Proposed state
+**/
+class CallHierarchyOutgoingCallsRequest {
+	public static inline var type = new ProtocolRequestType<CallHierarchyOutgoingCallsParams, Null<Array<CallHierarchyOutgoingCall>>,
+		Array<CallHierarchyOutgoingCall>, NoData, NoData>("callHierarchy/outgoingCalls");
 }

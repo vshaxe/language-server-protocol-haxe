@@ -120,7 +120,7 @@ typedef WorkDoneProgressCreateParams = {
 	reporting from the server.
 **/
 class WorkDoneProgressCreateRequest {
-	public static inline var type = new RequestType<WorkDoneProgressCreateParams, NoData, NoData, NoData>("window/workDoneProgress/create");
+	public static inline var type = new ProtocolRequestType<WorkDoneProgressCreateParams, NoData, Never, NoData, NoData>("window/workDoneProgress/create");
 }
 
 typedef WorkDoneProgressCancelParams = {
@@ -135,5 +135,5 @@ typedef WorkDoneProgressCancelParams = {
 	initiated on the server side.
 **/
 class WorkDoneProgressCancelNotification {
-	public static inline var type = new NotificationType<WorkDoneProgressCancelParams, NoData>("window/workDoneProgress/cancel");
+	public static inline var type = new ProtocolNotificationType<WorkDoneProgressCancelParams, NoData>("window/workDoneProgress/cancel");
 }

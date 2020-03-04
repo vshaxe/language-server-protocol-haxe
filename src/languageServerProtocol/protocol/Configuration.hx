@@ -1,7 +1,7 @@
 package languageServerProtocol.protocol;
 
-import languageServerProtocol.protocol.Protocol;
 import languageServerProtocol.Types.DocumentUri;
+import languageServerProtocol.protocol.Protocol;
 
 //---- Get Configuration request ----
 
@@ -22,7 +22,8 @@ typedef ConfigurationClientCapabilities = {
 	change event and empty the cache if such an event is received.
 **/
 class ConfigurationRequest {
-	public static inline var type = new RequestType<ConfigurationParams & PartialResultParams, Array<Any>, NoData, NoData>("workspace/configuration");
+	public static inline var type = new ProtocolRequestType<ConfigurationParams & PartialResultParams, Array<Any>, Never, NoData,
+		NoData>("workspace/configuration");
 }
 
 typedef ConfigurationItem = {
