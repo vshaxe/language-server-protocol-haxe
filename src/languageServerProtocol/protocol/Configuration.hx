@@ -8,6 +8,8 @@ import languageServerProtocol.protocol.Protocol;
 typedef ConfigurationClientCapabilities = {
 	/**
 		The client supports `workspace/configuration` requests.
+
+		@since 3.6.0
 	**/
 	var ?configuration:Bool;
 }

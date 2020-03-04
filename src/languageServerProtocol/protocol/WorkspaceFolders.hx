@@ -13,6 +13,8 @@ typedef WorkspaceFoldersInitializeParams = {
 typedef WorkspaceFoldersClientCapabilities = {
 	/**
 		The client has support for workspace folders
+
+		@since 3.6.0
 	**/
 	var ?workspaceFolders:Bool;
 }

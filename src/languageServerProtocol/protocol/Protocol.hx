@@ -1234,6 +1234,13 @@ typedef PublishDiagnosticsClientCapabilities = {
 		@since 3.15.0
 	**/
 	var ?versionSupport:Bool;
+
+	/**
+		Clients support complex diagnostic codes (e.g. code and target URI).
+
+		@since 3.16.0 - Proposed state
+	**/
+	var ?complexDiagnosticCodeSupport:Bool;
 }
 
 /**
@@ -1327,6 +1334,14 @@ typedef CompletionClientCapabilities = {
 			**/
 			var valueSet:Array<CompletionItemTag>;
 		}
+
+		/**
+			Client support insert replace edit to control different behavior if a
+			completion item is inserted in the text or should replace text.
+
+			@since 3.16.0 - Proposed state
+		**/
+		var ?insertReplaceSupport:Bool;
 	};
 
 	var ?completionItemKind:{
@@ -1817,6 +1832,20 @@ typedef DocumentSymbolClientCapabilities = {
 		The client support hierarchical document symbols.
 	**/
 	var ?hierarchicalDocumentSymbolSupport:Bool;
+
+	/**
+		The client supports tags on `SymbolInformation`. Tags are supported on
+		`DocumentSymbol` if `hierarchicalDocumentSymbolSupport` is set tot true.
+		Clients supporting tags have to handle unknown tags gracefully.
+
+		@since 3.16.0 - Proposed state
+	**/
+	var ?tagSupport:{
+		/**
+		 * The tags supported by the client.
+		 */
+		var valueSet:Array<SymbolTag>;
+	};
 }
 
 /**
@@ -1968,6 +1997,19 @@ typedef WorkspaceSymbolClientCapabilities = {
 			the initial version of the protocol.
 		**/
 		var ?valueSet:Array<SymbolKind>;
+	};
+
+	/**
+		The client supports tags on `SymbolInformation`.
+		Clients supporting tags have to handle unknown tags gracefully.
+
+		@since 3.16.0 - Proposed state
+	**/
+	var ?tagSupport:{
+		/**
+		 * The tags supported by the client.
+		 */
+		var valueSet:Array<SymbolTag>;
 	};
 }
 

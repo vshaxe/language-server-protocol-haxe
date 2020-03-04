@@ -274,6 +274,23 @@ enum abstract DiagnosticTag(Int) {
 }
 
 /**
+	Structure to capture more complex diagnostic codes.
+
+	@since 3.16.0 - Proposed state
+**/
+typedef DiagnosticCode = {
+	/**
+		The actual code
+	**/
+	var value:EitherType<String, Int>;
+
+	/**
+		A target URI to open with more information about the diagnostic error.
+	**/
+	var target:URI;
+}
+
+/**
 	Represents a diagnostic, such as a compiler error or warning.
 	Diagnostic objects are only valid in the scope of a resource.
 **/
@@ -291,8 +308,10 @@ typedef Diagnostic = {
 
 	/**
 		The diagnostic's code, which usually appear in the user interface.
+
+		@since 3.16.0 Support for `DiagnosticCode` - Proposed state
 	**/
-	var ?code:EitherType<Int, String>;
+	var ?code:EitherType<Int, EitherType<String, DiagnosticCode>>;
 
 	/**
 		A human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'.
@@ -306,6 +325,8 @@ typedef Diagnostic = {
 
 	/** 
 		Additional metadata about the diagnostic.
+
+		@since 3.15.0
 	**/
 	var ?tags:Array<DiagnosticTag>;
 
@@ -523,9 +544,24 @@ typedef WorkspaceEdit = {
 }
 
 /**
-	A tagging type for string properties that are actually URIs.
+	A tagging type for string properties that are actually document URIs.
 **/
 abstract DocumentUri(String) {
+	public inline function new(uri:String) {
+		this = uri;
+	}
+
+	public inline function toString() {
+		return this;
+	}
+}
+
+/**
+	A tagging type for string properties that are actually URIs
+
+	@since 3.16.0 - Proposed state
+**/
+abstract URI(String) {
 	public inline function new(uri:String) {
 		this = uri;
 	}
@@ -707,6 +743,28 @@ enum abstract CompletionItemTag(Int) {
 }
 
 /**
+	A special text edit to provide a insert or a replace operation.
+
+	@since 3.16.0 - Proposed state
+**/
+typedef InsertReplaceEdit = {
+	/**
+		The string to be inserted.
+	**/
+	var newText:String;
+
+	/**
+		The range if the insert is requested
+	**/
+	var insert:Range;
+
+	/**
+		The range if the replace is requested.
+	**/
+	var replace:Range;
+}
+
+/**
 	A completion item represents a text snippet that is
 	proposed to complete text that is being typed.
 **/
@@ -793,10 +851,12 @@ typedef CompletionItem = {
 		this completion. When an edit is provided the value of
 		`insertText` is ignored.
 
-		*Note:* The text edit's range must be a [single line] and it must contain the position
-		at which completion has been requested.
+		*Note:* The text edit's range as well as both ranges from a insert replace edit must be a
+		[single line] and they must contain the position at which completion has been requested.
+
+		@since 3.16.0 additional type `InsertReplaceEdit` - Proposed state
 	**/
-	var ?textEdit:TextEdit;
+	var ?textEdit:EitherType<TextEdit, InsertReplaceEdit>;
 
 	/**
 		An optional array of additional [text edits](#TextEdit) that are applied when
@@ -1084,7 +1144,16 @@ typedef SymbolInformation = {
 	var kind:SymbolKind;
 
 	/**
+		Tags for this completion item.
+
+		@since 3.16.0 - Proposed state
+	**/
+	var ?tags:Array<SymbolTag>;
+
+	/**
 		Indicates if this symbol is deprecated.
+
+		@deprecated Use tags instead
 	**/
 	var ?deprecated:Bool;
 
@@ -1134,7 +1203,16 @@ typedef DocumentSymbol = {
 	var kind:SymbolKind;
 
 	/**
+		Tags for this completion item.
+
+		@since 3.16.0 - Proposed state
+	**/
+	var ?tags:Array<SymbolTag>;
+
+	/**
 		Indicates if this symbol is deprecated.
+
+		@deprecated Use tags instead
 	**/
 	var ?deprecated:Bool;
 
