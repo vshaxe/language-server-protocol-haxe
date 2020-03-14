@@ -45,7 +45,7 @@ class DocumentColorRequest {
 	public static inline final type = new ProtocolRequestType<DocumentColorParams, Array<ColorInformation>, Array<ColorInformation>, NoData,
 		DocumentColorRegistrationOptions>("textDocument/documentColor");
 
-	/** @deprecated Use DocumentColorRequest.type */
+	@:deprecated("Use DocumentColorRequest.type")
 	public static final resultType = new ProgressType<Array<ColorInformation>>();
 }
 

@@ -800,8 +800,8 @@ typedef CompletionItem = {
 
 	/**
 		Indicates if this item is deprecated.
-		@deprecated Use `tags` instead.
 	**/
+	@:deprecated("Use `tags` instead.")
 	var ?deprecated:Bool;
 
 	/**
@@ -1152,9 +1152,8 @@ typedef SymbolInformation = {
 
 	/**
 		Indicates if this symbol is deprecated.
-
-		@deprecated Use tags instead
 	**/
+	@:deprecated("Use tags instead")
 	var ?deprecated:Bool;
 
 	/**
@@ -1211,9 +1210,8 @@ typedef DocumentSymbol = {
 
 	/**
 		Indicates if this symbol is deprecated.
-
-		@deprecated Use tags instead
 	**/
+	@:deprecated("Use tags instead")
 	var ?deprecated:Bool;
 
 	/**
@@ -1536,9 +1534,8 @@ typedef TextDocumentContentChangeEvent = {
 
 	/**
 		The optional length of the range that got replaced.
-
-		@deprecated use range instead.
 	**/
+	@:deprecated("use range instead.")
 	var ?rangeLength:Int;
 
 	/**
