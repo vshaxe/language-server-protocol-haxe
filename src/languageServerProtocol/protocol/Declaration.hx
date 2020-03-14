@@ -32,8 +32,9 @@ typedef DeclarationParams = TextDocumentPositionParams & WorkDoneProgressParams 
 	to such.
 **/
 class DeclarationRequest {
-	public static inline final type = new RequestType<DeclarationParams, Null<EitherType<Declaration, Array<DeclarationLink>>>, NoData,
-		DeclarationRegistrationOptions>("textDocument/declaration");
+	public static inline final type = new ProtocolRequestType<DeclarationParams, Null<EitherType<Declaration, Array<DeclarationLink>>>,
+		EitherType<Array<Location>, Array<DeclarationLink>>, NoData, DeclarationRegistrationOptions>("textDocument/declaration");
 
+	@:deprecated("Use DeclarationRequest.type")
 	public static final resultType = new ProgressType<EitherType<Array<Location>, Array<DeclarationLink>>>();
 }

@@ -47,8 +47,9 @@ typedef FoldingRangeParams = WorkDoneProgressParams &
 	that resolves to such.
 **/
 class FoldingRangeRequest {
-	public static inline final type = new RequestType<FoldingRangeParams, Null<Array<FoldingRange>>, NoData,
+	public static inline final type = new ProtocolRequestType<FoldingRangeParams, Null<Array<FoldingRange>>, Array<FoldingRange>, NoData,
 		FoldingRangeRegistrationOptions>("textDocument/foldingRange");
 
+	@:deprecated("Use FoldingRangeRequest.type")
 	public static final resultType = new ProgressType<Array<FoldingRange>>();
 }

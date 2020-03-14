@@ -56,7 +56,7 @@ typedef WorkspaceFolder = {
 	The `workspace/workspaceFolders` is sent from the server to the client to fetch the open workspace folders.
 **/
 class WorkspaceFoldersRequest {
-	public static inline final type = new RequestType<NoData, Null<Array<WorkspaceFolder>>, NoData, NoData>("workspace/workspaceFolders");
+	public static inline final type = new ProtocolRequestType<NoData, Null<Array<WorkspaceFolder>>, Never, NoData, NoData>("workspace/workspaceFolders");
 }
 
 /**
@@ -64,7 +64,7 @@ class WorkspaceFoldersRequest {
 	folder configuration changes.
 **/
 class DidChangeWorkspaceFoldersNotification {
-	public static inline final type = new NotificationType<DidChangeWorkspaceFoldersParams, NoData>("workspace/didChangeWorkspaceFolders");
+	public static inline final type = new ProtocolNotificationType<DidChangeWorkspaceFoldersParams, NoData>("workspace/didChangeWorkspaceFolders");
 }
 
 /**
