@@ -89,7 +89,7 @@ typedef RegistrationParams = {
 	handler on the client side.
 **/
 class RegistrationRequest {
-	public static inline final type = new RequestType<RegistrationParams, NoData, NoData, NoData>("client/registerCapability");
+	public static inline final type = new ProtocolRequestType<RegistrationParams, NoData, Never, NoData, NoData>("client/registerCapability");
 }
 
 /**
@@ -120,7 +120,7 @@ typedef UnregistrationParams = {
 	handler on the client side.
 **/
 class UnregistrationRequest {
-	public static inline final type = new RequestType<UnregistrationParams, NoData, NoData, NoData>("client/unregisterCapability");
+	public static inline final type = new ProtocolRequestType<UnregistrationParams, NoData, Never, NoData, NoData>("client/unregisterCapability");
 }
 
 typedef WorkDoneProgressParams = {
@@ -571,7 +571,8 @@ typedef ServerCapabilities = WorkspaceFoldersServerCapabilities & {
 	resolves to such.
 **/
 class InitializeRequest {
-	public static inline final type = new RequestType<InitializeParams & WorkDoneProgressParams, InitializeResult, InitializeError, NoData>("initialize");
+	public static inline final type = new ProtocolRequestType<InitializeParams & WorkDoneProgressParams, InitializeResult, Never, InitializeError,
+		NoData>("initialize");
 }
 
 /**
@@ -690,7 +691,7 @@ typedef InitializedParams = {}
 	is allowed to send requests from the server to the client.
 **/
 class InitializedNotification {
-	public static inline final type = new NotificationType<InitializedParams, NoData>("initialized");
+	public static inline final type = new ProtocolNotificationType<InitializedParams, NoData>("initialized");
 }
 
 //---- Shutdown Method ----
@@ -702,7 +703,7 @@ class InitializedNotification {
 	is the exit event.
 **/
 class ShutdownRequest {
-	public static inline final type = new RequestType<NoData, NoData, NoData, NoData>("shutdown");
+	public static inline final type = new ProtocolRequestType<NoData, NoData, Never, NoData, NoData>("shutdown");
 }
 
 //---- Exit Notification ----
@@ -712,7 +713,7 @@ class ShutdownRequest {
 	ask the server to exit its process.
 **/
 class ExitNotification {
-	public static inline final type = new NotificationType<NoData, NoData>("exit");
+	public static inline final type = new ProtocolNotificationType<NoData, NoData>("exit");
 }
 
 //---- Configuration notification ----
@@ -730,7 +731,7 @@ typedef DidChangeConfigurationClientCapabilities = {
 	the changed configuration as defined by the language client.
 **/
 class DidChangeConfigurationNotification {
-	public static inline final type = new NotificationType<DidChangeConfigurationParams,
+	public static inline final type = new ProtocolNotificationType<DidChangeConfigurationParams,
 		DidChangeConfigurationRegistrationOptions>("workspace/didChangeConfiguration");
 }
 
@@ -792,7 +793,7 @@ typedef ShowMessageParams = {
 	the client to display a particular message in the user interface.
 **/
 class ShowMessageNotification {
-	public static inline final type = new NotificationType<ShowMessageParams, NoData>("window/showMessage");
+	public static inline final type = new ProtocolNotificationType<ShowMessageParams, NoData>("window/showMessage");
 }
 
 typedef MessageActionItem = {
@@ -824,7 +825,8 @@ typedef ShowMessageRequestParams = {
 	and a set of options actions to the user.
 **/
 class ShowMessageRequest {
-	public static inline final type = new RequestType<ShowMessageRequestParams, Null<MessageActionItem>, NoData, NoData>("window/showMessageRequest");
+	public static inline final type = new ProtocolRequestType<ShowMessageRequestParams, Null<MessageActionItem>, Never, NoData,
+		NoData>("window/showMessageRequest");
 }
 
 /**
@@ -832,7 +834,7 @@ class ShowMessageRequest {
 	the client to log a particular message.
 **/
 class LogMessageNotification {
-	public static inline final type = new NotificationType<LogMessageParams, NoData>("window/logMessage");
+	public static inline final type = new ProtocolNotificationType<LogMessageParams, NoData>("window/logMessage");
 }
 
 typedef LogMessageParams = {
@@ -854,7 +856,7 @@ typedef LogMessageParams = {
 	the client to log telemetry data.
 **/
 class TelemetryEventNotification {
-	public static inline final type = new NotificationType<Dynamic, NoData>("telemetry/event");
+	public static inline final type = new ProtocolNotificationType<Dynamic, NoData>("telemetry/event");
 }
 
 //---- Text document notifications ----
@@ -957,7 +959,7 @@ typedef DidOpenTextDocumentParams = {
 	is one.
 **/
 class DidOpenTextDocumentNotification {
-	public static inline final type = new NotificationType<DidOpenTextDocumentParams, TextDocumentRegistrationOptions>("textDocument/didOpen");
+	public static inline final type = new ProtocolNotificationType<DidOpenTextDocumentParams, TextDocumentRegistrationOptions>("textDocument/didOpen");
 }
 
 /**
@@ -1001,7 +1003,8 @@ typedef TextDocumentChangeRegistrationOptions = TextDocumentRegistrationOptions 
 	changes to a text document.
 **/
 class DidChangeTextDocumentNotification {
-	public static inline final type = new NotificationType<DidChangeTextDocumentParams, TextDocumentChangeRegistrationOptions>("textDocument/didChange");
+	public static inline final type = new ProtocolNotificationType<DidChangeTextDocumentParams,
+		TextDocumentChangeRegistrationOptions>("textDocument/didChange");
 }
 
 /**
@@ -1024,7 +1027,7 @@ typedef DidCloseTextDocumentParams = {
 	notification requires a previous open notification to be sent.
 **/
 class DidCloseTextDocumentNotification {
-	public static inline final type = new NotificationType<DidCloseTextDocumentParams, TextDocumentRegistrationOptions>("textDocument/didClose");
+	public static inline final type = new ProtocolNotificationType<DidCloseTextDocumentParams, TextDocumentRegistrationOptions>("textDocument/didClose");
 }
 
 /**
@@ -1052,7 +1055,7 @@ typedef TextDocumentSaveRegistrationOptions = TextDocumentRegistrationOptions & 
 	the document got saved in the client.
 **/
 class DidSaveTextDocumentNotification {
-	public static inline final type = new NotificationType<DidSaveTextDocumentParams, TextDocumentSaveRegistrationOptions>("textDocument/didSave");
+	public static inline final type = new ProtocolNotificationType<DidSaveTextDocumentParams, TextDocumentSaveRegistrationOptions>("textDocument/didSave");
 }
 
 /**
@@ -1075,7 +1078,7 @@ typedef WillSaveTextDocumentParams = {
 	the document is actually saved.
 **/
 class WillSaveTextDocumentNotification {
-	public static inline final type = new NotificationType<WillSaveTextDocumentParams, TextDocumentRegistrationOptions>("textDocument/willSave");
+	public static inline final type = new ProtocolNotificationType<WillSaveTextDocumentParams, TextDocumentRegistrationOptions>("textDocument/willSave");
 }
 
 /**
@@ -1087,7 +1090,7 @@ class WillSaveTextDocumentNotification {
 	reliable.
 **/
 class WillSaveTextDocumentWaitUntilRequest {
-	public static inline final type = new RequestType<WillSaveTextDocumentParams, Null<Array<TextEdit>>, NoData,
+	public static inline final type = new ProtocolRequestType<WillSaveTextDocumentParams, Null<Array<TextEdit>>, Never, NoData,
 		TextDocumentRegistrationOptions>("textDocument/willSaveWaitUntil");
 }
 
@@ -1107,7 +1110,7 @@ typedef DidChangeWatchedFilesClientCapabilities = {
 	the client detects changes to file watched by the language client.
 **/
 class DidChangeWatchedFilesNotification {
-	public static inline final type = new NotificationType<DidChangeWatchedFilesParams,
+	public static inline final type = new ProtocolNotificationType<DidChangeWatchedFilesParams,
 		DidChangeWatchedFilesRegistrationOptions>("workspace/didChangeWatchedFiles");
 }
 
@@ -1263,7 +1266,7 @@ typedef PublishDiagnosticsParams = {
 	results of validation runs.
 **/
 class PublishDiagnosticsNotification {
-	public static inline final type = new NotificationType<PublishDiagnosticsParams, NoData>("textDocument/publishDiagnostics");
+	public static inline final type = new ProtocolNotificationType<PublishDiagnosticsParams, NoData>("textDocument/publishDiagnostics");
 }
 
 //---- Completion Support --------------------------
@@ -1452,9 +1455,10 @@ typedef CompletionRegistrationOptions = TextDocumentRegistrationOptions & Comple
 	`filterText`, `insertText`, and `textEdit`, must not be changed during resolve.
 **/
 class CompletionRequest {
-	public static inline final type = new RequestType<CompletionParams, Null<EitherType<Array<CompletionItem>, CompletionList>>, NoData,
-		CompletionRegistrationOptions>("textDocument/completion");
+	public static inline final type = new ProtocolRequestType<CompletionParams, Null<EitherType<Array<CompletionItem>, CompletionList>>,
+		Array<CompletionItem>, NoData, CompletionRegistrationOptions>("textDocument/completion");
 
+	@:deprecated("Use CompletionRequest.type")
 	public static final resultType = new ProgressType<Array<CompletionItem>>();
 }
 
@@ -1464,7 +1468,7 @@ class CompletionRequest {
 	is of type [CompletionItem](#CompletionItem) or a Thenable that resolves to such.
 **/
 class CompletionResolveRequest {
-	public static inline final type = new RequestType<CompletionItem, CompletionItem, NoData, NoData>("completionItem/resolve");
+	public static inline final type = new ProtocolRequestType<CompletionItem, CompletionItem, Never, NoData, NoData>("completionItem/resolve");
 }
 
 //---- Hover Support -------------------------------
@@ -1503,7 +1507,7 @@ typedef HoverRegistrationOptions = TextDocumentRegistrationOptions & HoverOption
 	type [Hover](#Hover) or a Thenable that resolves to such.
 **/
 class HoverRequest {
-	public static inline final type = new RequestType<HoverParams, Null<Hover>, NoData, HoverRegistrationOptions>("textDocument/hover");
+	public static inline final type = new ProtocolRequestType<HoverParams, Null<Hover>, Never, NoData, HoverRegistrationOptions>("textDocument/hover");
 }
 
 //---- SignatureHelp ----------------------------------
@@ -1650,7 +1654,7 @@ typedef SignatureHelpParams = TextDocumentPositionParams &
 typedef SignatureHelpRegistrationOptions = TextDocumentRegistrationOptions & SignatureHelpOptions;
 
 class SignatureHelpRequest {
-	public static inline final type = new RequestType<SignatureHelpParams, Null<SignatureHelp>, NoData,
+	public static inline final type = new ProtocolRequestType<SignatureHelpParams, Null<SignatureHelp>, Never, NoData,
 		SignatureHelpRegistrationOptions>("textDocument/signatureHelp");
 }
 
@@ -1696,9 +1700,10 @@ typedef DefinitionRegistrationOptions = TextDocumentRegistrationOptions & Defini
 	to such.
 **/
 class DefinitionRequest {
-	public static inline final type = new RequestType<DefinitionParams, Null<EitherType<Definition, DefinitionLink>>, NoData,
-		DefinitionRegistrationOptions>("textDocument/definition");
+	public static inline final type = new ProtocolRequestType<DefinitionParams, Null<EitherType<Definition, DefinitionLink>>,
+		EitherType<Array<Location>, Array<DefinitionLink>>, NoData, DefinitionRegistrationOptions>("textDocument/definition");
 
+	@:deprecated("Use DefinitionRequest.type")
 	public static final resultType = new ProgressType<EitherType<Array<Location>, Array<DefinitionLink>>>();
 }
 
@@ -1740,8 +1745,10 @@ typedef ReferenceRegistrationOptions = TextDocumentRegistrationOptions & Referen
 	[Location[]](#Location) or a Thenable that resolves to such.
 **/
 class ReferencesRequest {
-	public static inline final type = new RequestType<ReferenceParams, Null<Array<Location>>, NoData, ReferenceRegistrationOptions>("textDocument/references");
+	public static inline final type = new ProtocolRequestType<ReferenceParams, Null<Array<Location>>, Array<Location>, NoData,
+		ReferenceRegistrationOptions>("textDocument/references");
 
+	@:deprecated("Use ReferencesRequest.type")
 	public static final resultType = new ProgressType<Array<Location>>();
 }
 
@@ -1779,9 +1786,10 @@ typedef DocumentHighlightRegistrationOptions = TextDocumentRegistrationOptions &
 	(#DocumentHighlight) or a Thenable that resolves to such.
 **/
 class DocumentHighlightRequest {
-	public static inline final type = new RequestType<DocumentHighlightParams, Null<Array<DocumentHighlight>>, NoData,
+	public static inline final type = new ProtocolRequestType<DocumentHighlightParams, Null<Array<DocumentHighlight>>, Array<DocumentHighlight>, NoData,
 		DocumentHighlightRegistrationOptions>("textDocument/documentHighlight");
 
+	@:deprecated("Use DocumentHighlightRequest.type")
 	public static final resultType = new ProgressType<Array<DocumentHighlight>>();
 }
 
@@ -1847,9 +1855,10 @@ typedef DocumentSymbolRegistrationOptions = TextDocumentRegistrationOptions & Do
 	that resolves to such.
 **/
 class DocumentSymbolRequest {
-	public static inline final type = new RequestType<DocumentSymbolParams, Null<Array<EitherType<SymbolInformation, DocumentSymbol>>>, NoData,
-		DocumentSymbolRegistrationOptions>("textDocument/documentSymbol");
+	public static inline final type = new ProtocolRequestType<DocumentSymbolParams, Null<Array<EitherType<SymbolInformation, DocumentSymbol>>>,
+		EitherType<Array<SymbolInformation>, Array<DocumentSymbol>>, NoData, DocumentSymbolRegistrationOptions>("textDocument/documentSymbol");
 
+	@:deprecated("Use DocumentSymbolRequest.type")
 	public static final resultType = new ProgressType<EitherType<Array<SymbolInformation>, Array<DocumentSymbol>>>();
 }
 
@@ -1936,9 +1945,10 @@ typedef CodeActionRegistrationOptions = TextDocumentRegistrationOptions & CodeAc
 	A request to provide commands for the given text document and range.
 **/
 class CodeActionRequest {
-	public static inline final type = new RequestType<CodeActionParams, Null<Array<EitherType<Command, CodeAction>>>, NoData,
-		CodeActionRegistrationOptions>("textDocument/codeAction");
+	public static inline final type = new ProtocolRequestType<CodeActionParams, Null<Array<EitherType<Command, CodeAction>>>,
+		Array<EitherType<Command, CodeAction>>, NoData, CodeActionRegistrationOptions>("textDocument/codeAction");
 
+	@:deprecated("Use CodeActionRequest.type")
 	public static final resultType = new ProgressType<Array<EitherType<Command, CodeAction>>>();
 }
 
@@ -2000,9 +2010,10 @@ typedef WorkspaceSymbolRegistrationOptions = WorkspaceSymbolOptions;
 	resolves to such.
 **/
 class WorkspaceSymbolRequest {
-	public static inline final type = new RequestType<WorkspaceSymbolParams, Null<Array<SymbolInformation>>, NoData,
+	public static inline final type = new ProtocolRequestType<WorkspaceSymbolParams, Null<Array<SymbolInformation>>, Array<SymbolInformation>, NoData,
 		WorkspaceSymbolRegistrationOptions>("workspace/symbol");
 
+	@:deprecated("Use WorkspaceSymbolRequest.type")
 	public static final resultType = new ProgressType<Array<SymbolInformation>>();
 }
 
@@ -2047,8 +2058,10 @@ typedef CodeLensRegistrationOptions = TextDocumentRegistrationOptions & CodeLens
 	A request to provide code lens for the given text document.
 **/
 class CodeLensRequest {
-	public static inline final type = new RequestType<CodeLensParams, Array<CodeLens>, NoData, CodeLensRegistrationOptions>("textDocument/codeLens");
+	public static inline final type = new ProtocolRequestType<CodeLensParams, Array<CodeLens>, Array<CodeLens>, NoData,
+		CodeLensRegistrationOptions>("textDocument/codeLens");
 
+	@:deprecated("Use CodeLensRequest.type")
 	public static final resultType = new ProgressType<Array<CodeLens>>();
 }
 
@@ -2056,7 +2069,7 @@ class CodeLensRequest {
 	A request to resolve a command for a given code lens.
 **/
 class CodeLensResolveRequest {
-	public static inline final type = new RequestType<CodeLens, CodeLens, NoData, NoData>("codeLens/resolve");
+	public static inline final type = new ProtocolRequestType<CodeLens, CodeLens, Never, NoData, NoData>("codeLens/resolve");
 }
 
 //---- Document Links ----------------------------------------------
@@ -2107,9 +2120,10 @@ typedef DocumentLinkRegistrationOptions = TextDocumentRegistrationOptions & Docu
 	A request to provide document links
 **/
 class DocumentLinkRequest {
-	public static inline final type = new RequestType<DocumentLinkParams, Null<Array<DocumentLink>>, NoData,
+	public static inline final type = new ProtocolRequestType<DocumentLinkParams, Null<Array<DocumentLink>>, Array<DocumentLink>, NoData,
 		DocumentLinkRegistrationOptions>("textDocument/documentLink");
 
+	@:deprecated("Use DocumentLinkRequest.type")
 	public static final resultType = new ProgressType<Array<DocumentLink>>();
 }
 
@@ -2119,7 +2133,7 @@ class DocumentLinkRequest {
 	is of type [DocumentLink](#DocumentLink) or a Thenable that resolves to such.
 **/
 class DocumentLinkResolveRequest {
-	public static inline final type = new RequestType<DocumentLink, DocumentLink, NoData, NoData>("documentLink/resolve");
+	public static inline final type = new ProtocolRequestType<DocumentLink, DocumentLink, Never, NoData, NoData>("documentLink/resolve");
 }
 
 //---- Formatting ----------------------------------------------
@@ -2163,7 +2177,7 @@ typedef DocumentFormattingRegistrationOptions = TextDocumentRegistrationOptions 
 	A request to to format a whole document.
 **/
 class DocumentFormattingRequest {
-	public static inline final type = new RequestType<DocumentFormattingParams, Null<Array<TextEdit>>, NoData,
+	public static inline final type = new ProtocolRequestType<DocumentFormattingParams, Null<Array<TextEdit>>, Never, NoData,
 		DocumentFormattingRegistrationOptions>("textDocument/formatting");
 }
 
@@ -2211,7 +2225,7 @@ typedef DocumentRangeFormattingRegistrationOptions = TextDocumentRegistrationOpt
 	A request to to format a range in a document.
 **/
 class DocumentRangeFormattingRequest {
-	public static inline final type = new RequestType<DocumentRangeFormattingParams, Null<Array<TextEdit>>, NoData,
+	public static inline final type = new ProtocolRequestType<DocumentRangeFormattingParams, Null<Array<TextEdit>>, Never, NoData,
 		DocumentRangeFormattingRegistrationOptions>("textDocument/rangeFormatting");
 }
 
@@ -2274,7 +2288,7 @@ typedef DocumentOnTypeFormattingRegistrationOptions = TextDocumentRegistrationOp
 	A request to format a document on type.
 **/
 class DocumentOnTypeFormattingRequest {
-	public static inline final type = new RequestType<DocumentOnTypeFormattingParams, Null<Array<TextEdit>>, NoData,
+	public static inline final type = new ProtocolRequestType<DocumentOnTypeFormattingParams, Null<Array<TextEdit>>, Never, NoData,
 		DocumentOnTypeFormattingRegistrationOptions>("textDocument/onTypeFormatting");
 }
 
@@ -2337,7 +2351,8 @@ typedef RenameRegistrationOptions = TextDocumentRegistrationOptions & RenameOpti
 	A request to rename a symbol.
 **/
 class RenameRequest {
-	public static inline final type = new RequestType<RenameParams, Null<WorkspaceEdit>, NoData, RenameRegistrationOptions>("textDocument/rename");
+	public static inline final type = new ProtocolRequestType<RenameParams, Null<WorkspaceEdit>, Never, NoData,
+		RenameRegistrationOptions>("textDocument/rename");
 }
 
 typedef PrepareRenameParams = TextDocumentPositionParams & WorkDoneProgressParams;
@@ -2346,7 +2361,7 @@ typedef PrepareRenameParams = TextDocumentPositionParams & WorkDoneProgressParam
 	A request to test and perform the setup necessary for a rename.
 **/
 class PrepareRenameRequest {
-	public static inline final type = new RequestType<PrepareRenameParams, Null<EitherType<Range, {range:Range, placeholder:String}>>, NoData,
+	public static inline final type = new ProtocolRequestType<PrepareRenameParams, Null<EitherType<Range, {range:Range, placeholder:String}>>, Never, NoData,
 		NoData>("textDocument/prepareRename");
 }
 
@@ -2397,7 +2412,7 @@ typedef ExecuteCommandRegistrationOptions = ExecuteCommandOptions;
 	a workspace edit which the client will apply to the workspace.
 **/
 class ExecuteCommandRequest {
-	public static inline final type = new RequestType<ExecuteCommandParams, Null<Dynamic>, NoData,
+	public static inline final type = new ProtocolRequestType<ExecuteCommandParams, Null<Dynamic>, Never, NoData,
 		ExecuteCommandRegistrationOptions>("workspace/executeCommand");
 }
 
@@ -2464,5 +2479,6 @@ typedef ApplyWorkspaceEditResponse = {
 	A request sent from the server to the client to modified certain resources.
 **/
 class ApplyWorkspaceEditRequest {
-	public static inline final type = new RequestType<ApplyWorkspaceEditParams, ApplyWorkspaceEditResponse, NoData, NoData>("workspace/applyEdit");
+	public static inline final type = new ProtocolRequestType<ApplyWorkspaceEditParams, ApplyWorkspaceEditResponse, Never, NoData,
+		NoData>("workspace/applyEdit");
 }
