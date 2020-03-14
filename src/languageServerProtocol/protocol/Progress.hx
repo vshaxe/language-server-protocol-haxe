@@ -105,7 +105,7 @@ typedef WorkDoneProgressEnd = {
 }
 
 class WorkDoneProgress {
-	public final type = new ProgressType<EitherType<WorkDoneProgressBegin, EitherType<WorkDoneProgressReport, WorkDoneProgressEnd>>>();
+	public static final type = new ProgressType<EitherType<WorkDoneProgressBegin, EitherType<WorkDoneProgressReport, WorkDoneProgressEnd>>>();
 }
 
 typedef WorkDoneProgressCreateParams = {
