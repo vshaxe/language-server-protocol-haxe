@@ -1,0 +1,21 @@
+name: gh-pages
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
+    - run: npm install
+    - run: npx lix install gh:HaxeFoundation/dox
+    - run: npx haxe doc.hxml
+    - uses: JamesIves/github-pages-deploy-action@3.4.2
+      with:
+        ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
+        BRANCH: gh-pages
+        FOLDER: out
