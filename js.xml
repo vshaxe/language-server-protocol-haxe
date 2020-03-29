@@ -1,6 +1,6 @@
 <!-- This file can be parsed by haxe.rtti.XmlParser -->
 <haxe>
-	<abstract path="Any" params="" file="/home/travis/haxe/std/Any.hx">
+	<abstract path="Any" params="" file="/home/runner/haxe/versions/4.0.5/std/Any.hx">
 		<from><icast field="__cast"><c path="__cast.T"/></icast></from>
 		<this><d/></this>
 		<to><icast field="__promote"><c path="__promote.T"/></icast></to>
@@ -13,9 +13,9 @@
 	support field access or operators and it's bound to monomorphs. So,
 	to work with the actual value, it needs to be explicitly promoted
 	to another type.</haxe_doc>
-		<impl><class path="_Any.Any_Impl_" params="" file="/home/travis/haxe/std/Any.hx" private="1" module="Any"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="_Any.Any_Impl_" params="" file="/home/runner/haxe/versions/4.0.5/std/Any.hx" private="1" module="Any"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<class path="Array" params="T" file="/home/travis/haxe/std/js/_std/Array.hx" extern="1">
+	<class path="Array" params="T" file="/home/runner/haxe/versions/4.0.5/std/js/_std/Array.hx" extern="1">
 		<length public="1" set="null">
 			<x path="Int"/>
 			<haxe_doc>The length of `this` Array.</haxe_doc>
@@ -72,11 +72,6 @@
 		If `this` is the empty Array `[]`, `null` is returned and the length
 		remains 0.</haxe_doc>
 		</shift>
-		<iterator public="1" get="inline" set="null" line="85">
-			<f a=""><c path="haxe.iterators.ArrayIterator"><c path="Array.T"/></c></f>
-			<meta><m n=":runtime"/></meta>
-			<haxe_doc>Returns an iterator of the Array values.</haxe_doc>
-		</iterator>
 		<new public="1" set="method">
 			<f a=""><x path="Void"/></f>
 			<haxe_doc>Creates a new Array.</haxe_doc>
@@ -92,7 +87,7 @@
 			<m n=":coreApi"/>
 		</meta>
 	</class>
-	<abstract path="Class" params="T" file="/home/travis/haxe/std/Class.hx">
+	<abstract path="Class" params="T" file="/home/runner/haxe/versions/4.0.5/std/Class.hx">
 		<this><x path="Class"><c path="Class.T"/></x></this>
 		<haxe_doc>An abstract type that represents a Class.
 
@@ -100,11 +95,12 @@
 
 	@see https://haxe.org/manual/types-class-instance.html</haxe_doc>
 		<meta>
+			<m n=":valueUsed"/>
 			<m n=":coreType"/>
 			<m n=":runtimeValue"/>
 		</meta>
 	</abstract>
-	<class path="Date" params="" file="/home/travis/haxe/std/js/_std/Date.hx" extern="1">
+	<class path="Date" params="" file="/home/runner/haxe/versions/4.0.5/std/js/_std/Date.hx" extern="1">
 		<now public="1" get="inline" set="null" line="46" static="1">
 			<f a=""><c path="Date"/></f>
 			<haxe_doc>Returns a Date representing the current local time.</haxe_doc>
@@ -258,7 +254,7 @@
 	timestamps outside the range on any target.</haxe_doc>
 		<meta><m n=":coreApi"/></meta>
 	</class>
-	<class path="js.lib.RegExp" params="" file="/home/travis/haxe/std/js/lib/RegExp.hx" extern="1">
+	<class path="js.lib.RegExp" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/RegExp.hx" extern="1">
 		<global public="1" set="null"><x path="Bool"/></global>
 		<ignoreCase public="1" set="null"><x path="Bool"/></ignoreCase>
 		<multiline public="1" set="null"><x path="Bool"/></multiline>
@@ -284,7 +280,7 @@
 	[regexp literals](https://haxe.org/manual/std-regex.html).</haxe_doc>
 		<meta><m n=":native"><e>"RegExp"</e></m></meta>
 	</class>
-	<class path="EReg" params="" file="/home/travis/haxe/std/js/_std/EReg.hx">
+	<class path="EReg" params="" file="/home/runner/haxe/versions/4.0.5/std/js/_std/EReg.hx">
 		<r><c path="_EReg.HaxeRegExp"/></r>
 		<match public="1" set="method" line="29">
 			<f a="s">
@@ -344,7 +340,7 @@
 			<m n=":coreApi"/>
 		</meta>
 	</class>
-	<class path="_EReg.HaxeRegExp" params="" file="/home/travis/haxe/std/js/_std/EReg.hx" private="1" module="EReg" extern="1">
+	<class path="_EReg.HaxeRegExp" params="" file="/home/runner/haxe/versions/4.0.5/std/js/_std/EReg.hx" private="1" module="EReg" extern="1">
 		<extends path="js.lib.RegExp"/>
 		<m public="1"><c path="js.lib.RegExpMatch"/></m>
 		<s public="1"><c path="String"/></s>
@@ -353,7 +349,7 @@
 			<m n=":native"><e>"RegExp"</e></m>
 		</meta>
 	</class>
-	<abstract path="Enum" params="T" file="/home/travis/haxe/std/Enum.hx">
+	<abstract path="Enum" params="T" file="/home/runner/haxe/versions/4.0.5/std/Enum.hx">
 		<this><x path="Enum"><c path="Enum.T"/></x></this>
 		<haxe_doc>An abstract type that represents an Enum type.
 
@@ -363,20 +359,39 @@
 
 	@see https://haxe.org/manual/types-enum-instance.html</haxe_doc>
 		<meta>
+			<m n=":valueUsed"/>
 			<m n=":coreType"/>
 			<m n=":runtimeValue"/>
 		</meta>
 	</abstract>
-	<abstract path="EnumValue" params="" file="/home/travis/haxe/std/EnumValue.hx">
+	<abstract path="EnumValue" params="" file="/home/runner/haxe/versions/4.0.5/std/EnumValue.hx">
 		<this><x path="EnumValue"/></this>
 		<haxe_doc>An abstract type that represents any enum value.
 	See `Type` for the Haxe Reflection API.
 
 	@see https://haxe.org/manual/types-enum-instance.html</haxe_doc>
 		<meta><m n=":coreType"/></meta>
-		<impl><class path="_EnumValue.EnumValue_Impl_" params="" file="/home/travis/haxe/std/EnumValue.hx" private="1" module="EnumValue"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="_EnumValue.EnumValue_Impl_" params="" file="/home/runner/haxe/versions/4.0.5/std/EnumValue.hx" private="1" module="EnumValue"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<class path="js.Syntax" params="" file="/home/travis/haxe/std/js/Syntax.hx" extern="1">
+	<typedef path="Map" params="K:V" file="/home/runner/haxe/versions/4.0.5/std/Map.hx"><x path="haxe.ds.Map">
+	<c path="Map.K"/>
+	<c path="Map.V"/>
+</x></typedef>
+	<typedef path="IMap" params="K:V" file="/home/runner/haxe/versions/4.0.5/std/Map.hx" module="Map">
+		<c path="haxe.IMap">
+			<c path="IMap.K"/>
+			<c path="IMap.V"/>
+		</c>
+		<meta>
+			<m n=":dox"><e>hide</e></m>
+			<m n=":deprecated"/>
+		</meta>
+	</typedef>
+	<class path="Math" params="" file="/home/runner/haxe/versions/4.0.5/std/js/_std/Math.hx" extern="1"><meta>
+	<m n=":keep"/>
+	<m n=":keepInit"/>
+</meta></class>
+	<class path="js.Syntax" params="" file="/home/runner/haxe/versions/4.0.5/std/js/Syntax.hx" extern="1">
 		<code public="1" set="method" static="1">
 			<f a="code:args">
 				<c path="String"/>
@@ -394,18 +409,8 @@
 		will generate
 		```haxe
 		console.log("hi", 42);
-		```
-
-		Emits a compilation error if the count of `args` does not match the count of placeholders in `code`.</haxe_doc>
+		```</haxe_doc>
 		</code>
-		<plainCode public="1" set="method" static="1">
-			<f a="code">
-				<c path="String"/>
-				<d/>
-			</f>
-			<haxe_doc>Inject `code` directly into generated source.
-		The same as `js.Syntax.code` except this one does not provide code interpolation.</haxe_doc>
-		</plainCode>
 		<construct public="1" params="T" set="method" static="1">
 			<f a="cl:args">
 				<x path="Class"><c path="construct.T"/></x>
@@ -485,353 +490,7 @@
 			<m n=":noClosure"/>
 		</meta>
 	</class>
-	<class path="js.lib.Date" params="" file="/home/travis/haxe/std/js/lib/Date.hx" extern="1">
-		<fromHaxeDate public="1" get="inline" set="null" line="40" static="1">
-			<f a="date">
-				<t path="_Date.HaxeDate"/>
-				<c path="js.lib.Date"/>
-			</f>
-			<haxe_doc>Cast Haxe's Date to js.lib.Date.</haxe_doc>
-		</fromHaxeDate>
-		<toHaxeDate public="1" get="inline" set="null" line="47" static="1">
-			<f a="date">
-				<c path="js.lib.Date"/>
-				<t path="_Date.HaxeDate"/>
-			</f>
-			<haxe_doc>Cast js.lib.Date to Haxe's Date.</haxe_doc>
-		</toHaxeDate>
-		<now public="1" set="method" static="1">
-			<f a=""><x path="Float"/></f>
-			<haxe_doc>Returns the numeric value corresponding to the current time - the number of milliseconds elapsed since January 1, 1970 00:00:00 UTC, with leap seconds ignored</haxe_doc>
-		</now>
-		<parse public="1" set="method" static="1">
-			<f a="str">
-				<c path="String"/>
-				<x path="Float"/>
-			</f>
-			<haxe_doc>Parses a string representation of a date and returns the number of milliseconds since 1 January, 1970, 00:00:00, UTC, with leap seconds ignored.</haxe_doc>
-		</parse>
-		<UTC public="1" set="method" static="1">
-			<f a="year:month:?day:?hours:?minutes:?seconds:?milliseconds">
-				<x path="Int"/>
-				<x path="Int"/>
-				<x path="Int"/>
-				<x path="Int"/>
-				<x path="Int"/>
-				<x path="Int"/>
-				<x path="Int"/>
-				<x path="Float"/>
-			</f>
-			<haxe_doc>Returns the number of milliseconds since January 1, 1970, 00:00:00 UTC, with leap seconds ignored.</haxe_doc>
-		</UTC>
-		<getDate public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the day of the month (1-31) for the specified date according to local time.</haxe_doc>
-		</getDate>
-		<getDay public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the day of the week (0-6) for the specified date according to local time.</haxe_doc>
-		</getDay>
-		<getFullYear public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the year (4 digits for 4-digit years) of the specified date according to local time.</haxe_doc>
-		</getFullYear>
-		<getHours public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the hour (0-23) in the specified date according to local time.</haxe_doc>
-		</getHours>
-		<getMilliseconds public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the milliseconds (0-999) in the specified date according to local time.</haxe_doc>
-		</getMilliseconds>
-		<getMinutes public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the minutes (0-59) in the specified date according to local time.</haxe_doc>
-		</getMinutes>
-		<getMonth public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the month (0-11) in the specified date according to local time.</haxe_doc>
-		</getMonth>
-		<getSeconds public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the seconds (0-59) in the specified date according to local time.</haxe_doc>
-		</getSeconds>
-		<getTime public="1" set="method">
-			<f a=""><x path="Float"/></f>
-			<haxe_doc>Returns the numeric value of the specified date as the number of milliseconds since January 1, 1970, 00:00:00 UTC (negative for prior times).</haxe_doc>
-		</getTime>
-		<getTimezoneOffset public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the time-zone offset in minutes for the current locale.</haxe_doc>
-		</getTimezoneOffset>
-		<getUTCDate public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the day (date) of the month (1-31) in the specified date according to universal time.</haxe_doc>
-		</getUTCDate>
-		<getUTCDay public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the day of the week (0-6) in the specified date according to universal time.</haxe_doc>
-		</getUTCDay>
-		<getUTCFullYear public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the year (4 digits for 4-digit years) in the specified date according to universal time.</haxe_doc>
-		</getUTCFullYear>
-		<getUTCHours public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the hours (0-23) in the specified date according to universal time.</haxe_doc>
-		</getUTCHours>
-		<getUTCMilliseconds public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the milliseconds (0-999) in the specified date according to universal time.</haxe_doc>
-		</getUTCMilliseconds>
-		<getUTCMinutes public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the minutes (0-59) in the specified date according to universal time.</haxe_doc>
-		</getUTCMinutes>
-		<getUTCMonth public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the month (0-11) in the specified date according to universal time.</haxe_doc>
-		</getUTCMonth>
-		<getUTCSeconds public="1" set="method">
-			<f a=""><x path="Int"/></f>
-			<haxe_doc>Returns the seconds (0-59) in the specified date according to universal time.</haxe_doc>
-		</getUTCSeconds>
-		<setDate public="1" set="method">
-			<f a="value">
-				<x path="Int"/>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Sets the day of the month for a specified date according to local time.</haxe_doc>
-		</setDate>
-		<setFullYear public="1" set="method">
-			<f a="value">
-				<x path="Int"/>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Sets the full year (e.g. 4 digits for 4-digit years) for a specified date according to local time.</haxe_doc>
-		</setFullYear>
-		<setHours public="1" set="method">
-			<f a="value">
-				<x path="Int"/>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Sets the hours for a specified date according to local time.</haxe_doc>
-		</setHours>
-		<setMilliseconds public="1" set="method">
-			<f a="value">
-				<x path="Int"/>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Sets the milliseconds for a specified date according to local time.</haxe_doc>
-		</setMilliseconds>
-		<setMinutes public="1" set="method">
-			<f a="value">
-				<x path="Int"/>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Sets the minutes for a specified date according to local time.</haxe_doc>
-		</setMinutes>
-		<setMonth public="1" set="method">
-			<f a="value">
-				<x path="Int"/>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Sets the month for a specified date according to local time.</haxe_doc>
-		</setMonth>
-		<setSeconds public="1" set="method">
-			<f a="value">
-				<x path="Int"/>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Sets the seconds for a specified date according to local time.</haxe_doc>
-		</setSeconds>
-		<setTime public="1" set="method">
-			<f a="value">
-				<x path="Float"/>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Sets the Date object to the time represented by a number of milliseconds since January 1, 1970, 00:00:00 UTC, allowing for negative numbers for times prior.</haxe_doc>
-		</setTime>
-		<setUTCDate public="1" set="method">
-			<f a="value">
-				<x path="Int"/>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Sets the day of the month for a specified date according to universal time.</haxe_doc>
-		</setUTCDate>
-		<setUTCFullYear public="1" set="method">
-			<f a="value">
-				<x path="Int"/>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Sets the full year (e.g. 4 digits for 4-digit years) for a specified date according to universal time.</haxe_doc>
-		</setUTCFullYear>
-		<setUTCHours public="1" set="method">
-			<f a="value">
-				<x path="Int"/>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Sets the hour for a specified date according to universal time.</haxe_doc>
-		</setUTCHours>
-		<setUTCMilliseconds public="1" set="method">
-			<f a="value">
-				<x path="Int"/>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Sets the milliseconds for a specified date according to universal time.</haxe_doc>
-		</setUTCMilliseconds>
-		<setUTCMinutes public="1" set="method">
-			<f a="value">
-				<x path="Int"/>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Sets the minutes for a specified date according to universal time.</haxe_doc>
-		</setUTCMinutes>
-		<setUTCMonth public="1" set="method">
-			<f a="value">
-				<x path="Int"/>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Sets the month for a specified date according to universal time.</haxe_doc>
-		</setUTCMonth>
-		<setUTCSeconds public="1" set="method">
-			<f a="value">
-				<x path="Int"/>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Sets the seconds for a specified date according to universal time.</haxe_doc>
-		</setUTCSeconds>
-		<toDateString public="1" set="method">
-			<f a=""><c path="String"/></f>
-			<haxe_doc>Returns the "date" portion of the Date as a human-readable string.</haxe_doc>
-		</toDateString>
-		<toISOString public="1" set="method">
-			<f a=""><c path="String"/></f>
-			<haxe_doc>Converts a date to a string following the ISO 8601 Extended Format.</haxe_doc>
-		</toISOString>
-		<toJSON public="1" set="method">
-			<f a=""><c path="String"/></f>
-			<haxe_doc>Returns a string representing the Date using toISOString(). Intended for use by JSON.stringify().</haxe_doc>
-		</toJSON>
-		<toLocaleDateString public="1" set="method">
-			<f a="?locales:?options">
-				<c path="String"/>
-				<d><d/></d>
-				<c path="String"/>
-			</f>
-			<haxe_doc>Returns a string with a locality sensitive representation of the date portion of this date based on system settings.</haxe_doc>
-			<overloads><toLocaleDateString public="1" set="method">
-	<f a="?locales:?options">
-		<c path="Array"><c path="String"/></c>
-		<d><d/></d>
-		<c path="String"/>
-	</f>
-	<haxe_doc>Returns a string with a locality sensitive representation of the date portion of this date based on system settings.</haxe_doc>
-</toLocaleDateString></overloads>
-		</toLocaleDateString>
-		<toLocaleFormat public="1" set="method">
-			<f a="format">
-				<c path="String"/>
-				<c path="String"/>
-			</f>
-			<haxe_doc>Converts a date to a string, using a format string.</haxe_doc>
-		</toLocaleFormat>
-		<toLocaleString public="1" set="method">
-			<f a="?locales:?options">
-				<c path="String"/>
-				<d><d/></d>
-				<c path="String"/>
-			</f>
-			<haxe_doc>Returns a string with a locality sensitive representation of this date. Overrides the Object.prototype.toLocaleString() method.</haxe_doc>
-			<overloads><toLocaleString public="1" set="method">
-	<f a="?locales:?options">
-		<c path="Array"><c path="String"/></c>
-		<d><d/></d>
-		<c path="String"/>
-	</f>
-	<haxe_doc>Returns a string with a locality sensitive representation of this date. Overrides the Object.prototype.toLocaleString() method.</haxe_doc>
-</toLocaleString></overloads>
-		</toLocaleString>
-		<toLocaleTimeString public="1" set="method">
-			<f a="?locales:?options">
-				<c path="String"/>
-				<d><d/></d>
-				<c path="String"/>
-			</f>
-			<haxe_doc>Returns a string with a locality sensitive representation of the time portion of this date based on system settings.</haxe_doc>
-			<overloads><toLocaleTimeString public="1" set="method">
-	<f a="?locales:?options">
-		<c path="Array"><c path="String"/></c>
-		<d><d/></d>
-		<c path="String"/>
-	</f>
-	<haxe_doc>Returns a string with a locality sensitive representation of the time portion of this date based on system settings.</haxe_doc>
-</toLocaleTimeString></overloads>
-		</toLocaleTimeString>
-		<toSource public="1" set="method">
-			<f a=""><c path="String"/></f>
-			<haxe_doc>Returns a string representing the source for an equivalent Date object; you can use this value to create a new object. Overrides the Object.prototype.toSource() method.</haxe_doc>
-		</toSource>
-		<toString public="1" set="method">
-			<f a=""><c path="String"/></f>
-			<haxe_doc>Returns a string representing the specified Date object. Overrides the Object.prototype.toString() method.</haxe_doc>
-		</toString>
-		<toTimeString public="1" set="method">
-			<f a=""><c path="String"/></f>
-			<haxe_doc>Returns the "time" portion of the Date as a human-readable string.</haxe_doc>
-		</toTimeString>
-		<toUTCString public="1" set="method">
-			<f a=""><c path="String"/></f>
-			<haxe_doc>Converts a date to a string using the UTC timezone.</haxe_doc>
-		</toUTCString>
-		<new public="1" set="method">
-			<f a=""><x path="Void"/></f>
-			<overloads>
-				<new public="1" set="method"><f a="value">
-	<x path="Float"/>
-	<x path="Void"/>
-</f></new>
-				<new public="1" set="method"><f a="dateString">
-	<c path="String"/>
-	<x path="Void"/>
-</f></new>
-				<new public="1" set="method"><f a="year:month:?day:?hours:?minutes:?seconds:?milliseconds">
-	<x path="Int"/>
-	<x path="Int"/>
-	<x path="Int"/>
-	<x path="Int"/>
-	<x path="Int"/>
-	<x path="Int"/>
-	<x path="Int"/>
-	<x path="Void"/>
-</f></new>
-			</overloads>
-		</new>
-		<haxe_doc>Creates a JavaScript Date instance that represents a single moment in time. Date objects are based on a time value that is the number of milliseconds since 1 January 1970 UTC.</haxe_doc>
-		<meta>
-			<m n=":directlyUsed"/>
-			<m n=":native"><e>"Date"</e></m>
-		</meta>
-	</class>
-	<typedef path="Map" params="K:V" file="/home/travis/haxe/std/Map.hx"><x path="haxe.ds.Map">
-	<c path="Map.K"/>
-	<c path="Map.V"/>
-</x></typedef>
-	<typedef path="IMap" params="K:V" file="/home/travis/haxe/std/Map.hx" module="Map">
-		<c path="haxe.IMap">
-			<c path="IMap.K"/>
-			<c path="IMap.V"/>
-		</c>
-		<meta>
-			<m n=":dox"><e>hide</e></m>
-			<m n=":deprecated"/>
-		</meta>
-	</typedef>
-	<class path="Math" params="" file="/home/travis/haxe/std/js/_std/Math.hx" extern="1"><meta>
-	<m n=":keep"/>
-	<m n=":keepInit"/>
-</meta></class>
-	<class path="String" params="" file="/home/travis/haxe/std/js/_std/String.hx" extern="1">
+	<class path="String" params="" file="/home/runner/haxe/versions/4.0.5/std/js/_std/String.hx" extern="1">
 		<fromCharCode public="1" get="inline" set="null" line="43" static="1">
 			<f a="code">
 				<x path="Int"/>
@@ -1003,8 +662,8 @@
 			<m n=":coreApi"/>
 		</meta>
 	</class>
-	<class path="Std" params="" file="/home/travis/haxe/std/js/_std/Std.hx">
-		<string public="1" set="method" line="46" static="1">
+	<class path="Std" params="" file="/home/runner/haxe/versions/4.0.5/std/js/_std/Std.hx">
+		<string public="1" set="method" line="42" static="1">
 			<f a="s">
 				<d/>
 				<c path="String"/>
@@ -1026,7 +685,7 @@
 
 		If s is null, "null" is returned.</haxe_doc>
 		</string>
-		<parseInt public="1" set="method" line="55" static="1">
+		<parseInt public="1" set="method" line="51" static="1">
 			<f a="x">
 				<c path="String"/>
 				<x path="Null"><x path="Int"/></x>
@@ -1059,14 +718,14 @@
 			<m n=":coreApi"/>
 		</meta>
 	</class>
-	<abstract path="Void" params="" file="/home/travis/haxe/std/StdTypes.hx" module="StdTypes">
+	<abstract path="Void" params="" file="/home/runner/haxe/versions/4.0.5/std/StdTypes.hx" module="StdTypes">
 		<this><x path="Void"/></this>
 		<haxe_doc>The standard `Void` type. Only `null` values can be of the type `Void`.
 
 	@see https://haxe.org/manual/types-void.html</haxe_doc>
 		<meta><m n=":coreType"/></meta>
 	</abstract>
-	<abstract path="Float" params="" file="/home/travis/haxe/std/StdTypes.hx" module="StdTypes">
+	<abstract path="Float" params="" file="/home/runner/haxe/versions/4.0.5/std/StdTypes.hx" module="StdTypes">
 		<this><x path="Float"/></this>
 		<haxe_doc><![CDATA[The standard `Float` type, this is a double-precision IEEE 64bit float.
 
@@ -1079,12 +738,13 @@
 	@see https://haxe.org/manual/types-basic-types.html
 	@see https://haxe.org/manual/types-nullability.html]]></haxe_doc>
 		<meta>
+			<m n=":valueUsed"/>
 			<m n=":coreType"/>
 			<m n=":notNull"/>
 			<m n=":runtimeValue"/>
 		</meta>
 	</abstract>
-	<abstract path="Int" params="" file="/home/travis/haxe/std/StdTypes.hx" module="StdTypes">
+	<abstract path="Int" params="" file="/home/runner/haxe/versions/4.0.5/std/StdTypes.hx" module="StdTypes">
 		<this><x path="Int"/></this>
 		<to><icast><x path="Float"/></icast></to>
 		<haxe_doc><![CDATA[The standard `Int` type. Its precision depends on the platform.
@@ -1099,12 +759,13 @@
 	@see https://haxe.org/manual/std-math-integer-math.html
 	@see https://haxe.org/manual/types-nullability.html]]></haxe_doc>
 		<meta>
+			<m n=":valueUsed"/>
 			<m n=":coreType"/>
 			<m n=":notNull"/>
 			<m n=":runtimeValue"/>
 		</meta>
 	</abstract>
-	<abstract path="Null" params="T" file="/home/travis/haxe/std/StdTypes.hx" module="StdTypes">
+	<abstract path="Null" params="T" file="/home/runner/haxe/versions/4.0.5/std/StdTypes.hx" module="StdTypes">
 		<from><icast><c path="Null.T"/></icast></from>
 		<this><x path="Null"><c path="Null.T"/></x></this>
 		<to><icast><c path="Null.T"/></icast></to>
@@ -1122,7 +783,7 @@
 			<m n=":coreType"/>
 		</meta>
 	</abstract>
-	<abstract path="Bool" params="" file="/home/travis/haxe/std/StdTypes.hx" module="StdTypes">
+	<abstract path="Bool" params="" file="/home/runner/haxe/versions/4.0.5/std/StdTypes.hx" module="StdTypes">
 		<this><x path="Bool"/></this>
 		<haxe_doc><![CDATA[The standard Boolean type, which can either be `true` or `false`.
 
@@ -1132,12 +793,13 @@
 	@see https://haxe.org/manual/types-bool.html
 	@see https://haxe.org/manual/types-nullability.html]]></haxe_doc>
 		<meta>
+			<m n=":valueUsed"/>
 			<m n=":coreType"/>
 			<m n=":notNull"/>
 			<m n=":runtimeValue"/>
 		</meta>
 	</abstract>
-	<abstract path="Dynamic" params="T" file="/home/travis/haxe/std/StdTypes.hx" module="StdTypes">
+	<abstract path="Dynamic" params="T" file="/home/runner/haxe/versions/4.0.5/std/StdTypes.hx" module="StdTypes">
 		<this><x path="Dynamic"><c path="Dynamic.T"/></x></this>
 		<haxe_doc>`Dynamic` is a special type which is compatible with all other types.
 
@@ -1147,11 +809,12 @@
 
 	@see https://haxe.org/manual/types-dynamic.html</haxe_doc>
 		<meta>
+			<m n=":valueUsed"/>
 			<m n=":coreType"/>
 			<m n=":runtimeValue"/>
 		</meta>
 	</abstract>
-	<typedef path="Iterator" params="T" file="/home/travis/haxe/std/StdTypes.hx" module="StdTypes">
+	<typedef path="Iterator" params="T" file="/home/runner/haxe/versions/4.0.5/std/StdTypes.hx" module="StdTypes">
 		<a>
 			<next set="method">
 				<f a=""><c path="Iterator.T"/></f>
@@ -1181,21 +844,21 @@
 
 	@see https://haxe.org/manual/lf-iterators.html</haxe_doc>
 	</typedef>
-	<typedef path="Iterable" params="T" file="/home/travis/haxe/std/StdTypes.hx" module="StdTypes">
+	<typedef path="Iterable" params="T" file="/home/runner/haxe/versions/4.0.5/std/StdTypes.hx" module="StdTypes">
 		<a><iterator set="method"><f a=""><t path="Iterator"><c path="Iterable.T"/></t></f></iterator></a>
 		<haxe_doc>An `Iterable` is a data structure which has an `iterator()` method.
 	See `Lambda` for generic functions on iterable structures.
 
 	@see https://haxe.org/manual/lf-iterators.html</haxe_doc>
 	</typedef>
-	<typedef path="KeyValueIterator" params="K:V" file="/home/travis/haxe/std/StdTypes.hx" module="StdTypes">
+	<typedef path="KeyValueIterator" params="K:V" file="/home/runner/haxe/versions/4.0.5/std/StdTypes.hx" module="StdTypes">
 		<t path="Iterator"><a>
 	<value><c path="KeyValueIterator.V"/></value>
 	<key><c path="KeyValueIterator.K"/></key>
 </a></t>
 		<haxe_doc>A `KeyValueIterator` is an `Iterator` that has a key and a value.</haxe_doc>
 	</typedef>
-	<typedef path="KeyValueIterable" params="K:V" file="/home/travis/haxe/std/StdTypes.hx" module="StdTypes">
+	<typedef path="KeyValueIterable" params="K:V" file="/home/runner/haxe/versions/4.0.5/std/StdTypes.hx" module="StdTypes">
 		<a><keyValueIterator set="method"><f a=""><t path="KeyValueIterator">
 	<c path="KeyValueIterable.K"/>
 	<c path="KeyValueIterable.V"/>
@@ -1203,7 +866,7 @@
 		<haxe_doc>A `KeyValueIterable` is a data structure which has a `keyValueIterator()`
 	method to iterate over key-value-pairs.</haxe_doc>
 	</typedef>
-	<class path="ArrayAccess" params="T" file="/home/travis/haxe/std/StdTypes.hx" module="StdTypes" extern="1" interface="1"><haxe_doc>`ArrayAccess` is used to indicate a class that can be accessed using brackets.
+	<class path="ArrayAccess" params="T" file="/home/runner/haxe/versions/4.0.5/std/StdTypes.hx" module="StdTypes" extern="1" interface="1"><haxe_doc>`ArrayAccess` is used to indicate a class that can be accessed using brackets.
 	The type parameter represents the type of the elements stored.
 
 	This interface should be used for externs only. Haxe does not support custom
@@ -1211,13 +874,13 @@
 	abstract types.
 
 	@see https://haxe.org/manual/types-abstract-array-access.html</haxe_doc></class>
-	<class path="StringBuf" params="" file="/home/travis/haxe/std/StringBuf.hx">
+	<class path="StringBuf" params="" file="/home/runner/haxe/versions/4.0.5/std/StringBuf.hx">
 		<b><c path="String"/></b>
 		<length public="1" get="null" set="null">
 			<x path="Int"/>
 			<haxe_doc>The length of `this` StringBuf in characters.</haxe_doc>
 		</length>
-		<new public="1" get="inline" set="null" line="44">
+		<new public="1" get="inline" set="null" line="47">
 			<f a=""><x path="Void"/></f>
 			<haxe_doc>Creates a new StringBuf instance.
 
@@ -1226,15 +889,18 @@
 		<haxe_doc>A String buffer is an efficient way to build a big string by appending small
 	elements together.
 
+	Its cross-platform implementation uses String concatenation internally, but
+	StringBuf may be optimized for different targets.
+
 	Unlike String, an instance of StringBuf is not immutable in the sense that
 	it can be passed as argument to functions which modify it by appending more
-	values.</haxe_doc>
+	values. However, the internal buffer cannot be modified.</haxe_doc>
 		<meta>
 			<m n=":keep"/>
 			<m n=":directlyUsed"/>
 		</meta>
 	</class>
-	<class path="StringTools" params="" file="/home/travis/haxe/std/StringTools.hx">
+	<class path="StringTools" params="" file="/home/runner/haxe/versions/4.0.5/std/StringTools.hx">
 		<isSpace public="1" set="method" line="288" static="1">
 			<f a="s:pos">
 				<c path="String"/>
@@ -1295,7 +961,7 @@
 			<m n=":directlyUsed"/>
 		</meta>
 	</class>
-	<enum path="haxe.StackItem" params="" file="/home/travis/haxe/std/haxe/CallStack.hx" module="haxe.CallStack">
+	<enum path="haxe.StackItem" params="" file="/home/runner/haxe/versions/4.0.5/std/haxe/CallStack.hx" module="haxe.CallStack">
 		<CFunction/>
 		<Module a="m"><c path="String"/></Module>
 		<FilePos a="s:file:line:?column">
@@ -1312,16 +978,19 @@
 		<haxe_doc>Elements return by `CallStack` methods.</haxe_doc>
 		<meta><m n=":directlyUsed"/></meta>
 	</enum>
-	<class path="haxe.CallStack" params="" file="/home/travis/haxe/std/haxe/CallStack.hx">
+	<class path="haxe.CallStack" params="" file="/home/runner/haxe/versions/4.0.5/std/haxe/CallStack.hx">
 		<lastException static="1"><c path="js.lib.Error"/></lastException>
-		<getStack set="method" line="43" static="1"><f a="e">
-	<c path="js.lib.Error"/>
-	<c path="Array"><e path="haxe.StackItem"/></c>
-</f></getStack>
+		<getStack set="method" line="43" static="1">
+			<f a="e">
+				<c path="js.lib.Error"/>
+				<c path="Array"><e path="haxe.StackItem"/></c>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+		</getStack>
 		<wrapCallSite public="1" static="1">
 			<f a="">
-				<t path="haxe.V8CallSite"/>
-				<t path="haxe.V8CallSite"/>
+				<d/>
+				<d/>
 			</f>
 			<meta><m n=":noCompletion"/></meta>
 		</wrapCallSite>
@@ -1331,19 +1000,19 @@
 		the place the last exception was thrown and the place it was
 		caught, or an empty array if not available.</haxe_doc>
 		</exceptionStack>
-		<toString public="1" set="method" line="257" static="1">
+		<toString public="1" set="method" line="259" static="1">
 			<f a="stack">
 				<c path="Array"><e path="haxe.StackItem"/></c>
 				<c path="String"/>
 			</f>
 			<haxe_doc>Returns a representation of the stack as a printable string.</haxe_doc>
 		</toString>
-		<itemToString set="method" line="266" static="1"><f a="b:s">
+		<itemToString set="method" line="268" static="1"><f a="b:s">
 	<c path="StringBuf"/>
 	<e path="haxe.StackItem"/>
 	<x path="Void"/>
 </f></itemToString>
-		<makeStack set="method" line="300" static="1"><f a="s">
+		<makeStack set="method" line="302" static="1"><f a="s">
 	<d/>
 	<c path="Array"><e path="haxe.StackItem"/></c>
 </f></makeStack>
@@ -1353,50 +1022,25 @@
 			<m n=":directlyUsed"/>
 		</meta>
 	</class>
-	<class path="haxe._CallStack.V8Error" params="" file="/home/travis/haxe/std/haxe/CallStack.hx" private="1" module="haxe.CallStack" extern="1">
-		<prepareStackTrace public="1" static="1"><f a="error:structuredStackTrace">
-	<c path="js.lib.Error"/>
-	<c path="Array"><t path="haxe.V8CallSite"/></c>
-	<x path="Any"/>
-</f></prepareStackTrace>
-		<meta>
-			<m n=":directlyUsed"/>
-			<m n=":native"><e>"Error"</e></m>
-		</meta>
-	</class>
-	<typedef path="haxe.V8CallSite" params="" file="/home/travis/haxe/std/haxe/CallStack.hx" module="haxe.CallStack"><a>
-	<getLineNumber set="method"><f a=""><x path="Int"/></f></getLineNumber>
-	<getFunctionName set="method"><f a=""><c path="String"/></f></getFunctionName>
-	<getFileName set="method"><f a=""><c path="String"/></f></getFileName>
-	<getColumnNumber set="method"><f a=""><x path="Int"/></f></getColumnNumber>
-</a></typedef>
-	<abstract path="haxe.Function" params="" file="/home/travis/haxe/std/haxe/Constraints.hx" module="haxe.Constraints">
+	<abstract path="haxe.Function" params="" file="/home/runner/haxe/versions/4.0.5/std/haxe/Constraints.hx" module="haxe.Constraints">
 		<this><d/></this>
 		<haxe_doc>This type unifies with any function type.
 
 	It is intended to be used as a type parameter constraint. If used as a real
 	type, the underlying type will be `Dynamic`.</haxe_doc>
 		<meta><m n=":callable"/></meta>
-		<impl><class path="haxe._Constraints.Function_Impl_" params="" file="/home/travis/haxe/std/haxe/Constraints.hx" private="1" module="haxe.Constraints"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="haxe._Constraints.Function_Impl_" params="" file="/home/runner/haxe/versions/4.0.5/std/haxe/Constraints.hx" private="1" module="haxe.Constraints"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<abstract path="haxe.FlatEnum" params="" file="/home/travis/haxe/std/haxe/Constraints.hx" module="haxe.Constraints">
+	<abstract path="haxe.FlatEnum" params="" file="/home/runner/haxe/versions/4.0.5/std/haxe/Constraints.hx" module="haxe.Constraints">
 		<this><d/></this>
 		<haxe_doc>This type unifies with an enum instance if all constructors of the enum
 	require no arguments.
 
 	It is intended to be used as a type parameter constraint. If used as a real
 	type, the underlying type will be `Dynamic`.</haxe_doc>
-		<impl><class path="haxe._Constraints.FlatEnum_Impl_" params="" file="/home/travis/haxe/std/haxe/Constraints.hx" private="1" module="haxe.Constraints"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="haxe._Constraints.FlatEnum_Impl_" params="" file="/home/runner/haxe/versions/4.0.5/std/haxe/Constraints.hx" private="1" module="haxe.Constraints"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<abstract path="haxe.NotVoid" params="" file="/home/travis/haxe/std/haxe/Constraints.hx" module="haxe.Constraints">
-		<this><d/></this>
-		<haxe_doc>This type unifies with anything but `Void`.
-
-	It is intended to be used as a type parameter constraint. If used as a real
-	type, the underlying type will be `Dynamic`.</haxe_doc>
-		<impl><class path="haxe._Constraints.NotVoid_Impl_" params="" file="/home/travis/haxe/std/haxe/Constraints.hx" private="1" module="haxe.Constraints"><meta><m n=":keep"/></meta></class></impl>
-	</abstract>
-	<abstract path="haxe.Constructible" params="T" file="/home/travis/haxe/std/haxe/Constraints.hx" module="haxe.Constraints">
+	<abstract path="haxe.Constructible" params="T" file="/home/runner/haxe/versions/4.0.5/std/haxe/Constraints.hx" module="haxe.Constraints">
 		<this><d/></this>
 		<haxe_doc><![CDATA[This type unifies with any instance of classes that have a constructor
 	which
@@ -1410,10 +1054,10 @@
 
 	It is intended to be used as a type parameter constraint. If used as a real
 	type, the underlying type will be `Dynamic`.]]></haxe_doc>
-		<impl><class path="haxe._Constraints.Constructible_Impl_" params="" file="/home/travis/haxe/std/haxe/Constraints.hx" private="1" module="haxe.Constraints"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="haxe._Constraints.Constructible_Impl_" params="" file="/home/runner/haxe/versions/4.0.5/std/haxe/Constraints.hx" private="1" module="haxe.Constraints"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<class path="haxe.IMap" params="K:V" file="/home/travis/haxe/std/haxe/Constraints.hx" module="haxe.Constraints" interface="1"><meta><m n=":keep"/></meta></class>
-	<abstract path="haxe.DynamicAccess" params="T" file="/home/travis/haxe/std/haxe/DynamicAccess.hx">
+	<class path="haxe.IMap" params="K:V" file="/home/runner/haxe/versions/4.0.5/std/haxe/Constraints.hx" module="haxe.Constraints" interface="1"><meta><m n=":keep"/></meta></class>
+	<abstract path="haxe.DynamicAccess" params="T" file="/home/runner/haxe/versions/4.0.5/std/haxe/DynamicAccess.hx">
 		<from><icast><d><c path="haxe.DynamicAccess.T"/></d></icast></from>
 		<this><d><c path="haxe.DynamicAccess.T"/></d></this>
 		<to><icast><d><c path="haxe.DynamicAccess.T"/></d></icast></to>
@@ -1423,9 +1067,9 @@
 	For example, these types of structures are often created from JSON.
 
 	Basically, it wraps `Reflect` calls in a `Map`-like interface.</haxe_doc>
-		<impl><class path="haxe._DynamicAccess.DynamicAccess_Impl_" params="" file="/home/travis/haxe/std/haxe/DynamicAccess.hx" private="1" module="haxe.DynamicAccess"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="haxe._DynamicAccess.DynamicAccess_Impl_" params="" file="/home/runner/haxe/versions/4.0.5/std/haxe/DynamicAccess.hx" private="1" module="haxe.DynamicAccess"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<class path="haxe.EnumTools" params="" file="/home/travis/haxe/std/haxe/EnumTools.hx" extern="1">
+	<class path="haxe.EnumTools" params="" file="/home/runner/haxe/versions/4.0.5/std/haxe/EnumTools.hx" extern="1">
 		<getName public="1" params="T" get="inline" set="null" line="52" static="1">
 			<f a="e">
 				<x path="Enum"><c path="getName.T"/></x>
@@ -1517,7 +1161,7 @@
 	If the first argument to any of the methods is `null`, the result is
 	unspecified.</haxe_doc>
 	</class>
-	<class path="haxe.EnumValueTools" params="" file="/home/travis/haxe/std/haxe/EnumTools.hx" module="haxe.EnumTools" extern="1">
+	<class path="haxe.EnumValueTools" params="" file="/home/runner/haxe/versions/4.0.5/std/haxe/EnumTools.hx" module="haxe.EnumTools" extern="1">
 		<equals public="1" params="T" get="inline" set="null" line="133" static="1">
 			<f a="a:b">
 				<c path="equals.T"/>
@@ -1576,7 +1220,7 @@
 	If the first argument to any of the methods is `null`, the result is
 	unspecified.</haxe_doc>
 	</class>
-	<class path="haxe.Json" params="" file="/home/travis/haxe/std/js/_std/haxe/Json.hx" extern="1">
+	<class path="haxe.Json" params="" file="/home/runner/haxe/versions/4.0.5/std/js/_std/haxe/Json.hx" extern="1">
 		<parse public="1" set="method" static="1">
 			<f a="text">
 				<c path="String"/>
@@ -1624,7 +1268,7 @@
 			<m n=":native"><e>"JSON"</e></m>
 		</meta>
 	</class>
-	<abstract path="haxe.ds.HashMap" params="K:V" file="/home/travis/haxe/std/haxe/ds/HashMap.hx">
+	<abstract path="haxe.ds.HashMap" params="K:V" file="/home/runner/haxe/versions/4.0.5/std/haxe/ds/HashMap.hx">
 		<this><c path="haxe.ds._HashMap.HashMapData">
 	<c path="haxe.ds.HashMap.K"/>
 	<c path="haxe.ds.HashMap.V"/>
@@ -1634,9 +1278,9 @@
 	See `Map` for documentation details.
 
 	@see https://haxe.org/manual/std-Map.html</haxe_doc>
-		<impl><class path="haxe.ds._HashMap.HashMap_Impl_" params="" file="/home/travis/haxe/std/haxe/ds/HashMap.hx" private="1" module="haxe.ds.HashMap"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="haxe.ds._HashMap.HashMap_Impl_" params="" file="/home/runner/haxe/versions/4.0.5/std/haxe/ds/HashMap.hx" private="1" module="haxe.ds.HashMap"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<class path="haxe.ds.IntMap" params="T" file="/home/travis/haxe/std/js/_std/haxe/ds/IntMap.hx">
+	<class path="haxe.ds.IntMap" params="T" file="/home/runner/haxe/versions/4.0.5/std/js/_std/haxe/ds/IntMap.hx">
 		<implements path="haxe.IMap">
 			<x path="Int"/>
 			<c path="haxe.ds.IntMap.T"/>
@@ -1664,7 +1308,7 @@
 			<m n=":coreApi"/>
 		</meta>
 	</class>
-	<abstract path="haxe.ds.Map" params="K:V" file="/home/travis/haxe/std/haxe/ds/Map.hx">
+	<abstract path="haxe.ds.Map" params="K:V" file="/home/runner/haxe/versions/4.0.5/std/haxe/ds/Map.hx">
 		<from>
 			<icast field="fromStringMap"><c path="haxe.ds.StringMap"><c path="fromStringMap.V"/></c></icast>
 			<icast field="fromIntMap"><c path="haxe.ds.IntMap"><c path="fromIntMap.V"/></c></icast>
@@ -1704,9 +1348,9 @@
 
 	@see https://haxe.org/manual/std-Map.html]]></haxe_doc>
 		<meta><m n=":multiType"><e>@:followWithAbstracts K</e></m></meta>
-		<impl><class path="haxe.ds._Map.Map_Impl_" params="" file="/home/travis/haxe/std/haxe/ds/Map.hx" private="1" module="haxe.ds.Map"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="haxe.ds._Map.Map_Impl_" params="" file="/home/runner/haxe/versions/4.0.5/std/haxe/ds/Map.hx" private="1" module="haxe.ds.Map"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<class path="haxe.ds.ObjectMap" params="K:V" file="/home/travis/haxe/std/js/_std/haxe/ds/ObjectMap.hx">
+	<class path="haxe.ds.ObjectMap" params="K:V" file="/home/runner/haxe/versions/4.0.5/std/js/_std/haxe/ds/ObjectMap.hx">
 		<implements path="haxe.IMap">
 			<c path="haxe.ds.ObjectMap.K"/>
 			<c path="haxe.ds.ObjectMap.V"/>
@@ -1747,10 +1391,9 @@
 			<m n=":coreApi"/>
 		</meta>
 	</class>
-	<abstract path="haxe.ds.ReadOnlyArray" params="T" file="/home/travis/haxe/std/haxe/ds/ReadOnlyArray.hx">
+	<abstract path="haxe.ds.ReadOnlyArray" params="T" file="/home/runner/haxe/versions/4.0.5/std/haxe/ds/ReadOnlyArray.hx">
 		<from><icast><c path="Array"><c path="haxe.ds.ReadOnlyArray.T"/></c></icast></from>
 		<this><c path="Array"><c path="haxe.ds.ReadOnlyArray.T"/></c></this>
-		<to><icast><t path="Iterable"><c path="haxe.ds.ReadOnlyArray.T"/></t></icast></to>
 		<haxe_doc>`ReadOnlyArray` is an abstract over an ordinary `Array` which only exposes
 	APIs that don't modify the instance, hence "read-only".
 
@@ -1769,7 +1412,7 @@
 	<e>slice</e>
 	<e>toString</e>
 </m></meta>
-		<impl><class path="haxe.ds._ReadOnlyArray.ReadOnlyArray_Impl_" params="" file="/home/travis/haxe/std/haxe/ds/ReadOnlyArray.hx" private="1" module="haxe.ds.ReadOnlyArray">
+		<impl><class path="haxe.ds._ReadOnlyArray.ReadOnlyArray_Impl_" params="" file="/home/runner/haxe/versions/4.0.5/std/haxe/ds/ReadOnlyArray.hx" private="1" module="haxe.ds.ReadOnlyArray">
 	<length public="1" get="accessor" set="null" static="1">
 		<x path="Int"/>
 		<meta><m n=":impl"/></meta>
@@ -1778,13 +1421,30 @@
 	<meta><m n=":keep"/></meta>
 </class></impl>
 	</abstract>
-	<class path="haxe.ds.StringMap" params="T" file="/home/travis/haxe/std/js/_std/haxe/ds/StringMap.hx">
+	<class path="haxe.ds.StringMap" params="T" file="/home/runner/haxe/versions/4.0.5/std/js/_std/haxe/ds/StringMap.hx">
 		<implements path="haxe.IMap">
 			<c path="String"/>
 			<c path="haxe.ds.StringMap.T"/>
 		</implements>
 		<h><d/></h>
-		<new public="1" get="inline" set="null" line="33">
+		<rh><d/></rh>
+		<setReserved set="method" line="78"><f a="key:value">
+	<c path="String"/>
+	<c path="haxe.ds.StringMap.T"/>
+	<x path="Void"/>
+</f></setReserved>
+		<getReserved set="method" line="84"><f a="key">
+	<c path="String"/>
+	<x path="Null"><c path="haxe.ds.StringMap.T"/></x>
+</f></getReserved>
+		<remove public="1" set="method" line="94">
+			<f a="key">
+				<c path="String"/>
+				<x path="Bool"/>
+			</f>
+			<haxe_doc>See `Map.remove`</haxe_doc>
+		</remove>
+		<new public="1" get="inline" set="null" line="51">
 			<f a=""><x path="Void"/></f>
 			<haxe_doc>Creates a new StringMap.</haxe_doc>
 		</new>
@@ -1799,7 +1459,7 @@
 			<m n=":coreApi"/>
 		</meta>
 	</class>
-	<abstract path="haxe.extern.EitherType" params="T1:T2" file="/home/travis/haxe/std/haxe/extern/EitherType.hx">
+	<abstract path="haxe.extern.EitherType" params="T1:T2" file="/home/runner/haxe/versions/4.0.5/std/haxe/extern/EitherType.hx">
 		<from>
 			<icast><c path="haxe.extern.EitherType.T2"/></icast>
 			<icast><c path="haxe.extern.EitherType.T1"/></icast>
@@ -1818,9 +1478,9 @@
 	Otherwise, use of this type is discouraged.
 
 	@see <https://haxe.org/manual/lf-externs.html>]]></haxe_doc>
-		<impl><class path="haxe.extern._EitherType.EitherType_Impl_" params="" file="/home/travis/haxe/std/haxe/extern/EitherType.hx" private="1" module="haxe.extern.EitherType"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="haxe.extern._EitherType.EitherType_Impl_" params="" file="/home/runner/haxe/versions/4.0.5/std/haxe/extern/EitherType.hx" private="1" module="haxe.extern.EitherType"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<abstract path="haxe.extern.Rest" params="T" file="/home/travis/haxe/std/haxe/extern/Rest.hx">
+	<abstract path="haxe.extern.Rest" params="T" file="/home/runner/haxe/versions/4.0.5/std/haxe/extern/Rest.hx">
 		<this><c path="Array"><c path="haxe.extern.Rest.T"/></c></this>
 		<haxe_doc><![CDATA[A special abstract type that represents "rest" function argument.
 
@@ -1829,36 +1489,9 @@
 	passed to that method.
 
 	@see <https://haxe.org/manual/lf-externs.html>]]></haxe_doc>
-		<impl><class path="haxe.extern._Rest.Rest_Impl_" params="" file="/home/travis/haxe/std/haxe/extern/Rest.hx" private="1" module="haxe.extern.Rest"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="haxe.extern._Rest.Rest_Impl_" params="" file="/home/runner/haxe/versions/4.0.5/std/haxe/extern/Rest.hx" private="1" module="haxe.extern.Rest"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<class path="haxe.iterators.ArrayIterator" params="T" file="/home/travis/haxe/std/haxe/iterators/ArrayIterator.hx">
-		<array final="1"><c path="Array"><c path="haxe.iterators.ArrayIterator.T"/></c></array>
-		<current expr="0">
-			<x path="Int"/>
-			<meta><m n=":value"><e>0</e></m></meta>
-		</current>
-		<hasNext public="1" get="inline" set="null" line="43">
-			<f a=""><x path="Bool"/></f>
-			<haxe_doc>See `Iterator.hasNext`</haxe_doc>
-		</hasNext>
-		<next public="1" get="inline" set="null" line="51">
-			<f a=""><c path="haxe.iterators.ArrayIterator.T"/></f>
-			<haxe_doc>See `Iterator.next`</haxe_doc>
-		</next>
-		<new public="1" get="inline" set="null" line="35">
-			<f a="array">
-				<c path="Array"><c path="haxe.iterators.ArrayIterator.T"/></c>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Create a new `ArrayIterator`.</haxe_doc>
-		</new>
-		<haxe_doc><![CDATA[This iterator is used only when `Array<T>` is passed to `Iterable<T>`]]></haxe_doc>
-		<meta>
-			<m n=":keep"/>
-			<m n=":directlyUsed"/>
-		</meta>
-	</class>
-	<class path="js.lib.Error" params="" file="/home/travis/haxe/std/js/lib/Error.hx" extern="1">
+	<class path="js.lib.Error" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/Error.hx" extern="1">
 		<message public="1"><c path="String"/></message>
 		<name public="1"><c path="String"/></name>
 		<stack public="1" set="null"><c path="String"/></stack>
@@ -1871,143 +1504,7 @@
 			<m n=":native"><e>"Error"</e></m>
 		</meta>
 	</class>
-	<class path="js._Boot.HaxeError" params="" file="/home/travis/haxe/std/js/Boot.hx" private="1" module="js.Boot">
-		<extends path="js.lib.Error"/>
-		<val><d/></val>
-		<new public="1" set="method" line="31"><f a="val">
-	<d/>
-	<x path="Void"/>
-</f></new>
-		<meta>
-			<m n=":keep"/>
-			<m n=":directlyUsed"/>
-		</meta>
-	</class>
-	<class path="js.Boot" params="" file="/home/travis/haxe/std/js/Boot.hx">
-		<__string_rec set="method" line="78" static="1">
-			<f a="o:s">
-				<a>
-					<toString set="null"><f a=""><c path="String"/></f></toString>
-					<length set="null"><x path="Int"/></length>
-					<hasOwnProperty set="null"><f a="">
-	<c path="String"/>
-	<x path="Bool"/>
-</f></hasOwnProperty>
-					<_hx_index set="null"><x path="Int"/></_hx_index>
-					<__enum__ set="null"><x path="Bool"/></__enum__>
-				</a>
-				<c path="String"/>
-				<c path="String"/>
-			</f>
-			<meta>
-				<m n=":has_untyped"/>
-				<m n=":ifFeature"><e>"has_enum"</e></m>
-			</meta>
-		</__string_rec>
-		<__toStr static="1"><c path="js.lib.Function"/></__toStr>
-		<meta>
-			<m n=":keep"/>
-			<m n=":directlyUsed"/>
-			<m n=":dox"><e>hide</e></m>
-		</meta>
-	</class>
-	<class path="js.lib.EvalError" params="" file="/home/travis/haxe/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
-		<extends path="js.lib.Error"/>
-		<new public="1" set="method"><f a="?message">
-	<c path="String"/>
-	<x path="Void"/>
-</f></new>
-		<meta><m n=":native"><e>"EvalError"</e></m></meta>
-	</class>
-	<class path="js.lib.RangeError" params="" file="/home/travis/haxe/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
-		<extends path="js.lib.Error"/>
-		<new public="1" set="method"><f a="?message">
-	<c path="String"/>
-	<x path="Void"/>
-</f></new>
-		<meta><m n=":native"><e>"RangeError"</e></m></meta>
-	</class>
-	<class path="js.lib.ReferenceError" params="" file="/home/travis/haxe/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
-		<extends path="js.lib.Error"/>
-		<new public="1" set="method"><f a="?message">
-	<c path="String"/>
-	<x path="Void"/>
-</f></new>
-		<meta><m n=":native"><e>"ReferenceError"</e></m></meta>
-	</class>
-	<class path="js.lib.SyntaxError" params="" file="/home/travis/haxe/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
-		<extends path="js.lib.Error"/>
-		<new public="1" set="method"><f a="?message">
-	<c path="String"/>
-	<x path="Void"/>
-</f></new>
-		<meta><m n=":native"><e>"SyntaxError"</e></m></meta>
-	</class>
-	<class path="js.lib.TypeError" params="" file="/home/travis/haxe/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
-		<extends path="js.lib.Error"/>
-		<new public="1" set="method"><f a="?message">
-	<c path="String"/>
-	<x path="Void"/>
-</f></new>
-		<meta><m n=":native"><e>"TypeError"</e></m></meta>
-	</class>
-	<class path="js.lib.URIError" params="" file="/home/travis/haxe/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
-		<extends path="js.lib.Error"/>
-		<new public="1" set="method"><f a="?message">
-	<c path="String"/>
-	<x path="Void"/>
-</f></new>
-		<meta><m n=":native"><e>"URIError"</e></m></meta>
-	</class>
-	<class path="js.lib.Function" params="" file="/home/travis/haxe/std/js/lib/Function.hx" extern="1">
-		<length public="1" set="null">
-			<x path="Int"/>
-			<haxe_doc>Specifies the number of arguments expected by the function.</haxe_doc>
-		</length>
-		<name public="1">
-			<c path="String"/>
-			<haxe_doc>The name of the function.</haxe_doc>
-		</name>
-		<apply public="1" set="method">
-			<f a="thisArg:argsArray">
-				<d/>
-				<c path="Array"><d/></c>
-				<d/>
-			</f>
-			<haxe_doc>Calls a function and sets its this to the provided value, arguments can be passed as an Array object.</haxe_doc>
-		</apply>
-		<call public="1" set="method">
-			<f a="thisArg:args">
-				<d/>
-				<x path="haxe.extern.Rest"><d/></x>
-				<d/>
-			</f>
-			<haxe_doc>Calls (executes) a function and sets its this to the provided value, arguments can be passed as they are.</haxe_doc>
-		</call>
-		<bind public="1" set="method">
-			<f a="thisArg:args">
-				<d/>
-				<x path="haxe.extern.Rest"><d/></x>
-				<c path="js.lib.Function"/>
-			</f>
-			<haxe_doc>Creates a new function which, when called, has its this set to the provided value,
-		with a given sequence of arguments preceding any provided when the new function was called.</haxe_doc>
-		</bind>
-		<toString public="1" set="method">
-			<f a=""><c path="String"/></f>
-			<haxe_doc>Returns a string representing the source code of the function.</haxe_doc>
-		</toString>
-		<new public="1" set="method">
-			<f a="arg:rest">
-				<c path="String"/>
-				<x path="haxe.extern.Rest"><c path="String"/></x>
-				<x path="Void"/>
-			</f>
-			<haxe_doc>Creates a new Function object.</haxe_doc>
-		</new>
-		<meta><m n=":native"><e>"Function"</e></m></meta>
-	</class>
-	<class path="js.lib.Object" params="" file="/home/travis/haxe/std/js/lib/Object.hx" extern="1">
+	<class path="js.lib.Object" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/Object.hx" extern="1">
 		<assign public="1" params="T" set="method" static="1">
 			<f a="target:sources">
 				<c path="assign.T"/>
@@ -2183,7 +1680,183 @@
 			<m n=":native"><e>"Object"</e></m>
 		</meta>
 	</class>
-	<typedef path="js.lib.ObjectPrototype" params="" file="/home/travis/haxe/std/js/lib/Object.hx" module="js.lib.Object">
+	<class path="js._Boot.HaxeError" params="" file="/home/runner/haxe/versions/4.0.5/std/js/Boot.hx" private="1" module="js.Boot">
+		<extends path="js.lib.Error"/>
+		<val><d/></val>
+		<new public="1" set="method" line="31"><f a="val">
+	<d/>
+	<x path="Void"/>
+</f></new>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+		</meta>
+	</class>
+	<class path="js.Boot" params="" file="/home/runner/haxe/versions/4.0.5/std/js/Boot.hx">
+		<getClass set="method" line="61" static="1">
+			<f a="o">
+				<x path="Null"><d/></x>
+				<x path="Null"><d/></x>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+		</getClass>
+		<__string_rec set="method" line="78" static="1">
+			<f a="o:s">
+				<a>
+					<toString set="null"><f a=""><c path="String"/></f></toString>
+					<length set="null"><x path="Int"/></length>
+					<hasOwnProperty set="null"><f a="">
+	<c path="String"/>
+	<x path="Bool"/>
+</f></hasOwnProperty>
+					<_hx_index set="null"><x path="Int"/></_hx_index>
+					<__enum__ set="null"><x path="Bool"/></__enum__>
+				</a>
+				<c path="String"/>
+				<c path="String"/>
+			</f>
+			<meta>
+				<m n=":has_untyped"/>
+				<m n=":ifFeature"><e>"has_enum"</e></m>
+			</meta>
+		</__string_rec>
+		<__interfLoop set="method" line="163" static="1"><f a="cc:cl">
+	<d/>
+	<d/>
+	<x path="Bool"/>
+</f></__interfLoop>
+		<__instanceof set="method" line="179" static="1">
+			<f a="o:cl">
+				<d/>
+				<d/>
+				<x path="Bool"/>
+			</f>
+			<meta>
+				<m n=":has_untyped"/>
+				<m n=":ifFeature"><e>"typed_catch"</e></m>
+			</meta>
+		</__instanceof>
+		<__downcastCheck set="method" line="223" static="1"><f a="o:cl">
+	<d/>
+	<x path="Class"><d/></x>
+	<x path="Bool"/>
+</f></__downcastCheck>
+		<__toStr static="1"><c path="js.lib.Function"/></__toStr>
+		<__nativeClassName set="method" line="245" static="1"><f a="o">
+	<d/>
+	<c path="String"/>
+</f></__nativeClassName>
+		<__isNativeObj set="method" line="255" static="1"><f a="o">
+	<d/>
+	<x path="Bool"/>
+</f></__isNativeObj>
+		<__resolveNativeClass set="method" line="260" static="1"><f a="name">
+	<c path="String"/>
+	<x path="Null"><d/></x>
+</f></__resolveNativeClass>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+			<m n=":dox"><e>hide</e></m>
+		</meta>
+	</class>
+	<class path="js.lib.EvalError" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
+		<extends path="js.lib.Error"/>
+		<new public="1" set="method"><f a="?message">
+	<c path="String"/>
+	<x path="Void"/>
+</f></new>
+		<meta><m n=":native"><e>"EvalError"</e></m></meta>
+	</class>
+	<class path="js.lib.RangeError" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
+		<extends path="js.lib.Error"/>
+		<new public="1" set="method"><f a="?message">
+	<c path="String"/>
+	<x path="Void"/>
+</f></new>
+		<meta><m n=":native"><e>"RangeError"</e></m></meta>
+	</class>
+	<class path="js.lib.ReferenceError" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
+		<extends path="js.lib.Error"/>
+		<new public="1" set="method"><f a="?message">
+	<c path="String"/>
+	<x path="Void"/>
+</f></new>
+		<meta><m n=":native"><e>"ReferenceError"</e></m></meta>
+	</class>
+	<class path="js.lib.SyntaxError" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
+		<extends path="js.lib.Error"/>
+		<new public="1" set="method"><f a="?message">
+	<c path="String"/>
+	<x path="Void"/>
+</f></new>
+		<meta><m n=":native"><e>"SyntaxError"</e></m></meta>
+	</class>
+	<class path="js.lib.TypeError" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
+		<extends path="js.lib.Error"/>
+		<new public="1" set="method"><f a="?message">
+	<c path="String"/>
+	<x path="Void"/>
+</f></new>
+		<meta><m n=":native"><e>"TypeError"</e></m></meta>
+	</class>
+	<class path="js.lib.URIError" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
+		<extends path="js.lib.Error"/>
+		<new public="1" set="method"><f a="?message">
+	<c path="String"/>
+	<x path="Void"/>
+</f></new>
+		<meta><m n=":native"><e>"URIError"</e></m></meta>
+	</class>
+	<class path="js.lib.Function" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/Function.hx" extern="1">
+		<length public="1" set="null">
+			<x path="Int"/>
+			<haxe_doc>Specifies the number of arguments expected by the function.</haxe_doc>
+		</length>
+		<name public="1">
+			<c path="String"/>
+			<haxe_doc>The name of the function.</haxe_doc>
+		</name>
+		<apply public="1" set="method">
+			<f a="thisArg:argsArray">
+				<d/>
+				<c path="Array"><d/></c>
+				<d/>
+			</f>
+			<haxe_doc>Calls a function and sets its this to the provided value, arguments can be passed as an Array object.</haxe_doc>
+		</apply>
+		<call public="1" set="method">
+			<f a="thisArg:args">
+				<d/>
+				<x path="haxe.extern.Rest"><d/></x>
+				<d/>
+			</f>
+			<haxe_doc>Calls (executes) a function and sets its this to the provided value, arguments can be passed as they are.</haxe_doc>
+		</call>
+		<bind public="1" set="method">
+			<f a="thisArg:args">
+				<d/>
+				<x path="haxe.extern.Rest"><d/></x>
+				<c path="js.lib.Function"/>
+			</f>
+			<haxe_doc>Creates a new function which, when called, has its this set to the provided value,
+		with a given sequence of arguments preceding any provided when the new function was called.</haxe_doc>
+		</bind>
+		<toString public="1" set="method">
+			<f a=""><c path="String"/></f>
+			<haxe_doc>Returns a string representing the source code of the function.</haxe_doc>
+		</toString>
+		<new public="1" set="method">
+			<f a="arg:rest">
+				<c path="String"/>
+				<x path="haxe.extern.Rest"><c path="String"/></x>
+				<x path="Void"/>
+			</f>
+			<haxe_doc>Creates a new Function object.</haxe_doc>
+		</new>
+		<meta><m n=":native"><e>"Function"</e></m></meta>
+	</class>
+	<typedef path="js.lib.ObjectPrototype" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/Object.hx" module="js.lib.Object">
 		<a>
 			<valueOf set="null">
 				<c path="js.lib.Function"/>
@@ -2216,7 +1889,7 @@
 		<haxe_doc><![CDATA[Type for
 	@see <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object>]]></haxe_doc>
 	</typedef>
-	<typedef path="js.lib.ObjectPropertyDescriptor" params="" file="/home/travis/haxe/std/js/lib/Object.hx" module="js.lib.Object">
+	<typedef path="js.lib.ObjectPropertyDescriptor" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/Object.hx" module="js.lib.Object">
 		<a>
 			<writable>
 				<x path="Null"><x path="Bool"/></x>
@@ -2272,10 +1945,10 @@
 		</a>
 		<haxe_doc><![CDATA[@see <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty>]]></haxe_doc>
 	</typedef>
-	<abstract path="js.lib.ObjectEntry" params="" file="/home/travis/haxe/std/js/lib/Object.hx" module="js.lib.Object">
+	<abstract path="js.lib.ObjectEntry" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/Object.hx" module="js.lib.Object">
 		<this><c path="Array"><x path="Any"/></c></this>
 		<haxe_doc>Key/value access helper for `js.lib.Object.entries()`.</haxe_doc>
-		<impl><class path="js.lib._Object.ObjectEntry_Impl_" params="" file="/home/travis/haxe/std/js/lib/Object.hx" private="1" module="js.lib.Object">
+		<impl><class path="js.lib._Object.ObjectEntry_Impl_" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/Object.hx" private="1" module="js.lib.Object">
 	<key public="1" get="accessor" set="null" static="1">
 		<c path="String"/>
 		<meta><m n=":impl"/></meta>
@@ -2287,12 +1960,12 @@
 	<meta><m n=":keep"/></meta>
 </class></impl>
 	</abstract>
-	<class path="js.lib.RegExpMatch" params="" file="/home/travis/haxe/std/js/lib/RegExp.hx" module="js.lib.RegExp" extern="1">
+	<class path="js.lib.RegExpMatch" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/RegExp.hx" module="js.lib.RegExp" extern="1">
 		<extends path="Array"><c path="String"/></extends>
 		<index public="1"><x path="Int"/></index>
 		<input public="1"><c path="String"/></input>
 	</class>
-	<class path="js.lib.Symbol" params="" file="/home/travis/haxe/std/js/lib/Symbol.hx" extern="1">
+	<class path="js.lib.Symbol" params="" file="/home/runner/haxe/versions/4.0.5/std/js/lib/Symbol.hx" extern="1">
 		<for_ public="1" set="method" static="1">
 			<f a="key">
 				<c path="String"/>
@@ -2313,15 +1986,11 @@
 			<c path="js.lib.Symbol"/>
 			<haxe_doc>A method returning the default iterator for an object.</haxe_doc>
 		</iterator>
-		<asyncIterator public="1" set="null" static="1">
-			<c path="js.lib.Symbol"/>
-			<haxe_doc>A method that returns the default AsyncIterator for an object.</haxe_doc>
-		</asyncIterator>
 		<toString public="1" set="method">
 			<f a=""><c path="String"/></f>
 			<haxe_doc>Returns a string containing the description of the Symbol.</haxe_doc>
 		</toString>
-		<ofObject public="1" params="T" get="inline" set="null" line="66">
+		<ofObject public="1" params="T" get="inline" set="null" line="61">
 			<f a="object">
 				<a/>
 				<x path="Null"><c path="ofObject.T"/></x>
@@ -2343,9 +2012,9 @@
 		</new>
 		<meta><m n=":native"><e>"Symbol"</e></m></meta>
 	</class>
-	<abstract path="jsonrpc.CancellationToken" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/CancellationToken.hx">
+	<abstract path="jsonrpc.CancellationToken" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/CancellationToken.hx">
 		<this><c path="jsonrpc._CancellationToken.CancellationTokenImpl"/></this>
-		<impl><class path="jsonrpc._CancellationToken.CancellationToken_Impl_" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/CancellationToken.hx" private="1" module="jsonrpc.CancellationToken">
+		<impl><class path="jsonrpc._CancellationToken.CancellationToken_Impl_" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/CancellationToken.hx" private="1" module="jsonrpc.CancellationToken">
 	<canceled public="1" get="accessor" set="null" static="1">
 		<x path="Bool"/>
 		<meta><m n=":impl"/></meta>
@@ -2367,7 +2036,7 @@
 	</setCallback>
 </class></impl>
 	</abstract>
-	<class path="jsonrpc._CancellationToken.CancellationToken_Impl_" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/CancellationToken.hx" private="1" module="jsonrpc.CancellationToken">
+	<class path="jsonrpc._CancellationToken.CancellationToken_Impl_" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/CancellationToken.hx" private="1" module="jsonrpc.CancellationToken">
 		<canceled public="1" get="accessor" set="null" static="1">
 			<x path="Bool"/>
 			<meta><m n=":impl"/></meta>
@@ -2388,9 +2057,9 @@
 			<meta><m n=":impl"/></meta>
 		</setCallback>
 	</class>
-	<abstract path="jsonrpc.CancellationTokenSource" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/CancellationToken.hx" module="jsonrpc.CancellationToken">
+	<abstract path="jsonrpc.CancellationTokenSource" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/CancellationToken.hx" module="jsonrpc.CancellationToken">
 		<this><c path="jsonrpc._CancellationToken.CancellationTokenImpl"/></this>
-		<impl><class path="jsonrpc._CancellationToken.CancellationTokenSource_Impl_" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/CancellationToken.hx" private="1" module="jsonrpc.CancellationToken">
+		<impl><class path="jsonrpc._CancellationToken.CancellationTokenSource_Impl_" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/CancellationToken.hx" private="1" module="jsonrpc.CancellationToken">
 	<token public="1" get="accessor" set="null" static="1">
 		<x path="jsonrpc.CancellationToken"/>
 		<meta><m n=":impl"/></meta>
@@ -2418,7 +2087,7 @@
 	</cancel>
 </class></impl>
 	</abstract>
-	<class path="jsonrpc._CancellationToken.CancellationTokenSource_Impl_" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/CancellationToken.hx" private="1" module="jsonrpc.CancellationToken">
+	<class path="jsonrpc._CancellationToken.CancellationTokenSource_Impl_" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/CancellationToken.hx" private="1" module="jsonrpc.CancellationToken">
 		<token public="1" get="accessor" set="null" static="1">
 			<x path="jsonrpc.CancellationToken"/>
 			<meta><m n=":impl"/></meta>
@@ -2445,14 +2114,14 @@
 			<meta><m n=":impl"/></meta>
 		</cancel>
 	</class>
-	<class path="jsonrpc._CancellationToken.CancellationTokenImpl" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/CancellationToken.hx" private="1" module="jsonrpc.CancellationToken">
+	<class path="jsonrpc._CancellationToken.CancellationTokenImpl" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/CancellationToken.hx" private="1" module="jsonrpc.CancellationToken">
 		<canceled public="1" set="null"><x path="Bool"/></canceled>
 		<callback public="1"><f a=""><x path="Void"/></f></callback>
 		<cancel public="1" get="inline" set="null" line="34"><f a=""><x path="Void"/></f></cancel>
 		<new public="1" get="inline" set="null" line="30"><f a=""><x path="Void"/></f></new>
 		<meta><m n=":directlyUsed"/></meta>
 	</class>
-	<class path="jsonrpc.ErrorUtils" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/ErrorUtils.hx">
+	<class path="jsonrpc.ErrorUtils" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/ErrorUtils.hx">
 		<errorToString public="1" set="method" line="4" static="1"><f a="error:intro">
 	<d/>
 	<c path="String"/>
@@ -2460,22 +2129,22 @@
 </f></errorToString>
 		<meta><m n=":directlyUsed"/></meta>
 	</class>
-	<typedef path="jsonrpc.CancelParams" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><a><id>
+	<typedef path="jsonrpc.CancelParams" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><a><id>
 	<x path="haxe.extern.EitherType">
 		<x path="Int"/>
 		<c path="String"/>
 	</x>
 	<haxe_doc>The request id to cancel.</haxe_doc>
 </id></a></typedef>
-	<class path="jsonrpc.CancelNotification" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><type public="1" get="inline" set="null" expr="new NotificationType&lt;CancelParams&gt;(&quot;$/cancelRequest&quot;)" line="16" static="1">
+	<class path="jsonrpc.CancelNotification" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><type final="1" public="1" get="inline" set="null" expr="new NotificationType&lt;CancelParams&gt;(&quot;$/cancelRequest&quot;)" line="16" static="1">
 	<x path="jsonrpc.NotificationType"><t path="jsonrpc.CancelParams"/></x>
 	<meta><m n=":value"><e><![CDATA[new NotificationType<CancelParams>("$/cancelRequest")]]></e></m></meta>
 </type></class>
-	<typedef path="jsonrpc.ProgressToken" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><x path="haxe.extern.EitherType">
+	<typedef path="jsonrpc.ProgressToken" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><x path="haxe.extern.EitherType">
 	<x path="Int"/>
 	<c path="String"/>
 </x></typedef>
-	<typedef path="jsonrpc.ProgressParams" params="T" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><a>
+	<typedef path="jsonrpc.ProgressParams" params="T" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><a>
 	<value>
 		<c path="jsonrpc.ProgressParams.T"/>
 		<haxe_doc>The progress data.</haxe_doc>
@@ -2485,15 +2154,15 @@
 		<haxe_doc>The progress token provided by the client.</haxe_doc>
 	</token>
 </a></typedef>
-	<class path="jsonrpc.ProgressNotification" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><type public="1" get="inline" set="null" expr="new NotificationType&lt;ProgressParams&lt;Any&gt;&gt;(&quot;$/progress&quot;)" line="34" static="1">
+	<class path="jsonrpc.ProgressNotification" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><type final="1" public="1" get="inline" set="null" expr="new NotificationType&lt;ProgressParams&lt;Any&gt;&gt;(&quot;$/progress&quot;)" line="34" static="1">
 	<x path="jsonrpc.NotificationType"><t path="jsonrpc.ProgressParams"><x path="Any"/></t></x>
 	<meta><m n=":value"><e><![CDATA[new NotificationType<ProgressParams<Any>>("$/progress")]]></e></m></meta>
 </type></class>
-	<class path="jsonrpc.ProgressType" params="P" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol">
+	<class path="jsonrpc.ProgressType" params="P" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol">
 		<new public="1" set="method" line="38"><f a=""><x path="Void"/></f></new>
 		<meta><m n=":directlyUsed"/></meta>
 	</class>
-	<typedef path="jsonrpc.RequestHandler" params="P:R:E" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><f a="params:token:resolve:reject">
+	<typedef path="jsonrpc.RequestHandler" params="P:R:E" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><f a="params:token:resolve:reject">
 	<c path="jsonrpc.RequestHandler.P"/>
 	<x path="jsonrpc.CancellationToken"/>
 	<f a="response">
@@ -2506,15 +2175,15 @@
 	</f>
 	<x path="Void"/>
 </f></typedef>
-	<typedef path="jsonrpc.NotificationHandler" params="P" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><f a="params">
+	<typedef path="jsonrpc.NotificationHandler" params="P" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><f a="params">
 	<c path="jsonrpc.NotificationHandler.P"/>
 	<x path="Void"/>
 </f></typedef>
-	<typedef path="jsonrpc.Disposable" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><a><dispose set="method">
+	<typedef path="jsonrpc.Disposable" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Protocol.hx" module="jsonrpc.Protocol"><a><dispose set="method">
 	<f a=""><x path="Void"/></f>
 	<haxe_doc>Dispose this object.</haxe_doc>
 </dispose></a></typedef>
-	<class path="jsonrpc.Protocol" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Protocol.hx">
+	<class path="jsonrpc.Protocol" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Protocol.hx">
 		<PROTOCOL_VERSION public="1" get="inline" set="null" expr="&quot;2.0&quot;" line="55" static="1">
 			<c path="String"/>
 			<meta><m n=":value"><e>"2.0"</e></m></meta>
@@ -2598,25 +2267,25 @@
 	<t path="jsonrpc.ResponseMessage"/>
 	<x path="Void"/>
 </f></handleResponse>
-		<sendNotification public="1" params="P" get="inline" set="null" line="206"><f a="name:?params">
+		<sendNotification public="1" params="P" get="inline" set="null" line="211"><f a="name:?params">
 	<x path="jsonrpc.NotificationType"><c path="sendNotification.P"/></x>
 	<c path="sendNotification.P"/>
 	<x path="Void"/>
 </f></sendNotification>
-		<sendProgress public="1" params="P" get="inline" set="null" line="220"><f a="type:token:value">
+		<sendProgress public="1" params="P" get="inline" set="null" line="225"><f a="type:token:value">
 	<c path="jsonrpc.ProgressType"><c path="sendProgress.P"/></c>
 	<t path="jsonrpc.ProgressToken"/>
 	<c path="sendProgress.P"/>
 	<x path="Void"/>
 </f></sendProgress>
-		<sendRequest public="1" params="P:R:E" set="method" line="224"><f a="method:params:token:resolve:reject">
+		<sendRequest public="1" params="P:R:E" set="method" line="229"><f a="method:params:?token:?resolve:?reject">
 	<x path="jsonrpc.RequestType">
 		<c path="sendRequest.P"/>
 		<c path="sendRequest.R"/>
 		<c path="sendRequest.E"/>
 	</x>
 	<c path="sendRequest.P"/>
-	<x path="Null"><x path="jsonrpc.CancellationToken"/></x>
+	<x path="jsonrpc.CancellationToken"/>
 	<f a="result">
 		<c path="sendRequest.R"/>
 		<x path="Void"/>
@@ -2627,7 +2296,7 @@
 	</f>
 	<x path="Void"/>
 </f></sendRequest>
-		<logError public="1" set="dynamic" line="240"><f a="message">
+		<logError public="1" set="dynamic" line="245"><f a="message">
 	<c path="String"/>
 	<x path="Void"/>
 </f></logError>
@@ -2641,34 +2310,34 @@
 </f></new>
 		<haxe_doc>A simple JSON-RPC protocol base class.</haxe_doc>
 	</class>
-	<class path="jsonrpc._Protocol.ResponseCallbackEntry" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Protocol.hx" private="1" module="jsonrpc.Protocol">
+	<class path="jsonrpc._Protocol.ResponseCallbackEntry" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Protocol.hx" private="1" module="jsonrpc.Protocol">
 		<method public="1"><c path="String"/></method>
-		<resolve public="1"><f a="">
+		<resolve public="1"><x path="Null"><f a="">
 	<d/>
 	<x path="Void"/>
-</f></resolve>
-		<reject public="1"><f a="">
+</f></x></resolve>
+		<reject public="1"><x path="Null"><f a="">
 	<d/>
 	<x path="Void"/>
-</f></reject>
-		<new public="1" set="method" line="248"><f a="method:resolve:reject">
+</f></x></reject>
+		<new public="1" set="method" line="253"><f a="method:resolve:reject">
 	<c path="String"/>
-	<f a="">
-		<d/>
-		<x path="Void"/>
-	</f>
-	<f a="">
-		<d/>
-		<x path="Void"/>
-	</f>
+	<x path="Null"><f a="">
+	<d/>
+	<x path="Void"/>
+</f></x>
+	<x path="Null"><f a="">
+	<d/>
+	<x path="Void"/>
+</f></x>
 	<x path="Void"/>
 </f></new>
 		<meta><m n=":directlyUsed"/></meta>
 	</class>
-	<abstract path="jsonrpc.ResponseError" params="T" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/ResponseError.hx">
+	<abstract path="jsonrpc.ResponseError" params="T" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/ResponseError.hx">
 		<this><t path="jsonrpc.ResponseErrorData"/></this>
 		<to><icast><t path="jsonrpc.ResponseErrorData"/></icast></to>
-		<impl><class path="jsonrpc._ResponseError.ResponseError_Impl_" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/ResponseError.hx" private="1" module="jsonrpc.ResponseError">
+		<impl><class path="jsonrpc._ResponseError.ResponseError_Impl_" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/ResponseError.hx" private="1" module="jsonrpc.ResponseError">
 	<ParseError public="1" get="inline" set="null" expr="-32700" line="10" static="1">
 		<x path="Int"/>
 		<meta><m n=":value"><e>-32700</e></m></meta>
@@ -2721,7 +2390,7 @@
 </f></internalError>
 </class></impl>
 	</abstract>
-	<class path="jsonrpc._ResponseError.ResponseError_Impl_" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/ResponseError.hx" private="1" module="jsonrpc.ResponseError">
+	<class path="jsonrpc._ResponseError.ResponseError_Impl_" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/ResponseError.hx" private="1" module="jsonrpc.ResponseError">
 		<ParseError public="1" get="inline" set="null" expr="-32700" line="10" static="1">
 			<x path="Int"/>
 			<meta><m n=":value"><e>-32700</e></m></meta>
@@ -2773,18 +2442,18 @@
 	<x path="jsonrpc.ResponseError"><e path="jsonrpc.NoData"/></x>
 </f></internalError>
 	</class>
-	<typedef path="jsonrpc.Message" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Types.hx" module="jsonrpc.Types">
+	<typedef path="jsonrpc.Message" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Types.hx" module="jsonrpc.Types">
 		<a><jsonrpc>
 	<c path="String"/>
 	<haxe_doc>JSON-RPC version (2.0).</haxe_doc>
 </jsonrpc></a>
 		<haxe_doc>A general message as defined by JSON-RPC.</haxe_doc>
 	</typedef>
-	<typedef path="jsonrpc.RequestId" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Types.hx" module="jsonrpc.Types"><x path="haxe.extern.EitherType">
+	<typedef path="jsonrpc.RequestId" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Types.hx" module="jsonrpc.Types"><x path="haxe.extern.EitherType">
 	<x path="Int"/>
 	<c path="String"/>
 </x></typedef>
-	<typedef path="jsonrpc.RequestMessage" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Types.hx" module="jsonrpc.Types">
+	<typedef path="jsonrpc.RequestMessage" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Types.hx" module="jsonrpc.Types">
 		<a>
 			<params>
 				<x path="Null"><d/></x>
@@ -2807,7 +2476,7 @@
 		<haxe_doc>A request message to decribe a request between the client and the server.
 	Every processed request must send a response back to the sender of the request.</haxe_doc>
 	</typedef>
-	<typedef path="jsonrpc.ResponseMessage" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Types.hx" module="jsonrpc.Types">
+	<typedef path="jsonrpc.ResponseMessage" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Types.hx" module="jsonrpc.Types">
 		<a>
 			<result>
 				<x path="Null"><d/></x>
@@ -2833,7 +2502,7 @@
 	to return a response message to conform to the JSON RPC specification. The result property of the ResponseMessage should be set to
 	`null` in this case to signal a successful request.</haxe_doc>
 	</typedef>
-	<typedef path="jsonrpc.ResponseErrorData" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Types.hx" module="jsonrpc.Types">
+	<typedef path="jsonrpc.ResponseErrorData" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Types.hx" module="jsonrpc.Types">
 		<a>
 			<message>
 				<c path="String"/>
@@ -2851,7 +2520,7 @@
 		</a>
 		<haxe_doc>Error object sent in the `ResponseMessage.error` field.</haxe_doc>
 	</typedef>
-	<typedef path="jsonrpc.NotificationMessage" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Types.hx" module="jsonrpc.Types">
+	<typedef path="jsonrpc.NotificationMessage" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Types.hx" module="jsonrpc.Types">
 		<a>
 			<params>
 				<x path="Null"><d/></x>
@@ -2870,10 +2539,10 @@
 		<haxe_doc>A notification message. A processed notification message must not send a response back.
 	They work like events.</haxe_doc>
 	</typedef>
-	<abstract path="jsonrpc.RequestType" params="TParams:TResponse:TError" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Types.hx" module="jsonrpc.Types">
+	<abstract path="jsonrpc.RequestType" params="TParams:TResponse:TError" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Types.hx" module="jsonrpc.Types">
 		<this><c path="String"/></this>
 		<to><icast><c path="String"/></icast></to>
-		<impl><class path="jsonrpc._Types.RequestType_Impl_" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Types.hx" private="1" module="jsonrpc.Types"><_new public="1" get="inline" set="null" line="102" static="1">
+		<impl><class path="jsonrpc._Types.RequestType_Impl_" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Types.hx" private="1" module="jsonrpc.Types"><_new public="1" get="inline" set="null" line="102" static="1">
 	<f a="method">
 		<c path="String"/>
 		<x path="jsonrpc.RequestType">
@@ -2888,7 +2557,7 @@
 	</meta>
 </_new></class></impl>
 	</abstract>
-	<class path="jsonrpc._Types.RequestType_Impl_" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Types.hx" private="1" module="jsonrpc.Types"><_new public="1" get="inline" set="null" line="102" static="1">
+	<class path="jsonrpc._Types.RequestType_Impl_" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Types.hx" private="1" module="jsonrpc.Types"><_new public="1" get="inline" set="null" line="102" static="1">
 	<f a="method">
 		<c path="String"/>
 		<x path="jsonrpc.RequestType">
@@ -2902,10 +2571,10 @@
 		<m n=":noCompletion"/>
 	</meta>
 </_new></class>
-	<abstract path="jsonrpc.NotificationType" params="TParams" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Types.hx" module="jsonrpc.Types">
+	<abstract path="jsonrpc.NotificationType" params="TParams" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Types.hx" module="jsonrpc.Types">
 		<this><c path="String"/></this>
 		<to><icast><c path="String"/></icast></to>
-		<impl><class path="jsonrpc._Types.NotificationType_Impl_" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Types.hx" private="1" module="jsonrpc.Types"><_new public="1" get="inline" set="null" line="107" static="1">
+		<impl><class path="jsonrpc._Types.NotificationType_Impl_" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Types.hx" private="1" module="jsonrpc.Types"><_new public="1" get="inline" set="null" line="107" static="1">
 	<f a="method">
 		<c path="String"/>
 		<x path="jsonrpc.NotificationType"><c path="jsonrpc.NotificationType.TParams"/></x>
@@ -2916,7 +2585,7 @@
 	</meta>
 </_new></class></impl>
 	</abstract>
-	<class path="jsonrpc._Types.NotificationType_Impl_" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Types.hx" private="1" module="jsonrpc.Types"><_new public="1" get="inline" set="null" line="107" static="1">
+	<class path="jsonrpc._Types.NotificationType_Impl_" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Types.hx" private="1" module="jsonrpc.Types"><_new public="1" get="inline" set="null" line="107" static="1">
 	<f a="method">
 		<c path="String"/>
 		<x path="jsonrpc.NotificationType"><c path="jsonrpc.NotificationType.TParams"/></x>
@@ -2926,7 +2595,7 @@
 		<m n=":noCompletion"/>
 	</meta>
 </_new></class>
-	<enum path="jsonrpc.NoData" params="" file="/home/travis/haxe/lib/vscode-json-rpc/git/src/jsonrpc/Types.hx" module="jsonrpc.Types"><meta><m n=":flatEnum"/></meta></enum>
+	<enum path="jsonrpc.NoData" params="" file="/home/runner/haxe/haxe_libraries/vscode-json-rpc/0.0.1/github/1fbfeabd42d4b3fb8d86214cb2943e738bfee5bd/src/jsonrpc/Types.hx" module="jsonrpc.Types"><meta><m n=":flatEnum"/></meta></enum>
 	<typedef path="languageServerProtocol.Position" params="" file="src/languageServerProtocol/Types.hx" module="languageServerProtocol.Types">
 		<a>
 			<line>
