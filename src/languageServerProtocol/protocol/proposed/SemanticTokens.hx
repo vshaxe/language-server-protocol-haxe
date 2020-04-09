@@ -67,7 +67,7 @@ typedef SemanticTokens = {
 	/**
 		An optional result id. If provided and clients support delta updating
 		the client will include the result id in the next semantic token request.
-		A server can then instead of computing all sematic tokens again simply
+		A server can then instead of computing all semantic tokens again simply
 		send a delta.
 	**/
 	var ?resultId:String;
@@ -116,12 +116,12 @@ typedef SemanticTokensClientCapabilities = {
 			var ?dynamicRegistration:Bool;
 
 			/**
-				The token types know by the client.
+				The token types that the client supports.
 			**/
 			var tokenTypes:Array<String>;
 
 			/**
-				The token modifiers know by the client.
+				The token modifiers that the client supports.
 			**/
 			var tokenModifiers:Array<String>;
 		};
