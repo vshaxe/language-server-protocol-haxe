@@ -7112,7 +7112,6 @@
 					</trace>
 					<rootUri>
 						<x path="Null"><x path="languageServerProtocol.DocumentUri"/></x>
-						<meta><m n=":deprecated"><e>"deprecated in favour of workspaceFolders"</e></m></meta>
 						<haxe_doc>The rootUri of the workspace.
 		Is null if no folder is open.
 		If both `rootPath` and `rootUri` are set `rootUri` wins.</haxe_doc>
@@ -7184,7 +7183,6 @@
 			</trace>
 			<rootUri>
 				<x path="Null"><x path="languageServerProtocol.DocumentUri"/></x>
-				<meta><m n=":deprecated"><e>"deprecated in favour of workspaceFolders"</e></m></meta>
 				<haxe_doc>The rootUri of the workspace.
 		Is null if no folder is open.
 		If both `rootPath` and `rootUri` are set `rootUri` wins.</haxe_doc>
