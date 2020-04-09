@@ -4065,7 +4065,7 @@
 				<haxe_doc>The range if the insert is requested</haxe_doc>
 			</insert>
 		</a>
-		<haxe_doc>A special text edit to provide a insert or a replace operation.
+		<haxe_doc>A special text edit to provide an insert and a replace operation.
 
 	@since 3.16.0 - Proposed state</haxe_doc>
 	</typedef>
@@ -4081,8 +4081,16 @@
 		this completion. When an edit is provided the value of
 		`insertText` is ignored.
 
-		*Note:* The text edit's range as well as both ranges from a insert replace edit must be a
+		Most editors support two different operation when accepting a completion item. One is to insert a
+		completion text and the other is to replace an existing text with a competion text. Since this can
+		usually not predetermend by a server it can report both ranges. Clients need to signal support for
+		`InsertReplaceEdits` via the `textDocument.completion.insertReplaceSupport` client capability
+		property.
+
+		*Note 1:* The text edit's range as well as both ranges from a insert replace edit must be a
 		[single line] and they must contain the position at which completion has been requested.
+		*Note 2:* If an `InsertReplaceEdit` is returned the edit's insert range must be a prefix of
+		the edit's replace range, that means it must be contained and starting at the same position.
 
 		@since 3.16.0 additional type `InsertReplaceEdit` - Proposed state</haxe_doc>
 			</textEdit>
@@ -4381,7 +4389,7 @@
 		<haxe_doc>A document highlight kind.</haxe_doc>
 		<meta><m n=":enum"/></meta>
 		<impl><class path="languageServerProtocol._Types.DocumentHighlightKind_Impl_" params="" file="src/languageServerProtocol/Types.hx" private="1" module="languageServerProtocol.Types" extern="1">
-	<Text public="1" get="inline" set="null" expr="cast 1" line="1060" static="1">
+	<Text public="1" get="inline" set="null" expr="cast 1" line="1068" static="1">
 		<x path="languageServerProtocol.DocumentHighlightKind"/>
 		<meta>
 			<m n=":value"><e>cast 1</e></m>
@@ -4412,7 +4420,7 @@
 </class></impl>
 	</abstract>
 	<class path="languageServerProtocol._Types.DocumentHighlightKind_Impl_" params="" file="src/languageServerProtocol/Types.hx" private="1" module="languageServerProtocol.Types" extern="1">
-		<Text public="1" get="inline" set="null" expr="cast 1" line="1060" static="1">
+		<Text public="1" get="inline" set="null" expr="cast 1" line="1068" static="1">
 			<x path="languageServerProtocol.DocumentHighlightKind"/>
 			<meta>
 				<m n=":value"><e>cast 1</e></m>
@@ -4462,7 +4470,7 @@
 		<haxe_doc>A symbol kind.</haxe_doc>
 		<meta><m n=":enum"/></meta>
 		<impl><class path="languageServerProtocol._Types.SymbolKind_Impl_" params="" file="src/languageServerProtocol/Types.hx" private="1" module="languageServerProtocol.Types" extern="1">
-	<File public="1" get="inline" set="null" expr="cast 1" line="1093" static="1">
+	<File public="1" get="inline" set="null" expr="cast 1" line="1101" static="1">
 		<x path="languageServerProtocol.SymbolKind"/>
 		<meta>
 			<m n=":value"><e>cast 1</e></m>
@@ -4674,7 +4682,7 @@
 </class></impl>
 	</abstract>
 	<class path="languageServerProtocol._Types.SymbolKind_Impl_" params="" file="src/languageServerProtocol/Types.hx" private="1" module="languageServerProtocol.Types" extern="1">
-		<File public="1" get="inline" set="null" expr="cast 1" line="1093" static="1">
+		<File public="1" get="inline" set="null" expr="cast 1" line="1101" static="1">
 			<x path="languageServerProtocol.SymbolKind"/>
 			<meta>
 				<m n=":value"><e>cast 1</e></m>
@@ -4890,7 +4898,7 @@
 	@since 3.15</haxe_doc>
 		<meta><m n=":enum"/></meta>
 		<impl><class path="languageServerProtocol._Types.SymbolTag_Impl_" params="" file="src/languageServerProtocol/Types.hx" private="1" module="languageServerProtocol.Types" extern="1">
-	<Deprecated public="1" get="inline" set="null" expr="cast 1" line="1129" static="1">
+	<Deprecated public="1" get="inline" set="null" expr="cast 1" line="1137" static="1">
 		<x path="languageServerProtocol.SymbolTag"/>
 		<meta>
 			<m n=":value"><e>cast 1</e></m>
@@ -4903,7 +4911,7 @@
 </class></impl>
 	</abstract>
 	<class path="languageServerProtocol._Types.SymbolTag_Impl_" params="" file="src/languageServerProtocol/Types.hx" private="1" module="languageServerProtocol.Types" extern="1">
-		<Deprecated public="1" get="inline" set="null" expr="cast 1" line="1129" static="1">
+		<Deprecated public="1" get="inline" set="null" expr="cast 1" line="1137" static="1">
 			<x path="languageServerProtocol.SymbolTag"/>
 			<meta>
 				<m n=":value"><e>cast 1</e></m>
@@ -5029,7 +5037,7 @@
 	This enum has a set of predefined code action kinds.</haxe_doc>
 		<meta><m n=":enum"/></meta>
 		<impl><class path="languageServerProtocol._Types.CodeActionKind_Impl_" params="" file="src/languageServerProtocol/Types.hx" private="1" module="languageServerProtocol.Types" extern="1">
-	<Empty public="1" get="inline" set="null" expr="cast &quot;&quot;" line="1250" static="1">
+	<Empty public="1" get="inline" set="null" expr="cast &quot;&quot;" line="1258" static="1">
 		<x path="languageServerProtocol.CodeActionKind"/>
 		<meta>
 			<m n=":value"><e>cast ""</e></m>
@@ -5038,7 +5046,7 @@
 		</meta>
 		<haxe_doc>Empty kind.</haxe_doc>
 	</Empty>
-	<QuickFix public="1" get="inline" set="null" expr="cast &quot;quickfix&quot;" line="1255" static="1">
+	<QuickFix public="1" get="inline" set="null" expr="cast &quot;quickfix&quot;" line="1263" static="1">
 		<x path="languageServerProtocol.CodeActionKind"/>
 		<meta>
 			<m n=":value"><e>cast "quickfix"</e></m>
@@ -5047,7 +5055,7 @@
 		</meta>
 		<haxe_doc>Base kind for quickfix actions: 'quickfix'</haxe_doc>
 	</QuickFix>
-	<Refactor public="1" get="inline" set="null" expr="cast &quot;refactor&quot;" line="1260" static="1">
+	<Refactor public="1" get="inline" set="null" expr="cast &quot;refactor&quot;" line="1268" static="1">
 		<x path="languageServerProtocol.CodeActionKind"/>
 		<meta>
 			<m n=":value"><e>cast "refactor"</e></m>
@@ -5056,7 +5064,7 @@
 		</meta>
 		<haxe_doc>Base kind for refactoring actions: 'refactor'</haxe_doc>
 	</Refactor>
-	<RefactorExtract public="1" get="inline" set="null" expr="cast &quot;refactor.extract&quot;" line="1273" static="1">
+	<RefactorExtract public="1" get="inline" set="null" expr="cast &quot;refactor.extract&quot;" line="1281" static="1">
 		<x path="languageServerProtocol.CodeActionKind"/>
 		<meta>
 			<m n=":value"><e>cast "refactor.extract"</e></m>
@@ -5073,7 +5081,7 @@
 		- Extract interface from class
 		- ...</haxe_doc>
 	</RefactorExtract>
-	<RefactorInline public="1" get="inline" set="null" expr="cast &quot;refactor.inline&quot;" line="1285" static="1">
+	<RefactorInline public="1" get="inline" set="null" expr="cast &quot;refactor.inline&quot;" line="1293" static="1">
 		<x path="languageServerProtocol.CodeActionKind"/>
 		<meta>
 			<m n=":value"><e>cast "refactor.inline"</e></m>
@@ -5089,7 +5097,7 @@
 		- Inline constant
 		- ...</haxe_doc>
 	</RefactorInline>
-	<RefactorRewrite public="1" get="inline" set="null" expr="cast &quot;refactor.rewrite&quot;" line="1299" static="1">
+	<RefactorRewrite public="1" get="inline" set="null" expr="cast &quot;refactor.rewrite&quot;" line="1307" static="1">
 		<x path="languageServerProtocol.CodeActionKind"/>
 		<meta>
 			<m n=":value"><e>cast "refactor.rewrite"</e></m>
@@ -5107,7 +5115,7 @@
 		- Move method to base class
 		- ...</haxe_doc>
 	</RefactorRewrite>
-	<Source public="1" get="inline" set="null" expr="cast &quot;source&quot;" line="1306" static="1">
+	<Source public="1" get="inline" set="null" expr="cast &quot;source&quot;" line="1314" static="1">
 		<x path="languageServerProtocol.CodeActionKind"/>
 		<meta>
 			<m n=":value"><e>cast "source"</e></m>
@@ -5118,7 +5126,7 @@
 
 		Source code actions apply to the entire file.</haxe_doc>
 	</Source>
-	<SourceOrganizeImports public="1" get="inline" set="null" expr="cast &quot;source.organizeImports&quot;" line="1311" static="1">
+	<SourceOrganizeImports public="1" get="inline" set="null" expr="cast &quot;source.organizeImports&quot;" line="1319" static="1">
 		<x path="languageServerProtocol.CodeActionKind"/>
 		<meta>
 			<m n=":value"><e>cast "source.organizeImports"</e></m>
@@ -5127,7 +5135,7 @@
 		</meta>
 		<haxe_doc>Base kind for an organize imports source action: `source.organizeImports`</haxe_doc>
 	</SourceOrganizeImports>
-	<SourceFixAll public="1" get="inline" set="null" expr="cast &quot;source.fixAll&quot;" line="1321" static="1">
+	<SourceFixAll public="1" get="inline" set="null" expr="cast &quot;source.fixAll&quot;" line="1329" static="1">
 		<x path="languageServerProtocol.CodeActionKind"/>
 		<meta>
 			<m n=":value"><e>cast "source.fixAll"</e></m>
@@ -5145,7 +5153,7 @@
 </class></impl>
 	</abstract>
 	<class path="languageServerProtocol._Types.CodeActionKind_Impl_" params="" file="src/languageServerProtocol/Types.hx" private="1" module="languageServerProtocol.Types" extern="1">
-		<Empty public="1" get="inline" set="null" expr="cast &quot;&quot;" line="1250" static="1">
+		<Empty public="1" get="inline" set="null" expr="cast &quot;&quot;" line="1258" static="1">
 			<x path="languageServerProtocol.CodeActionKind"/>
 			<meta>
 				<m n=":value"><e>cast ""</e></m>
@@ -5154,7 +5162,7 @@
 			</meta>
 			<haxe_doc>Empty kind.</haxe_doc>
 		</Empty>
-		<QuickFix public="1" get="inline" set="null" expr="cast &quot;quickfix&quot;" line="1255" static="1">
+		<QuickFix public="1" get="inline" set="null" expr="cast &quot;quickfix&quot;" line="1263" static="1">
 			<x path="languageServerProtocol.CodeActionKind"/>
 			<meta>
 				<m n=":value"><e>cast "quickfix"</e></m>
@@ -5163,7 +5171,7 @@
 			</meta>
 			<haxe_doc>Base kind for quickfix actions: 'quickfix'</haxe_doc>
 		</QuickFix>
-		<Refactor public="1" get="inline" set="null" expr="cast &quot;refactor&quot;" line="1260" static="1">
+		<Refactor public="1" get="inline" set="null" expr="cast &quot;refactor&quot;" line="1268" static="1">
 			<x path="languageServerProtocol.CodeActionKind"/>
 			<meta>
 				<m n=":value"><e>cast "refactor"</e></m>
@@ -5172,7 +5180,7 @@
 			</meta>
 			<haxe_doc>Base kind for refactoring actions: 'refactor'</haxe_doc>
 		</Refactor>
-		<RefactorExtract public="1" get="inline" set="null" expr="cast &quot;refactor.extract&quot;" line="1273" static="1">
+		<RefactorExtract public="1" get="inline" set="null" expr="cast &quot;refactor.extract&quot;" line="1281" static="1">
 			<x path="languageServerProtocol.CodeActionKind"/>
 			<meta>
 				<m n=":value"><e>cast "refactor.extract"</e></m>
@@ -5189,7 +5197,7 @@
 		- Extract interface from class
 		- ...</haxe_doc>
 		</RefactorExtract>
-		<RefactorInline public="1" get="inline" set="null" expr="cast &quot;refactor.inline&quot;" line="1285" static="1">
+		<RefactorInline public="1" get="inline" set="null" expr="cast &quot;refactor.inline&quot;" line="1293" static="1">
 			<x path="languageServerProtocol.CodeActionKind"/>
 			<meta>
 				<m n=":value"><e>cast "refactor.inline"</e></m>
@@ -5205,7 +5213,7 @@
 		- Inline constant
 		- ...</haxe_doc>
 		</RefactorInline>
-		<RefactorRewrite public="1" get="inline" set="null" expr="cast &quot;refactor.rewrite&quot;" line="1299" static="1">
+		<RefactorRewrite public="1" get="inline" set="null" expr="cast &quot;refactor.rewrite&quot;" line="1307" static="1">
 			<x path="languageServerProtocol.CodeActionKind"/>
 			<meta>
 				<m n=":value"><e>cast "refactor.rewrite"</e></m>
@@ -5223,7 +5231,7 @@
 		- Move method to base class
 		- ...</haxe_doc>
 		</RefactorRewrite>
-		<Source public="1" get="inline" set="null" expr="cast &quot;source&quot;" line="1306" static="1">
+		<Source public="1" get="inline" set="null" expr="cast &quot;source&quot;" line="1314" static="1">
 			<x path="languageServerProtocol.CodeActionKind"/>
 			<meta>
 				<m n=":value"><e>cast "source"</e></m>
@@ -5234,7 +5242,7 @@
 
 		Source code actions apply to the entire file.</haxe_doc>
 		</Source>
-		<SourceOrganizeImports public="1" get="inline" set="null" expr="cast &quot;source.organizeImports&quot;" line="1311" static="1">
+		<SourceOrganizeImports public="1" get="inline" set="null" expr="cast &quot;source.organizeImports&quot;" line="1319" static="1">
 			<x path="languageServerProtocol.CodeActionKind"/>
 			<meta>
 				<m n=":value"><e>cast "source.organizeImports"</e></m>
@@ -5243,7 +5251,7 @@
 			</meta>
 			<haxe_doc>Base kind for an organize imports source action: `source.organizeImports`</haxe_doc>
 		</SourceOrganizeImports>
-		<SourceFixAll public="1" get="inline" set="null" expr="cast &quot;source.fixAll&quot;" line="1321" static="1">
+		<SourceFixAll public="1" get="inline" set="null" expr="cast &quot;source.fixAll&quot;" line="1329" static="1">
 			<x path="languageServerProtocol.CodeActionKind"/>
 			<meta>
 				<m n=":value"><e>cast "source.fixAll"</e></m>
@@ -5438,7 +5446,7 @@
 		<haxe_doc>Represents reasons why a text document is saved.</haxe_doc>
 		<meta><m n=":enum"/></meta>
 		<impl><class path="languageServerProtocol._Types.TextDocumentSaveReason_Impl_" params="" file="src/languageServerProtocol/Types.hx" private="1" module="languageServerProtocol.Types" extern="1">
-	<Manual public="1" get="inline" set="null" expr="cast 1" line="1512" static="1">
+	<Manual public="1" get="inline" set="null" expr="cast 1" line="1520" static="1">
 		<x path="languageServerProtocol.TextDocumentSaveReason"/>
 		<meta>
 			<m n=":value"><e>cast 1</e></m>
@@ -5469,7 +5477,7 @@
 </class></impl>
 	</abstract>
 	<class path="languageServerProtocol._Types.TextDocumentSaveReason_Impl_" params="" file="src/languageServerProtocol/Types.hx" private="1" module="languageServerProtocol.Types" extern="1">
-		<Manual public="1" get="inline" set="null" expr="cast 1" line="1512" static="1">
+		<Manual public="1" get="inline" set="null" expr="cast 1" line="1520" static="1">
 			<x path="languageServerProtocol.TextDocumentSaveReason"/>
 			<meta>
 				<m n=":value"><e>cast 1</e></m>
@@ -6222,18 +6230,17 @@
 	<cancellable>
 		<x path="Null"><x path="Bool"/></x>
 		<meta><m n=":optional"/></meta>
-		<haxe_doc>Controls enablement state of a cancel button. This property is only valid if a cancel
-		button got requested in the `WorkDoneProgressStart` payload.
+		<haxe_doc>Controls enablement state of a cancel button.
 
-		Clients that don't support cancellation or don't support control the button's
-		enablement state are allowed to ignore the setting.</haxe_doc>
+		Clients that don't support cancellation or don't support controlling the button's
+		enablement state are allowed to ignore the property.</haxe_doc>
 	</cancellable>
 </a></typedef>
 	<abstract path="languageServerProtocol.protocol.WorkDoneProgressEndKind" params="" file="src/languageServerProtocol/protocol/Progress.hx" module="languageServerProtocol.protocol.Progress">
 		<this><c path="String"/></this>
 		<meta><m n=":enum"/></meta>
 		<impl><class path="languageServerProtocol.protocol._Progress.WorkDoneProgressEndKind_Impl_" params="" file="src/languageServerProtocol/protocol/Progress.hx" private="1" module="languageServerProtocol.protocol.Progress" extern="1">
-	<End public="1" get="inline" set="null" expr="cast &quot;end&quot;" line="94" static="1">
+	<End public="1" get="inline" set="null" expr="cast &quot;end&quot;" line="93" static="1">
 		<x path="languageServerProtocol.protocol.WorkDoneProgressEndKind"/>
 		<meta>
 			<m n=":value"><e>cast "end"</e></m>
@@ -6245,7 +6252,7 @@
 </class></impl>
 	</abstract>
 	<class path="languageServerProtocol.protocol._Progress.WorkDoneProgressEndKind_Impl_" params="" file="src/languageServerProtocol/protocol/Progress.hx" private="1" module="languageServerProtocol.protocol.Progress" extern="1">
-		<End public="1" get="inline" set="null" expr="cast &quot;end&quot;" line="94" static="1">
+		<End public="1" get="inline" set="null" expr="cast &quot;end&quot;" line="93" static="1">
 			<x path="languageServerProtocol.protocol.WorkDoneProgressEndKind"/>
 			<meta>
 				<m n=":value"><e>cast "end"</e></m>
@@ -6264,7 +6271,7 @@
 	</message>
 	<kind><x path="languageServerProtocol.protocol.WorkDoneProgressEndKind"/></kind>
 </a></typedef>
-	<class path="languageServerProtocol.protocol.WorkDoneProgress" params="" file="src/languageServerProtocol/protocol/Progress.hx" module="languageServerProtocol.protocol.Progress"><type final="1" public="1" set="null" expr="new ProgressType&lt;EitherType&lt;WorkDoneProgressBegin,EitherType&lt;WorkDoneProgressReport,WorkDoneProgressEnd&gt;&gt;&gt;()" line="108" static="1">
+	<class path="languageServerProtocol.protocol.WorkDoneProgress" params="" file="src/languageServerProtocol/protocol/Progress.hx" module="languageServerProtocol.protocol.Progress"><type final="1" public="1" set="null" expr="new ProgressType&lt;EitherType&lt;WorkDoneProgressBegin,EitherType&lt;WorkDoneProgressReport,WorkDoneProgressEnd&gt;&gt;&gt;()" line="107" static="1">
 	<c path="jsonrpc.ProgressType"><x path="haxe.extern.EitherType">
 	<t path="languageServerProtocol.protocol.WorkDoneProgressBegin"/>
 	<x path="haxe.extern.EitherType">
@@ -6279,7 +6286,7 @@
 	<haxe_doc>The token to be used to report progress.</haxe_doc>
 </token></a></typedef>
 	<class path="languageServerProtocol.protocol.WorkDoneProgressCreateRequest" params="" file="src/languageServerProtocol/protocol/Progress.hx" module="languageServerProtocol.protocol.Progress">
-		<type final="1" public="1" get="inline" set="null" expr="new ProtocolRequestType&lt;WorkDoneProgressCreateParams,NoData,Never,NoData,NoData&gt;(&quot;window/workDoneProgress/create&quot;)" line="123" static="1">
+		<type final="1" public="1" get="inline" set="null" expr="new ProtocolRequestType&lt;WorkDoneProgressCreateParams,NoData,Never,NoData,NoData&gt;(&quot;window/workDoneProgress/create&quot;)" line="122" static="1">
 			<x path="languageServerProtocol.protocol.ProtocolRequestType">
 				<t path="languageServerProtocol.protocol.WorkDoneProgressCreateParams"/>
 				<e path="jsonrpc.NoData"/>
@@ -6297,7 +6304,7 @@
 	<haxe_doc>The token to be used to report progress.</haxe_doc>
 </token></a></typedef>
 	<class path="languageServerProtocol.protocol.WorkDoneProgressCancelNotification" params="" file="src/languageServerProtocol/protocol/Progress.hx" module="languageServerProtocol.protocol.Progress">
-		<type final="1" public="1" get="inline" set="null" expr="new ProtocolNotificationType&lt;WorkDoneProgressCancelParams,NoData&gt;(&quot;window/workDoneProgress/cancel&quot;)" line="138" static="1">
+		<type final="1" public="1" get="inline" set="null" expr="new ProtocolNotificationType&lt;WorkDoneProgressCancelParams,NoData&gt;(&quot;window/workDoneProgress/cancel&quot;)" line="137" static="1">
 			<x path="languageServerProtocol.protocol.ProtocolNotificationType">
 				<t path="languageServerProtocol.protocol.WorkDoneProgressCancelParams"/>
 				<e path="jsonrpc.NoData"/>
@@ -10945,7 +10952,7 @@
 		<meta><m n=":optional"/></meta>
 		<haxe_doc>An optional result id. If provided and clients support delta updating
 		the client will include the result id in the next semantic token request.
-		A server can then instead of computing all sematic tokens again simply
+		A server can then instead of computing all semantic tokens again simply
 		send a delta.</haxe_doc>
 	</resultId>
 	<data>
@@ -10975,11 +10982,11 @@
 	<x path="Null"><a>
 	<tokenTypes>
 		<c path="Array"><c path="String"/></c>
-		<haxe_doc>The token types know by the client.</haxe_doc>
+		<haxe_doc>The token types that the client supports.</haxe_doc>
 	</tokenTypes>
 	<tokenModifiers>
 		<c path="Array"><c path="String"/></c>
-		<haxe_doc>The token modifiers know by the client.</haxe_doc>
+		<haxe_doc>The token modifiers that the client supports.</haxe_doc>
 	</tokenModifiers>
 	<dynamicRegistration>
 		<x path="Null"><x path="Bool"/></x>
