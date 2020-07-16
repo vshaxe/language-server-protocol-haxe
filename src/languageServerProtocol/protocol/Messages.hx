@@ -4,6 +4,7 @@ import jsonrpc.Protocol.ProgressType;
 import languageServerProtocol.protocol.Protocol.NotificationType;
 import languageServerProtocol.protocol.Protocol.RequestType;
 
+@:transitive
 abstract ProtocolRequestType<P, R, PR, E, RO>(String) {
 	public inline function new(method:String) {
 		this = method;
@@ -18,6 +19,7 @@ abstract ProtocolRequestType<P, R, PR, E, RO>(String) {
 	}
 }
 
+@:transitive
 abstract ProtocolNotificationType<P, RO>(String) {
 	public inline function new(method:String) {
 		this = method;
