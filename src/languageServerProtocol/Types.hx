@@ -2397,17 +2397,17 @@ extern class TextDocument {
 	public var version:Int;
 
 	/**
-	 * Get the text of this document. A substring can be retrieved by
-	 * providing a range.
-	 *
-	 * @param range (optional) An range within the document to return.
-	 * If no range is passed, the full content is returned.
-	 * Invalid range positions are adjusted as described in [Position.line](#Position.line)
-	 * and [Position.character](#Position.character).
-	 * If the start range position is greater than the end range position,
-	 * then the effect of getText is as if the two positions were swapped.
-	 * @return The text of this document or a substring of the text if a
-	 *         range is provided.
+		Get the text of this document. A substring can be retrieved by
+		providing a range.
+
+		@param range (optional) An range within the document to return.
+		If no range is passed, the full content is returned.
+		Invalid range positions are adjusted as described in [Position.line](#Position.line)
+		and [Position.character](#Position.character).
+		If the start range position is greater than the end range position,
+		then the effect of getText is as if the two positions were swapped.
+		@return The text of this document or a substring of the text if a
+				range is provided.
 	**/
 	public function getText(?range:Range):String;
 
