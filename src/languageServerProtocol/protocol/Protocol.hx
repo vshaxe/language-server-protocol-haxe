@@ -1,15 +1,26 @@
 package languageServerProtocol.protocol;
 
 import languageServerProtocol.Types;
+import languageServerProtocol.protocol.CallHierarchy;
 import languageServerProtocol.protocol.ColorProvider;
 import languageServerProtocol.protocol.Configuration;
 import languageServerProtocol.protocol.Declaration;
+import languageServerProtocol.protocol.FileOperations;
 import languageServerProtocol.protocol.FoldingRange;
 import languageServerProtocol.protocol.Implementation;
+import languageServerProtocol.protocol.LinkedEditingRange;
+import languageServerProtocol.protocol.Moniker;
 import languageServerProtocol.protocol.Progress;
 import languageServerProtocol.protocol.SelectionRange;
+import languageServerProtocol.protocol.SemanticTokens;
+import languageServerProtocol.protocol.ShowDocument;
 import languageServerProtocol.protocol.TypeDefinition;
 import languageServerProtocol.protocol.WorkspaceFolders;
+import languageServerProtocol.protocol.proposed.Diagnostics;
+import languageServerProtocol.protocol.proposed.InlayHints;
+import languageServerProtocol.protocol.proposed.InlineValue;
+import languageServerProtocol.protocol.proposed.Notebook;
+import languageServerProtocol.protocol.proposed.TypeHierarchy;
 
 typedef RequestType<TParams, TResponse, TError, TRegistrationOptions> = jsonrpc.Types.RequestType<TParams, TResponse, TError>;
 typedef NotificationType<TParams, TRegistrationOptions> = jsonrpc.Types.NotificationType<TParams>;
@@ -35,7 +46,7 @@ abstract ResponseError<T>(ResponseErrorData) to ResponseErrorData {
 	@sample A language filter that applies to typescript files on disk: `{ language: 'typescript', scheme: 'file' }`
 	@sample A language filter that applies to all package.json paths: `{ language: 'json', pattern: '**package.json' }`
 **/
-typedef DocumentFilter = {
+typedef TextDocumentFilter = {
 	/**
 		A language id, like `haxe`.
 	**/
@@ -51,6 +62,58 @@ typedef DocumentFilter = {
 	**/
 	var ?pattern:String;
 }
+
+/**
+	A notebook document filter denotes a notebook document by
+	different properties. The properties will be match
+	against the notebook's URI (same as with documents)
+
+	@since 3.17.0
+	@proposed
+**/
+typedef NotebookDocumentFilter = {
+	/** The type of the enclosing notebook.**/
+	var ?notebookType:String;
+
+	/** A Uri [scheme](#Uri.scheme), like `file` or `untitled`.**/
+	var ?scheme:String;
+
+	/** A glob pattern.**/
+	var ?pattern:String;
+}
+
+/**
+	A notebook cell text document filter denotes a cell text
+	document by different properties.
+
+	@since 3.17.0
+	@proposed
+**/
+typedef NotebookCellTextDocumentFilter = {
+	/**
+		A filter that matches against the notebook
+		containing the notebook cell. If a string
+		value is provided it matches against the
+		notebook type. '*' matches every notebook.
+	**/
+	var notebook:EitherType<String, NotebookDocumentFilter>;
+
+	/**
+		A language id like `python`.
+
+		Will be matched against the language id of the
+		notebook cell document. '*' matches every language.
+	**/
+	var ?language:String;
+}
+
+/**
+	A document filter describes a top level text document or
+	a notebook cell document.
+
+	@since 3.17.0 - proposed support for NotebookCellTextDocumentFilter.
+**/
+typedef DocumentFilter = EitherType<TextDocumentFilter, NotebookCellTextDocumentFilter>;
 
 /**
 	A document selector is the combination of one or many document filters.
@@ -77,7 +140,7 @@ typedef Registration = {
 	/**
 		Options necessary for the registration.
 	**/
-	var ?registerOptions:Dynamic;
+	var ?registerOptions:LSPAny;
 }
 
 typedef RegistrationParams = {
@@ -207,8 +270,7 @@ enum abstract FailureHandlingKind(String) {
 
 	Define capabilities the editor / tool provides on the workspace.
 **/
-typedef WorkspaceClientCapabilites = ConfigurationClientCapabilities &
-	WorkspaceFoldersClientCapabilities & {
+typedef WorkspaceClientCapabilites = {
 	/**
 		The client supports applying batch edits to the workspace by supporting
 		the request 'workspace/applyEdit'
@@ -239,6 +301,70 @@ typedef WorkspaceClientCapabilites = ConfigurationClientCapabilities &
 		Capabilities specific to the `workspace/executeCommand` request.
 	**/
 	var ?executeCommand:ExecuteCommandClientCapabilities;
+
+	/**
+		The client has support for workspace folders
+
+		@since 3.6.0
+	**/
+	var ?workspaceFolders:Bool;
+
+	/**
+		The client supports `workspace/configuration` requests.
+
+		@since 3.6.0
+	**/
+	var ?configuration:Bool;
+
+	/**
+		Capabilities specific to the semantic token requests scoped to the
+		workspace.
+
+		@since 3.16.0
+	**/
+	var ?semanticTokens:SemanticTokensWorkspaceClientCapabilities;
+
+	/**
+		Capabilities specific to the code lens requests scoped to the
+		workspace.
+
+		@since 3.16.0
+	**/
+	var ?codeLens:CodeLensWorkspaceClientCapabilities;
+
+	/**
+		The client has support for file notifications/requests for user operations on files.
+
+		Since 3.16.0
+	**/
+	var ?fileOperations:FileOperationClientCapabilities;
+
+	/**
+		Capabilities specific to the inline values requests scoped to the
+		workspace.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?inlineValue:InlineValueWorkspaceClientCapabilities;
+
+	/**
+		Capabilities specific to the inlay hints requests scoped to the
+		workspace.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?inlayHint:InlayHintWorkspaceClientCapabilities;
+
+	/**
+		Capabilities specific to the diagnostic requests scoped to the
+		workspace.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?diagnostics:DiagnosticWorkspaceClientCapabilities;
 }
 
 /**
@@ -364,6 +490,259 @@ typedef TextDocumentClientCapabilities = {
 		Capabilities specific to `textDocument/publishDiagnostics`.
 	**/
 	var ?publishDiagnostics:PublishDiagnosticsClientCapabilities;
+
+	/**
+		Capabilities specific to the various call hierarchy request.
+
+		@since 3.16.0
+	**/
+	var ?callHierarchy:CallHierarchyClientCapabilities;
+
+	/**
+		Capabilities specific to the various semantic token request.
+
+		@since 3.16.0
+	**/
+	var ?semanticTokens:SemanticTokensClientCapabilities;
+
+	/**
+		Capabilities specific to the linked editing range request.
+
+		@since 3.16.0
+	**/
+	var ?linkedEditingRange:LinkedEditingRangeClientCapabilities;
+
+	/**
+		Client capabilities specific to the moniker request.
+
+		@since 3.16.0
+	**/
+	var ?moniker:MonikerClientCapabilities;
+
+	/**
+		Capabilities specific to the various type hierarchy requests.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?typeHierarchy:TypeHierarchyClientCapabilities;
+
+	/**
+		Capabilities specific to the `textDocument/inlineValue` request.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?inlineValue:InlineValueClientCapabilities;
+
+	/**
+		Capabilities specific to the `textDocument/inlayHint` request.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?inlayHint:InlayHintClientCapabilities;
+
+	/**
+		Capabilities specific to the diagnostic pull model.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?diagnostic:DiagnosticClientCapabilities;
+}
+
+typedef WindowClientCapabilities = {
+	/**
+		It indicates whether the client supports server initiated
+		progress using the `window/workDoneProgress/create` request.
+
+		The capability also controls Whether client supports handling
+		of progress notifications. If set servers are allowed to report a
+		`workDoneProgress` property in the request specific server
+		capabilities.
+
+		@since 3.15.0
+	**/
+	var ?workDoneProgress:Bool;
+
+	/**
+		Capabilities specific to the showMessage request.
+
+		@since 3.16.0
+	**/
+	var ?showMessage:ShowMessageRequestClientCapabilities;
+
+	/**
+		Capabilities specific to the showDocument request.
+
+		@since 3.16.0
+	**/
+	var ?showDocument:ShowDocumentClientCapabilities;
+}
+
+/**
+	Client capabilities specific to regular expressions.
+
+	@since 3.16.0
+**/
+typedef RegularExpressionsClientCapabilities = {
+	/**
+		The engine's name.
+	**/
+	var engine:String;
+
+	/**
+		The engine's version.
+	**/
+	var ?version:String;
+}
+
+/**
+	Client capabilities specific to the used markdown parser.
+
+	@since 3.16.0
+**/
+typedef MarkdownClientCapabilities = {
+	/**
+		The name of the parser.
+	**/
+	var parser:String;
+
+	/**
+		The version of the parser.
+	**/
+	var ?version:String;
+
+	/**
+		A list of HTML tags that the client allows / supports in
+		Markdown.
+
+		@since 3.17.0
+	**/
+	var ?allowedTags:Array<String>;
+}
+
+/**
+	A set of predefined position encoding kinds.
+
+	@since 3.17.0
+	@proposed
+**/
+enum abstract PositionEncodingKind(String) {
+	/**
+		Character offsets count UTF-8 code units.
+	**/
+	var UTF8 = 'utf-8';
+
+	/**
+		Character offsets count UTF-16 code units.
+
+		This is the default and must always be supported
+		by servers
+	**/
+	var UTF16 = 'utf-16';
+
+	/**
+		Character offsets count UTF-32 code units.
+
+		Implementation note: these are the same as Unicode code points,
+		so this `PositionEncodingKind` may also be used for an
+		encoding-agnostic representation of character offsets.
+	**/
+	var UTF32 = 'utf-32';
+}
+
+/**
+	A type indicating how positions are encoded,
+	specifically what column offsets mean.
+
+	@since 3.17.0
+	@proposed
+**/
+// typedef PositionEncodingKind = String;
+
+/**
+	General client capabilities.
+
+	@since 3.16.0
+**/
+typedef GeneralClientCapabilities = {
+	/**
+		Client capability that signals how the client
+		handles stale requests (e.g. a request
+		for which the client will not process the response
+		anymore since the information is outdated).
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?staleRequestSupport:{
+		/**
+			The client will actively cancel the request.
+		**/
+		var cancel:Bool;
+
+		/**
+			The list of requests for which the client
+			will retry the request if it receives a
+			response with error code `ContentModified`
+		**/
+		var retryOnContentModified:Array<String>;
+	}
+
+	/**
+		Client capabilities specific to regular expressions.
+
+		@since 3.16.0
+	**/
+	var ?regularExpressions:RegularExpressionsClientCapabilities;
+
+	/**
+		Client capabilities specific to the client's markdown parser.
+
+		@since 3.16.0
+	**/
+	var ?markdown:MarkdownClientCapabilities;
+
+	/**
+		The position encodings supported by the client. Client and server
+		have to agree on the same position encoding to ensure that offsets
+		(e.g. character position in a line) are interpreted the same on both
+		side.
+
+		To keep the protocol backwards compatible the following applies: if
+		the value 'utf-16' is missing from the array of position encodings
+		servers can assume that the client supports UTF-16. UTF-16 is
+		therefore a mandatory encoding.
+
+		If omitted it defaults to ['utf-16'].
+
+		Implementation considerations: since the conversion from one encoding
+		into another requires the content of the file / line the conversion
+		is best done where the file is read which is usually on the server
+		side.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?positionEncodings:Array<PositionEncodingKind>;
+}
+
+/**
+	Capabilities specific to the notebook document support.
+
+	@since 3.17.0
+	@proposed
+**/
+typedef NotebookDocumentClientCapabilities = {
+	/**
+		Capabilities specific to notebook document synchronization
+
+		@since 3.17.0
+		@proposed
+	**/
+	var synchronization:NotebookDocumentSyncClientCapabilities;
 }
 
 /**
@@ -385,9 +764,24 @@ typedef ClientCapabilities = {
 	var ?textDocument:TextDocumentClientCapabilities;
 
 	/**
+		Capabilities specific to the notebook document support.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?notebookDocument:NotebookDocumentClientCapabilities;
+
+	/**
 		Window specific client capabilities.
 	**/
 	var ?window:WorkDoneProgressClientCapabilities;
+
+	/**
+		General client capabilities.
+
+		@since 3.16.0
+	**/
+	var ?general:GeneralClientCapabilities;
 
 	/**
 		Experimental client capabilities.
@@ -438,20 +832,44 @@ typedef WorkDoneProgressOptions = {
 **/
 typedef ServerCapabilities = WorkspaceFoldersServerCapabilities & {
 	/**
+		The position encoding the server picked from the encodings offered
+		by the client via the client capability `general.positionEncodings`.
+
+		If the client didn't provide any position encodings the only valid
+		value that a server can return is 'utf-16'.
+
+		If omitted it defaults to 'utf-16'.
+
+		If for some reason
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?positionEncoding:PositionEncodingKind;
+
+	/**
 		Defines how text documents are synced.
 		Is either a detailed structure defining each notification or for backwards compatibility the TextDocumentSyncKind number.
 	**/
 	var ?textDocumentSync:EitherType<TextDocumentSyncOptions, TextDocumentSyncKind>;
 
 	/**
-		The server provides hover support.
+		Defines how notebook documents are synced.
+
+		@since 3.17.0
+		@proposed
 	**/
-	var ?hoverProvider:EitherType<Bool, HoverOptions>;
+	var ?notebookDocumentSync:EitherType<NotebookDocumentSyncOptions, NotebookDocumentSyncRegistrationOptions>;
 
 	/**
 		The server provides completion support.
 	**/
 	var ?completionProvider:CompletionOptions;
+
+	/**
+		The server provides hover support.
+	**/
+	var ?hoverProvider:EitherType<Bool, HoverOptions>;
 
 	/**
 		The server provides signature help support.
@@ -494,11 +912,6 @@ typedef ServerCapabilities = WorkspaceFoldersServerCapabilities & {
 	var ?documentSymbolProvider:EitherType<Bool, DocumentSymbolOptions>;
 
 	/**
-		The server provides workspace symbol support.
-	**/
-	var ?workspaceSymbolProvider:EitherType<Bool, WorkspaceSymbolOptions>;
-
-	/**
 		The server provides code actions. CodeActionOptions may only be
 		specified if the client states that it supports
 		`codeActionLiteralSupport` in its initial `initialize` request.
@@ -519,6 +932,11 @@ typedef ServerCapabilities = WorkspaceFoldersServerCapabilities & {
 		The server provides color provider support.
 	**/
 	var ?colorProvider:EitherType<Bool, EitherType<DocumentColorOptions, DocumentColorRegistrationOptions>>;
+
+	/**
+		The server provides workspace symbol support.
+	**/
+	var ?workspaceSymbolProvider:EitherType<Bool, WorkspaceSymbolOptions>;
 
 	/**
 		The server provides document formatting.
@@ -558,6 +976,85 @@ typedef ServerCapabilities = WorkspaceFoldersServerCapabilities & {
 	var ?executeCommandProvider:ExecuteCommandOptions;
 
 	/**
+		The server provides call hierarchy support.
+
+		@since 3.16.0
+	**/
+	var ?callHierarchyProvider:EitherType<Bool, EitherType<CallHierarchyOptions, CallHierarchyRegistrationOptions>>;
+
+	/**
+		The server provides linked editing range support.
+
+		@since 3.16.0
+	**/
+	var ?linkedEditingRangeProvider:EitherType<Bool, EitherType<LinkedEditingRangeOptions, LinkedEditingRangeRegistrationOptions>>;
+
+	/**
+		The server provides semantic tokens support.
+
+		@since 3.16.0
+	**/
+	var ?semanticTokensProvider:EitherType<SemanticTokensOptions, SemanticTokensRegistrationOptions>;
+
+	/**
+		The server provides moniker support.
+
+		@since 3.16.0
+	**/
+	var ?monikerProvider:EitherType<Bool, EitherType<MonikerOptions, MonikerRegistrationOptions>>;
+
+	/**
+		The server provides type hierarchy support.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?typeHierarchyProvider:EitherType<Bool, EitherType<TypeHierarchyOptions, TypeHierarchyRegistrationOptions>>;
+
+	/**
+		The server provides inline values.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?inlineValueProvider:EitherType<Bool, EitherType<InlineValueOptions, InlineValueRegistrationOptions>>;
+
+	/**
+		The server provides inlay hints.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?inlayHintProvider:EitherType<Bool, EitherType<InlayHintOptions, InlayHintRegistrationOptions>>;
+
+	/**
+		The server has support for pull model diagnostics.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?diagnosticProvider:EitherType<DiagnosticOptions, DiagnosticRegistrationOptions>;
+
+	/**
+		Workspace specific server capabilities.
+	**/
+	var ?workspace:{
+		/**
+			The server supports workspace folder.
+
+			@since 3.6.0
+		**/
+		var ?workspaceFolders:WorkspaceFoldersServerCapabilities;
+
+		/**
+			The server is interested in notifications/requests for operations on files.
+
+			@since 3.16.0
+		**/
+		var ?fileOperations:FileOperationOptions;
+	};
+
+	/**
 		Experimental server capabilities.
 	**/
 	var ?experimental:Dynamic;
@@ -578,7 +1075,8 @@ class InitializeRequest {
 /**
 	The initialize parameters
 **/
-typedef InitializeParams = WorkspaceFoldersInitializeParams & {
+typedef InitializeParams = WorkDoneProgressParams &
+	WorkspaceFoldersInitializeParams & {
 	/**
 		The process Id of the parent process that started the server.
 		Is null if the process has not been started by another process.
@@ -615,7 +1113,7 @@ typedef InitializeParams = WorkspaceFoldersInitializeParams & {
 		Is null if no folder is open.
 		If both `rootPath` and `rootUri` are set `rootUri` wins.
 	**/
-	// @:deprecated("deprecated in favour of workspaceFolders")
+	@:deprecated("deprecated in favour of workspaceFolders")
 	var rootUri:Null<DocumentUri>;
 
 	/**
@@ -638,6 +1136,7 @@ typedef InitializeParams = WorkspaceFoldersInitializeParams & {
 enum abstract TraceMode(String) to String {
 	var Off = "off";
 	var Messages = "messages";
+	var Compact = "compact";
 	var Verbose = "verbose";
 }
 
@@ -667,6 +1166,10 @@ typedef InitializeResult = {
 		**/
 		var ?version:String;
 	};
+}
+
+enum abstract InitializeErrorCodes(Int) {
+	var unknownProtocolVersion = 1;
 }
 
 /**
@@ -794,6 +1297,23 @@ typedef ShowMessageParams = {
 **/
 class ShowMessageNotification {
 	public static inline final type = new ProtocolNotificationType<ShowMessageParams, NoData>("window/showMessage");
+}
+
+/**
+	Show message request client capabilities
+**/
+typedef ShowMessageRequestClientCapabilities = {
+	/**
+		Capabilities specific to the `MessageActionItem` type.
+	**/
+	var ?messageActionItem:{
+		/**
+			Whether the client supports additional attributes which
+			are preserved and send back to the server in the
+			request's response.
+		**/
+		var ?additionalPropertiesSupport:Bool;
+	};
 }
 
 typedef MessageActionItem = {
@@ -1059,6 +1579,26 @@ class DidSaveTextDocumentNotification {
 }
 
 /**
+	Represents reasons why a text document is saved.
+**/
+enum abstract TextDocumentSaveReason(Int) {
+	/**
+		Manually triggered, e.g. by the user pressing save, by starting debugging, or by an API call.
+	**/
+	var Manual = 1;
+
+	/**
+		Automatic after a delay.
+	**/
+	var AfterDelay;
+
+	/**
+		When the editor lost focus.
+	**/
+	var FocusOut;
+}
+
+/**
 	The parameters send in a will save text document notification.
 **/
 typedef WillSaveTextDocumentParams = {
@@ -1103,6 +1643,14 @@ typedef DidChangeWatchedFilesClientCapabilities = {
 		from the server side.
 	**/
 	var ?dynamicRegistration:Bool;
+
+	/**
+		Whether the client has support for {@link  RelativePattern relative pattern}
+		or not.
+
+		@since 3.17.0
+	**/
+	var ?relativePatternSupport:Bool;
 }
 
 /**
@@ -1169,17 +1717,48 @@ typedef DidChangeWatchedFilesRegistrationOptions = {
 	var watchers:Array<FileSystemWatcher>;
 }
 
+/**
+	The glob pattern to watch relative to the base path. Glob patterns can have the following syntax:
+	- `*` to match one or more characters in a path segment
+	- `?` to match on one character in a path segment
+	- `**` to match any number of path segments, including none
+	- `{}` to group conditions (e.g. `**​/*.{ts,js}` matches all TypeScript and JavaScript files)
+	- `[]` to declare a range of characters to match in a path segment (e.g., `example.[0-9]` to match on `example.0`, `example.1`, …)
+	- `[!...]` to negate a range of characters to match in a path segment (e.g., `example.[!0-9]` to match on `example.a`, `example.b`, but not `example.0`)
+
+	@since 3.17.0
+**/
+typedef Pattern = String;
+
+/**
+	A relative pattern is a helper to construct glob patterns that are matched
+	relatively to a base URI. The common value for a `baseUri` is a workspace
+	folder root, but it can be another absolute URI as well.
+
+	@since 3.17.0
+**/
+typedef RelativePattern = {
+	/**
+		A workspace folder or a base URI to which this pattern will be matched
+		against relatively.
+	**/
+	var baseUri:EitherType<WorkspaceFolder, URI>;
+
+	/**
+		The actual glob pattern;
+	**/
+	var pattern:Pattern;
+}
+
+typedef GlobPattern = EitherType<Pattern, RelativePattern>;
+
 typedef FileSystemWatcher = {
 	/**
-		The  glob pattern to watch. Glob patterns can have the following syntax:
-		- `*` to match one or more characters in a path segment
-		- `?` to match on one character in a path segment
-		- `**` to match any number of path segments, including none
-		- `{}` to group conditions (e.g. `**​/*.{ts,js}` matches all TypeScript and JavaScript files)
-		- `[]` to declare a range of characters to match in a path segment (e.g., `example.[0-9]` to match on `example.0`, `example.1`, …)
-		- `[!...]` to negate a range of characters to match in a path segment (e.g., `example.[!0-9]` to match on `example.a`, `example.b`, but not `example.0`)
+		The glob pattern to watch. See {@link GlobPattern glob pattern} for more detail.
+
+		@since 3.17.0 support for relative patterns.
 	**/
-	var globPattern:String;
+	var globPattern:GlobPattern;
 
 	/**
 		The kind of events of interest. If omitted it defaults
@@ -1198,12 +1777,12 @@ enum abstract WatchKind(Int) to Int {
 	/**
 		Interested in change events
 	**/
-	var Change;
+	var Change = 2;
 
 	/**
 		Interested in delete events
 	**/
-	var Delete;
+	var Delete = 4;
 }
 
 //---- Diagnostic notification ----
@@ -1239,11 +1818,20 @@ typedef PublishDiagnosticsClientCapabilities = {
 	var ?versionSupport:Bool;
 
 	/**
-		Clients support complex diagnostic codes (e.g. code and target URI).
+		Client supports a codeDescription property
 
-		@since 3.16.0 - Proposed state
+		@since 3.16.0
 	**/
-	var ?complexDiagnosticCodeSupport:Bool;
+	var ?codeDescriptionSupport:Bool;
+
+	/**
+		Whether code action supports the `data` property which is
+		preserved between a `textDocument/publishDiagnostics` and
+		`textDocument/codeAction` request.
+
+		@since 3.16.0
+	**/
+	var ?dataSupport:Bool;
 }
 
 /**
@@ -1345,6 +1933,40 @@ typedef CompletionClientCapabilities = {
 			@since 3.16.0 - Proposed state
 		**/
 		var ?insertReplaceSupport:Bool;
+
+		/**
+			Indicates which properties a client can resolve lazily on a completion
+			item. Before version 3.16.0 only the predefined properties `documentation`
+			and `details` could be resolved lazily.
+
+			@since 3.16.0
+		**/
+		var ?resolveSupport:{
+			/**
+				The properties that a client can resolve lazily.
+			**/
+			var properties:Array<String>;
+		};
+
+		/**
+			The client supports the `insertTextMode` property on
+			a completion item to override the whitespace handling mode
+			as defined by the client (see `insertTextMode`).
+
+			@since 3.16.0
+		**/
+		var ?insertTextModeSupport:{
+			var valueSet:Array<InsertTextMode>;
+		};
+
+		/**
+			The client has support for completion item label
+			details (see also `CompletionItemLabelDetails`).
+
+			@since 3.17.0
+			@proposed
+		**/
+		var ?labelDetailsSupport:Bool;
 	};
 
 	var ?completionItemKind:{
@@ -1362,10 +1984,42 @@ typedef CompletionClientCapabilities = {
 	};
 
 	/**
+		Defines how the client handles whitespace and indentation
+		when accepting a completion item that uses multi line
+		text in either `insertText` or `textEdit`.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?insertTextMode:InsertTextMode;
+
+	/**
 		The client supports to send additional context information for a
 		`textDocument/completion` requestion.
 	**/
 	var ?contextSupport:Bool;
+
+	/**
+		The client supports the following `CompletionList` specific
+		capabilities.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?completionList:{
+		/**
+			The client supports the the following itemDefaults on
+			a completion list.
+
+			The value lists the supported property names of the
+			`CompletionList.itemDefaults` object. If omitted
+			no properties are supported.
+
+			@since 3.17.0
+			@proposed
+		**/
+		var ?itemDefaults:Array<String>;
+	};
 }
 
 /**
@@ -1451,6 +2105,25 @@ typedef CompletionOptions = WorkDoneProgressOptions & {
 		The server provides support to resolve additional information for a completion item.
 	**/
 	var ?resolveProvider:Bool;
+
+	/**
+		The server supports the following `CompletionItem` specific
+		capabilities.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?completionItem:{
+		/**
+			The server has support for completion item label
+			details (see also `CompletionItemLabelDetails`) when
+			receiving a completion item in a resolve call.
+
+			@since 3.17.0
+			@proposed
+		**/
+		var ?labelDetailsSupport:Bool;
+	};
 }
 
 /**
@@ -1470,11 +2143,8 @@ typedef CompletionRegistrationOptions = TextDocumentRegistrationOptions & Comple
 	`filterText`, `insertText`, and `textEdit`, must not be changed during resolve.
 **/
 class CompletionRequest {
-	public static inline final type = new ProtocolRequestType<CompletionParams, Null<EitherType<Array<CompletionItem>, CompletionList>>,
-		Array<CompletionItem>, NoData, CompletionRegistrationOptions>("textDocument/completion");
-
-	@:deprecated("Use CompletionRequest.type")
-	public static final resultType = new ProgressType<Array<CompletionItem>>();
+	public static inline final type = new ProtocolRequestType<CompletionParams, Null<EitherType<Array<CompletionItem>, CompletionList>>, Array<CompletionItem>
+		, NoData, CompletionRegistrationOptions>("textDocument/completion");
 }
 
 /**
@@ -1559,6 +2229,14 @@ typedef SignatureHelpClientCapabilities = {
 			**/
 			var ?labelOffsetSupport:Bool;
 		}
+
+		/**
+			The client support the `activeParameter` property on `SignatureInformation`
+			literal.
+
+			@since 3.16.0
+		**/
+		var ?activeParameterSupport:Bool;
 	};
 
 	/**
@@ -1715,11 +2393,8 @@ typedef DefinitionRegistrationOptions = TextDocumentRegistrationOptions & Defini
 	to such.
 **/
 class DefinitionRequest {
-	public static inline final type = new ProtocolRequestType<DefinitionParams, Null<EitherType<Definition, DefinitionLink>>,
+	public static inline final type = new ProtocolRequestType<DefinitionParams, Null<EitherType<Definition, Array<DefinitionLink>>>,
 		EitherType<Array<Location>, Array<DefinitionLink>>, NoData, DefinitionRegistrationOptions>("textDocument/definition");
-
-	@:deprecated("Use DefinitionRequest.type")
-	public static final resultType = new ProgressType<EitherType<Array<Location>, Array<DefinitionLink>>>();
 }
 
 //---- Reference Provider ----------------------------------
@@ -1762,9 +2437,6 @@ typedef ReferenceRegistrationOptions = TextDocumentRegistrationOptions & Referen
 class ReferencesRequest {
 	public static inline final type = new ProtocolRequestType<ReferenceParams, Null<Array<Location>>, Array<Location>, NoData,
 		ReferenceRegistrationOptions>("textDocument/references");
-
-	@:deprecated("Use ReferencesRequest.type")
-	public static final resultType = new ProgressType<Array<Location>>();
 }
 
 //---- Document Highlight ----------------------------------
@@ -1803,9 +2475,6 @@ typedef DocumentHighlightRegistrationOptions = TextDocumentRegistrationOptions &
 class DocumentHighlightRequest {
 	public static inline final type = new ProtocolRequestType<DocumentHighlightParams, Null<Array<DocumentHighlight>>, Array<DocumentHighlight>, NoData,
 		DocumentHighlightRegistrationOptions>("textDocument/documentHighlight");
-
-	@:deprecated("Use DocumentHighlightRequest.type")
-	public static final resultType = new ProgressType<Array<DocumentHighlight>>();
 }
 
 //---- Document Symbol Provider ---------------------------
@@ -1850,10 +2519,18 @@ typedef DocumentSymbolClientCapabilities = {
 	**/
 	var ?tagSupport:{
 		/**
-		 * The tags supported by the client.
-		 */
+			The tags supported by the client.
+		**/
 		var valueSet:Array<SymbolTag>;
 	};
+
+	/**
+		The client supports an additional label presented in the UI when
+		registering a document symbol provider.
+
+		@since 3.16.0
+	**/
+	var ?labelSupport:Bool;
 }
 
 /**
@@ -1870,7 +2547,15 @@ typedef DocumentSymbolParams = WorkDoneProgressParams &
 /**
 	Provider options for a [DocumentSymbolRequest](#DocumentSymbolRequest).
 **/
-typedef DocumentSymbolOptions = WorkDoneProgressOptions;
+typedef DocumentSymbolOptions = WorkDoneProgressOptions & {
+	/**
+		A human-readable string that is shown when multiple outlines trees
+		are shown for the same document.
+
+		@since 3.16.0
+	**/
+	var ?label:String;
+};
 
 /**
 	Registration options for a [DocumentSymbolRequest](#DocumentSymbolRequest).
@@ -1884,11 +2569,8 @@ typedef DocumentSymbolRegistrationOptions = TextDocumentRegistrationOptions & Do
 	that resolves to such.
 **/
 class DocumentSymbolRequest {
-	public static inline final type = new ProtocolRequestType<DocumentSymbolParams, Null<Array<EitherType<SymbolInformation, DocumentSymbol>>>,
+	public static inline final type = new ProtocolRequestType<DocumentSymbolParams, Null<EitherType<Array<SymbolInformation>, Array<DocumentSymbol>>>,
 		EitherType<Array<SymbolInformation>, Array<DocumentSymbol>>, NoData, DocumentSymbolRegistrationOptions>("textDocument/documentSymbol");
-
-	@:deprecated("Use DocumentSymbolRequest.type")
-	public static final resultType = new ProgressType<EitherType<Array<SymbolInformation>, Array<DocumentSymbol>>>();
 }
 
 //---- Code Action Provider ----------------------------------
@@ -1929,6 +2611,46 @@ typedef CodeActionClientCapabilities = {
 		@since 3.15.0
 	**/
 	var ?isPreferredSupport:Bool;
+
+	/**
+		Whether code action supports the `disabled` property.
+
+		@since 3.16.0
+	**/
+	var ?disabledSupport:Bool;
+
+	/**
+		Whether code action supports the `data` property which is
+		preserved between a `textDocument/codeAction` and a
+		`codeAction/resolve` request.
+
+		@since 3.16.0
+	**/
+	var ?dataSupport:Bool;
+
+	/**
+		Whether the client support resolving additional code action
+		properties via a separate `codeAction/resolve` request.
+
+		@since 3.16.0
+	**/
+	var ?resolveSupport:{
+		/**
+			The properties that a client can resolve lazily.
+		**/
+		var properties:Array<String>;
+	};
+
+	/**
+		Whether th client honors the change annotations in
+		text edits and resource operations returned via the
+		`CodeAction#edit` property by for example presenting
+		the workspace edit in the user interface and asking
+		for confirmation.
+
+		@since 3.16.0
+	**/
+	var ?honorsChangeAnnotations:Bool;
 }
 
 /**
@@ -1963,6 +2685,14 @@ typedef CodeActionOptions = WorkDoneProgressOptions & {
 		may list out every specific kind they provide.
 	**/
 	var ?codeActionKinds:Array<CodeActionKind>;
+
+	/**
+		The server provides support to resolve additional
+		information for a code action.
+
+		@since 3.16.0
+	**/
+	var ?resolveProvider:Bool;
 }
 
 /**
@@ -1976,9 +2706,15 @@ typedef CodeActionRegistrationOptions = TextDocumentRegistrationOptions & CodeAc
 class CodeActionRequest {
 	public static inline final type = new ProtocolRequestType<CodeActionParams, Null<Array<EitherType<Command, CodeAction>>>,
 		Array<EitherType<Command, CodeAction>>, NoData, CodeActionRegistrationOptions>("textDocument/codeAction");
+}
 
-	@:deprecated("Use CodeActionRequest.type")
-	public static final resultType = new ProgressType<Array<EitherType<Command, CodeAction>>>();
+/**
+	Request to resolve additional information for a given code action.The request's
+	parameter is of type [CodeAction](#CodeAction) the response
+	is of type [CodeAction](#CodeAction) or a Thenable that resolves to such.
+**/
+class CodeActionResolveRequest {
+	public static inline final type = new ProtocolRequestType<CodeAction, CodeAction, Never, NoData, NoData>("codeAction/resolve");
 }
 
 //---- Workspace Symbol Provider ---------------------------
@@ -2021,6 +2757,22 @@ typedef WorkspaceSymbolClientCapabilities = {
 		**/
 		var valueSet:Array<SymbolTag>;
 	};
+
+	/**
+		The client support partial workspace symbols. The client will send the
+		request `workspaceSymbol/resolve` to the server to resolve additional
+		properties.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var resolveSupport:{
+		/**
+			The properties that a client can resolve lazily. Usually
+			`location.range`
+		**/
+		var properties:Array<String>;
+	};
 }
 
 /**
@@ -2038,7 +2790,16 @@ typedef WorkspaceSymbolParams = WorkDoneProgressParams &
 /**
 	Server capabilities for a [WorkspaceSymbolRequest](#WorkspaceSymbolRequest).
 **/
-typedef WorkspaceSymbolOptions = WorkDoneProgressOptions;
+typedef WorkspaceSymbolOptions = WorkDoneProgressOptions & {
+	/**
+		The server provides support to resolve additional
+		information for a workspace symbol.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?resolveProvider:Bool;
+};
 
 /**
 	Registration options for a [WorkspaceSymbolRequest](#WorkspaceSymbolRequest).
@@ -2052,11 +2813,19 @@ typedef WorkspaceSymbolRegistrationOptions = WorkspaceSymbolOptions;
 	resolves to such.
 **/
 class WorkspaceSymbolRequest {
-	public static inline final type = new ProtocolRequestType<WorkspaceSymbolParams, Null<Array<SymbolInformation>>, Array<SymbolInformation>, NoData,
-		WorkspaceSymbolRegistrationOptions>("workspace/symbol");
+	public static inline final type = new ProtocolRequestType<WorkspaceSymbolParams, Null<EitherType<Array<SymbolInformation>, Array<WorkspaceSymbol>>>,
+		EitherType<Array<SymbolInformation>, Array<WorkspaceSymbol>>, NoData, WorkspaceSymbolRegistrationOptions>("workspace/symbol");
+}
 
-	@:deprecated("Use WorkspaceSymbolRequest.type")
-	public static final resultType = new ProgressType<Array<SymbolInformation>>();
+/**
+	A request to resolve the range inside the workspace
+	symbol's location.
+
+	@since 3.17.0
+	@proposed
+**/
+class WorkspaceSymbolResolveRequest {
+	public static inline final type = new ProtocolRequestType<WorkspaceSymbol, WorkspaceSymbol, Never, NoData, NoData>("workspaceSymbol/resolve");
 }
 
 //---- Code Lens Provider -------------------------------------------
@@ -2072,9 +2841,26 @@ typedef CodeLensClientCapabilities = {
 }
 
 /**
+	@since 3.16.0
+**/
+typedef CodeLensWorkspaceClientCapabilities = {
+	/**
+		Whether the client implementation supports a refresh request sent from the
+		server to the client.
+
+		Note that this event is global and will force the client to refresh all
+		code lenses currently shown. It should be used with absolute care and is
+		useful for situation where a server for example detect a project wide
+		change that requires such a calculation.
+	**/
+	var ?refreshSupport:Bool;
+}
+
+/**
 	The parameters of a [CodeLensRequest](#CodeLensRequest).
 **/
-typedef CodeLensParams = {
+typedef CodeLensParams = WorkDoneProgressParams &
+	PartialResultParams & {
 	/**
 		The document to request code lens for.
 	**/
@@ -2100,11 +2886,8 @@ typedef CodeLensRegistrationOptions = TextDocumentRegistrationOptions & CodeLens
 	A request to provide code lens for the given text document.
 **/
 class CodeLensRequest {
-	public static inline final type = new ProtocolRequestType<CodeLensParams, Array<CodeLens>, Array<CodeLens>, NoData,
+	public static inline final type = new ProtocolRequestType<CodeLensParams, Null<Array<CodeLens>>, Array<CodeLens>, NoData,
 		CodeLensRegistrationOptions>("textDocument/codeLens");
-
-	@:deprecated("Use CodeLensRequest.type")
-	public static final resultType = new ProgressType<Array<CodeLens>>();
 }
 
 /**
@@ -2112,6 +2895,15 @@ class CodeLensRequest {
 **/
 class CodeLensResolveRequest {
 	public static inline final type = new ProtocolRequestType<CodeLens, CodeLens, Never, NoData, NoData>("codeLens/resolve");
+}
+
+/**
+	A request to refresh all code actions
+
+	@since 3.16.0
+**/
+class CodeLensRefreshRequest {
+	public static inline final type = new ProtocolRequestType<NoData, NoData, NoData, NoData, NoData>("workspace/codeLens/refresh");
 }
 
 //---- Document Links ----------------------------------------------
@@ -2136,7 +2928,8 @@ typedef DocumentLinkClientCapabilities = {
 /**
 	The parameters of a [DocumentLinkRequest](#DocumentLinkRequest).
 **/
-typedef DocumentLinkParams = {
+typedef DocumentLinkParams = WorkDoneProgressParams &
+	PartialResultParams & {
 	/**
 		The document to provide document links for.
 	**/
@@ -2164,9 +2957,6 @@ typedef DocumentLinkRegistrationOptions = TextDocumentRegistrationOptions & Docu
 class DocumentLinkRequest {
 	public static inline final type = new ProtocolRequestType<DocumentLinkParams, Null<Array<DocumentLink>>, Array<DocumentLink>, NoData,
 		DocumentLinkRegistrationOptions>("textDocument/documentLink");
-
-	@:deprecated("Use DocumentLinkRequest.type")
-	public static final resultType = new ProgressType<Array<DocumentLink>>();
 }
 
 /**
@@ -2236,7 +3026,7 @@ typedef DocumentRangeFormattingClientCapabilities = {
 /**
 	The parameters of a [DocumentRangeFormattingRequest](#DocumentRangeFormattingRequest).
 **/
-typedef DocumentRangeFormattingParams = {
+typedef DocumentRangeFormattingParams = WorkDoneProgressParams & {
 	/**
 		The document to format.
 	**/
@@ -2336,6 +3126,10 @@ class DocumentOnTypeFormattingRequest {
 
 //---- Rename ----------------------------------------------
 
+enum abstract PrepareSupportDefaultBehavior(Int) {
+	var Identifier = 1;
+}
+
 typedef RenameClientCapabilities = {
 	/**
 		Whether rename supports dynamic registration.
@@ -2349,12 +3143,33 @@ typedef RenameClientCapabilities = {
 		@since version 3.12.0
 	**/
 	var ?prepareSupport:Bool;
+
+	/**
+		Client supports the default behavior result.
+
+		The value indicates the default behavior used by the
+		client.
+
+		@since 3.16.0
+	**/
+	var ?prepareSupportDefaultBehavior:PrepareSupportDefaultBehavior;
+
+	/**
+		Whether th client honors the change annotations in
+		text edits and resource operations returned via the
+		rename request's workspace edit by for example presenting
+		the workspace edit in the user interface and asking
+		for confirmation.
+
+		@since 3.16.0
+	**/
+	var ?honorsChangeAnnotations:Bool;
 }
 
 /**
 	The parameters of a [RenameRequest](#RenameRequest).
 **/
-typedef RenameParams = {
+typedef RenameParams = WorkDoneProgressParams & {
 	/**
 		The document to format.
 	**/
@@ -2398,12 +3213,13 @@ class RenameRequest {
 }
 
 typedef PrepareRenameParams = TextDocumentPositionParams & WorkDoneProgressParams;
+typedef PrepareRenameResult = EitherType<Range, EitherType<{var range:Range; var placeholder:String;}, {var defaultBehavior:Bool;}>>;
 
 /**
 	A request to test and perform the setup necessary for a rename.
 **/
 class PrepareRenameRequest {
-	public static inline final type = new ProtocolRequestType<PrepareRenameParams, Null<EitherType<Range, {range:Range, placeholder:String}>>, Never, NoData,
+	public static inline final type = new ProtocolRequestType<PrepareRenameParams, Null<PrepareRenameResult>, Never, NoData,
 		NoData>("textDocument/prepareRename");
 }
 
@@ -2422,7 +3238,7 @@ typedef ExecuteCommandClientCapabilities = {
 /**
 	The parameters of a [ExecuteCommandRequest](#ExecuteCommandRequest).
 **/
-typedef ExecuteCommandParams = {
+typedef ExecuteCommandParams = WorkDoneProgressParams & {
 	/**
 		The identifier of the actual command handler.
 	**/
@@ -2481,6 +3297,32 @@ typedef WorkspaceEditClientCapabilities = {
 		@since 3.13.0
 	**/
 	var ?failureHandling:FailureHandlingKind;
+
+	/**
+		Whether the client normalizes line endings to the client specific
+		setting.
+		If set to `true` the client will normalize line ending characters
+		in a workspace edit containing to the client specific new line
+		character.
+
+		@since 3.16.0
+	**/
+	var ?normalizesLineEndings:Bool;
+
+	/**
+		Whether the client in general supports change annotations on text edits,
+		create file, rename file and delete file changes.
+
+		@since 3.16.0
+	**/
+	var ?changeAnnotationSupport:{
+		/**
+			Whether the client groups edits with equal labels into tree nodes,
+			for instance all edits labelled with "Changes in Strings" would
+			be a tree node.
+		**/
+		var ?groupsOnLabel:Bool;
+	};
 }
 
 /**
@@ -2488,15 +3330,24 @@ typedef WorkspaceEditClientCapabilities = {
 **/
 typedef ApplyWorkspaceEditParams = {
 	/**
+		An optional label of the workspace edit. This label is
+		presented in the user interface for example on an undo
+		stack to undo the workspace edit.
+	**/
+	var ?label:String;
+
+	/**
 		The edits to apply.
 	**/
 	var edit:WorkspaceEdit;
 }
 
 /**
-	A response returned from the apply workspace edit request.
+	The result returned from the apply workspace edit request.
+
+	@since 3.17 renamed from ApplyWorkspaceEditResponse
 **/
-typedef ApplyWorkspaceEditResponse = {
+typedef ApplyWorkspaceEditResult = {
 	/**
 		Indicates whether the edit was applied or not.
 	**/
@@ -2518,9 +3369,15 @@ typedef ApplyWorkspaceEditResponse = {
 }
 
 /**
+	A response returned from the apply workspace edit request.
+**/
+@:deprecated("Use ApplyWorkspaceEditResult instead.")
+typedef ApplyWorkspaceEditResponse = ApplyWorkspaceEditResult;
+
+/**
 	A request sent from the server to the client to modified certain resources.
 **/
 class ApplyWorkspaceEditRequest {
-	public static inline final type = new ProtocolRequestType<ApplyWorkspaceEditParams, ApplyWorkspaceEditResponse, Never, NoData,
+	public static inline final type = new ProtocolRequestType<ApplyWorkspaceEditParams, ApplyWorkspaceEditResult, Never, NoData,
 		NoData>("workspace/applyEdit");
 }

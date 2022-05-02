@@ -4,7 +4,13 @@ import jsonrpc.Protocol.ProgressType;
 import languageServerProtocol.protocol.Protocol.NotificationType;
 import languageServerProtocol.protocol.Protocol.RequestType;
 
-abstract ProtocolRequestType<P, R, PR, E, RO>(String) {
+abstract RegistrationType<RO>(String) {
+	public inline function new(method:String) {
+		this = method;
+	}
+}
+
+abstract ProtocolRequestType<P, R, PR, E, RO>(String) to String {
 	public inline function new(method:String) {
 		this = method;
 	}
@@ -18,7 +24,7 @@ abstract ProtocolRequestType<P, R, PR, E, RO>(String) {
 	}
 }
 
-abstract ProtocolNotificationType<P, RO>(String) {
+abstract ProtocolNotificationType<P, RO>(String) to String {
 	public inline function new(method:String) {
 		this = method;
 	}

@@ -24,6 +24,38 @@ typedef FoldingRangeClientCapabilities = {
 		ignore specified `startCharacter` and `endCharacter` properties in a FoldingRange.
 	**/
 	var ?lineFoldingOnly:Bool;
+
+	/**
+		Specific options for the folding range kind.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?foldingRangeKind:{
+		/**
+			The folding range kind values the client supports. When this
+			property exists the client also guarantees that it will
+			handle values outside its set gracefully and falls back
+			to a default value when unknown.
+		**/
+		var ?valueSet:Array<FoldingRangeKind>;
+	};
+
+	/**
+		Specific options for the folding range.
+		@since 3.17.0
+		@proposed
+	**/
+	var ?foldingRange:{
+		/**
+			If set, the client signals that it supports setting collapsedText on
+			folding ranges to display custom labels instead of the default text.
+
+			@since 3.17.0
+			@proposed
+		**/
+		var ?collapsedText:Bool;
+	};
 }
 
 typedef FoldingRangeOptions = WorkDoneProgressOptions & {};
@@ -49,7 +81,4 @@ typedef FoldingRangeParams = WorkDoneProgressParams &
 class FoldingRangeRequest {
 	public static inline final type = new ProtocolRequestType<FoldingRangeParams, Null<Array<FoldingRange>>, Array<FoldingRange>, NoData,
 		FoldingRangeRegistrationOptions>("textDocument/foldingRange");
-
-	@:deprecated("Use FoldingRangeRequest.type")
-	public static final resultType = new ProgressType<Array<FoldingRange>>();
 }

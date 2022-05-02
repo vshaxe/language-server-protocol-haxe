@@ -1,18 +1,9 @@
 package languageServerProtocol.protocol;
 
-import languageServerProtocol.Types.DocumentUri;
+import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
 
 //---- Get Configuration request ----
-
-typedef ConfigurationClientCapabilities = {
-	/**
-		The client supports `workspace/configuration` requests.
-
-		@since 3.6.0
-	**/
-	var ?configuration:Bool;
-}
 
 /**
 	The 'workspace/configuration' request is sent from the server to the client to fetch a certain
@@ -24,7 +15,7 @@ typedef ConfigurationClientCapabilities = {
 	change event and empty the cache if such an event is received.
 **/
 class ConfigurationRequest {
-	public static inline final type = new ProtocolRequestType<ConfigurationParams & PartialResultParams, Array<Any>, Never, NoData,
+	public static inline final type = new ProtocolRequestType<ConfigurationParams & PartialResultParams, Array<LSPAny>, Never, NoData,
 		NoData>("workspace/configuration");
 }
 
