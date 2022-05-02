@@ -1,6 +1,6 @@
 package languageServerProtocol.protocol;
 
-import languageServerProtocol.Types.DocumentUri;
+import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
 
 typedef WorkspaceFoldersInitializeParams = {
@@ -10,46 +10,22 @@ typedef WorkspaceFoldersInitializeParams = {
 	var ?workspaceFolders:Array<WorkspaceFolder>;
 }
 
-typedef WorkspaceFoldersClientCapabilities = {
-	/**
-		The client has support for workspace folders
-
-		@since 3.6.0
-	**/
-	var ?workspaceFolders:Bool;
-}
-
 typedef WorkspaceFoldersServerCapabilities = {
-	var ?workspaceFolders:{
-		/**
-			The Server has support for workspace folders
-		**/
-		var ?supported:Bool;
-
-		/**
-			Whether the server wants to receive workspace folder
-			change notifications.
-
-			If a strings is provided the string is treated as a ID
-			under which the notification is registed on the client
-			side. The ID can be used to unregister for these events
-			using the `client/unregisterCapability` request.
-		**/
-		var ?changeNotifications:EitherType<String, Bool>;
-	};
-}
-
-typedef WorkspaceFolder = {
 	/**
-		The associated URI for this workspace folder.
+		The Server has support for workspace folders
 	**/
-	var uri:DocumentUri;
+	var ?supported:Bool;
 
 	/**
-		The name of the workspace folder. Used to refer to this
-		workspace folder in thge user interface.
+		Whether the server wants to receive workspace folder
+		change notifications.
+
+		If a strings is provided the string is treated as a ID
+		under which the notification is registed on the client
+		side. The ID can be used to unregister for these events
+		using the `client/unregisterCapability` request.
 	**/
-	var name:String;
+	var ?changeNotifications:EitherType<String, Bool>;
 }
 
 /**

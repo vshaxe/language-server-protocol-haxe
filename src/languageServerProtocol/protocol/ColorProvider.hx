@@ -14,13 +14,7 @@ typedef DocumentColorClientCapabilities = {
 	var ?dynamicRegistration:Bool;
 }
 
-typedef DocumentColorOptions = {
-	/**
-		Code lens has a resolve provider as well.
-	**/
-	var ?resolveProvider:Bool;
-}
-
+typedef DocumentColorOptions = WorkDoneProgressOptions;
 typedef DocumentColorRegistrationOptions = TextDocumentRegistrationOptions & StaticRegistrationOptions & DocumentColorOptions;
 
 //---- Color Symbol Provider ---------------------------
@@ -28,7 +22,8 @@ typedef DocumentColorRegistrationOptions = TextDocumentRegistrationOptions & Sta
 /**
 	Parameters for a `DocumentColor` request.
 **/
-typedef DocumentColorParams = {
+typedef DocumentColorParams = WorkDoneProgressParams &
+	PartialResultParams & {
 	/**
 		The text document.
 	**/
@@ -44,9 +39,6 @@ typedef DocumentColorParams = {
 class DocumentColorRequest {
 	public static inline final type = new ProtocolRequestType<DocumentColorParams, Array<ColorInformation>, Array<ColorInformation>, NoData,
 		DocumentColorRegistrationOptions>("textDocument/documentColor");
-
-	@:deprecated("Use DocumentColorRequest.type")
-	public static final resultType = new ProgressType<Array<ColorInformation>>();
 }
 
 /**

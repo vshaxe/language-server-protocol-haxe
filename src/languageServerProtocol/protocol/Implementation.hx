@@ -33,9 +33,6 @@ typedef ImplementationParams = TextDocumentPositionParams & WorkDoneProgressPara
 	Thenable that resolves to such.
 **/
 class ImplementationRequest {
-	public static inline final type = new ProtocolRequestType<ImplementationParams, Null<Definition>, EitherType<Array<Location>, Array<DefinitionLink>>,
-		NoData, TextDocumentRegistrationOptions>("textDocument/implementation");
-
-	@:deprecated("Use ImplementationRequest.type")
-	public static final resultType = new ProgressType<EitherType<Array<Location>, Array<DefinitionLink>>>();
+	public static inline final type = new ProtocolRequestType<ImplementationParams, Null<EitherType<Definition, Array<DefinitionLink>>>,
+		EitherType<Array<Location>, Array<DefinitionLink>>, NoData, TextDocumentRegistrationOptions>("textDocument/implementation");
 }

@@ -1,59 +1,45 @@
 package languageServerProtocol;
 
 /**
-	Position in a text document expressed as zero-based line and character offset.
-	The offsets are based on a UTF-16 string representation. So a string of the form
-	`a𐐀b` the character offset of the character `a` is 0, the character offset of `𐐀`
-	is 1 and the character offset of b is 3 since `𐐀` is represented using two code
-	units in UTF-16.
+	A tagging type for string properties that are actually URIs
 
-	Positions are line end character agnostic. So you can not specify a position that
-	denotes `\r|\n` or `\n|` where `|` represents the character offset.
+	@since 3.16.0 - Proposed state
 **/
-typedef Position = {
-	/**
-		Line position in a document (zero-based).
-		If a line number is greater than the number of lines in a document, it defaults back to the number of lines in the document.
-		If a line number is negative, it defaults to 0.
-	**/
-	var line:Int;
+abstract URI(String) {
+	public inline function new(uri:String) {
+		this = uri;
+	}
 
-	/**
-		Character offset on a line in a document (zero-based). Assuming that the line is
-		represented as a string, the `character` value represents the gap between the
-		`character` and `character + 1`.
-
-		If the character value is greater than the line length it defaults back to the
-		line length.
-		If a line number is negative, it defaults to 0.
-	**/
-	var character:Int;
+	public inline function toString() {
+		return this;
+	}
 }
 
 /**
-	A range in a text document expressed as (zero-based) start and end positions.
+	The LSP any type.
 
-	If you want to specify a range that contains a line including the line ending
-	character(s) then use an end position denoting the start of the next line.
-	For example:
-	```haxe
-	{
-		start: { line: 5, character: 23 }
-		end : { line 6, character : 0 }
-	}
-	```
+	Please note that strictly speaking a property with the value `undefined`
+	can't be converted into JSON preserving the property name. However for
+	convenience it is allowed and assumed that all these properties are
+	optional as well.
+
+	@since 3.17.0
 **/
-typedef Range = {
-	/**
-		The range's start position
-	**/
-	var start:Position;
+typedef LSPAny = Dynamic;
 
-	/**
-		The range's end position
-	**/
-	var end:Position;
-}
+/**
+	LSP object definition.
+
+	@since 3.17.0
+**/
+typedef LSPObject = haxe.DynamicAccess<Array<LSPAny>>;
+
+/**
+	LSP arrays.
+
+	@since 3.17.0
+**/
+typedef LSPArray = Array<LSPAny>;
 
 /**
 	Represents a location inside a resource, such as a line inside a text file.
@@ -158,7 +144,7 @@ typedef ColorPresentation = {
 }
 
 /**
-	Enum of known range kinds
+	A set of predefined range kinds.
 **/
 enum abstract FoldingRangeKind(String) from String {
 	/**
@@ -203,10 +189,20 @@ typedef FoldingRange = {
 
 	/**
 		Describes the kind of the folding range such as `comment' or 'region'. The kind
-		is used to categorize folding ranges and used by commands like 'Fold all comments'. See
-		[FoldingRangeKind](#FoldingRangeKind) for an enumeration of standardized kinds.
+		is used to categorize folding ranges. See [FoldingRangeKind](#FoldingRangeKind)
+		for an enumeration of standardized kinds.
 	**/
 	var ?kind:FoldingRangeKind;
+
+	/**
+		The text that the client should show when the specified range is
+		collapsed. If not defined or not supported by the client, a default
+		will be chosen by the client.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?collapsedText:String;
 }
 
 /**
@@ -274,20 +270,15 @@ enum abstract DiagnosticTag(Int) {
 }
 
 /**
-	Structure to capture more complex diagnostic codes.
+	Structure to capture a description for an error code.
 
-	@since 3.16.0 - Proposed state
+	@since 3.16.0
 **/
-typedef DiagnosticCode = {
+typedef CodeDescription = {
 	/**
-		The actual code
+		An URI to open with more information about the diagnostic error.
 	**/
-	var value:EitherType<String, Int>;
-
-	/**
-		A target URI to open with more information about the diagnostic error.
-	**/
-	var target:URI;
+	var href:URI;
 }
 
 /**
@@ -308,10 +299,16 @@ typedef Diagnostic = {
 
 	/**
 		The diagnostic's code, which usually appear in the user interface.
-
-		@since 3.16.0 Support for `DiagnosticCode` - Proposed state
 	**/
-	var ?code:EitherType<Int, EitherType<String, DiagnosticCode>>;
+	var ?code:EitherType<Int, String>;
+
+	/**
+		An optional property to describe the error code.
+		Requires the code field (above) to be present/not null.
+
+		@since 3.16.0
+	**/
+	var ?codeDescription:CodeDescription;
 
 	/**
 		A human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'.
@@ -335,6 +332,14 @@ typedef Diagnostic = {
 		a scope collide all definitions can be marked via this property.
 	**/
 	var ?relatedInformation:Array<DiagnosticRelatedInformation>;
+
+	/**
+		A data entry field that is preserved between a `textDocument/publishDiagnostics`
+		notification and `textDocument/codeAction` request.
+
+		@since 3.16.0
+	**/
+	var ?data:LSPAny;
 }
 
 /**
@@ -356,24 +361,49 @@ typedef Command = {
 	/**
 		Arguments that the command handler should be invoked with.
 	**/
-	var ?arguments:Array<Dynamic>;
+	var ?arguments:Array<LSPAny>;
 }
 
 /**
-	A textual edit applicable to a text document.
+	Additional information that describes document changes.
+
+	@since 3.16.0
 **/
-typedef TextEdit = {
+typedef ChangeAnnotation = {
 	/**
-		The range of the text document to be manipulated.
-		To insert text into a document create a range where start == end.
+		A human-readable string describing the actual change. The string
+		is rendered prominent in the user interface.
 	**/
-	var range:Range;
+	var label:String;
 
 	/**
-		The string to be inserted.
-		For delete operations use an empty string.
+		A flag which indicates that user confirmation is needed
+		before applying the change.
 	**/
-	var newText:String;
+	var ?needsConfirmation:Bool;
+
+	/**
+		A human-readable string which is rendered less prominent in
+		the user interface.
+	**/
+	var ?description:String;
+}
+
+/**
+	An identifier to refer to a change annotation stored with a workspace edit.
+**/
+typedef ChangeAnnotationIdentifier = String;
+
+/**
+	A special text edit with an additional change annotation.
+
+	@since 3.16.0
+**/
+typedef AnnotatedTextEdit = TextEdit & {
+	/**
+		The actual identifier of the change annotation
+	**/
+	var annotationId:ChangeAnnotationIdentifier;
 }
 
 /**
@@ -386,12 +416,29 @@ typedef TextDocumentEdit = {
 	/**
 		The text document to change.
 	**/
-	var textDocument:VersionedTextDocumentIdentifier;
+	var textDocument:OptionalVersionedTextDocumentIdentifier;
 
 	/**
 		The edits to be applied.
 	**/
-	var edits:Array<TextEdit>;
+	var edits:Array<EitherType<TextEdit, AnnotatedTextEdit>>;
+}
+
+/**
+	A generic resource operation.
+**/
+typedef ResourceOperation<T> = {
+	/**
+		The resource operation kind.
+	**/
+	var kind:T;
+
+	/**
+		An optional annotation identifier describing the operation.
+
+		@since 3.16.0
+	**/
+	var ?annotationId:ChangeAnnotationIdentifier;
 }
 
 enum abstract CreateFileKind(String) {
@@ -416,12 +463,7 @@ typedef CreateFileOptions = {
 /**
 	Create file operation.
 **/
-typedef CreateFile = {
-	/**
-		A create
-	**/
-	var kind:CreateFileKind;
-
+typedef CreateFile = ResourceOperation<CreateFileKind> & {
 	/**
 		The resource to create.
 	**/
@@ -455,12 +497,7 @@ typedef RenameFileOptions = {
 /**
 	Rename file operation
 **/
-typedef RenameFile = {
-	/**
-		A rename
-	**/
-	var kind:RenameFileKind;
-
+typedef RenameFile = ResourceOperation<RenameFileKind> & {
 	/**
 		The old (existing) location.
 	**/
@@ -499,12 +536,7 @@ typedef DeleteFileOptions = {
 /**
 	Delete file operation
 **/
-typedef DeleteFile = {
-	/**
-		A delete
-	**/
-	var kind:DeleteFileKind;
-
+typedef DeleteFile = ResourceOperation<DeleteFileKind> & {
 	/**
 		The file to delete.
 	**/
@@ -517,10 +549,18 @@ typedef DeleteFile = {
 }
 
 /**
-	A workspace edit represents changes to many resources managed in the workspace.
-	The edit should either provide `changes` or `documentChanges`.
-	If `documentChanges` are present they are preferred over `changes` if the client
-	can handle versioned document edits.
+	A workspace edit represents changes to many resources managed in the workspace. The edit
+	should either provide `changes` or `documentChanges`. If documentChanges are present
+	they are preferred over `changes` if the client can handle versioned document edits.
+
+	Since version 3.13.0 a workspace edit can contain resource operations as well. If resource
+	operations are present clients need to execute the operations in the order in which they
+	are provided. So a workspace edit for example can consist of the following two changes:
+	(1) a create file a.txt and (2) a text document edit which insert text into file a.txt.
+
+	An invalid sequence (e.g. (1) delete file a.txt and (2) insert text into file a.txt) will
+	cause failure of the operation. How the client recovers from the failure is described by
+	the client capability: `workspace.workspaceEdit.failureHandling`
 **/
 typedef WorkspaceEdit = {
 	/**
@@ -541,34 +581,80 @@ typedef WorkspaceEdit = {
 		only plain `TextEdit`s using the `changes` property are supported.
 	**/
 	var ?documentChanges:Array<EitherType<TextDocumentEdit, EitherType<CreateFile, EitherType<RenameFile, DeleteFile>>>>;
+
+	/**
+		A map of change annotations that can be referenced in `AnnotatedTextEdit`s or create, rename and
+		delete file / folder operations.
+
+		Whether clients honor this property depends on the client capability `workspace.changeAnnotationSupport`.
+
+		@since 3.16.0
+	**/
+	var ?changeAnnotations:haxe.DynamicAccess<ChangeAnnotation>;
 }
 
 /**
-	A tagging type for string properties that are actually document URIs.
+	A change to capture text edits for existing resources.
 **/
-abstract DocumentUri(String) {
-	public inline function new(uri:String) {
-		this = uri;
-	}
+extern interface TextEditChange {
+	/**
+		Gets all text edits for this change.
 
-	public inline function toString() {
-		return this;
-	}
-}
+		@return An array of text edits.
 
-/**
-	A tagging type for string properties that are actually URIs
+		@since 3.16.0 - support for annotated text edits. This is usually
+		guarded using a client capability.
+	**/
+	function all():Array<EitherType<TextEdit, AnnotatedTextEdit>>;
 
-	@since 3.16.0 - Proposed state
-**/
-abstract URI(String) {
-	public inline function new(uri:String) {
-		this = uri;
-	}
+	/**
+		Clears the edits for this change.
+	**/
+	function clear():Void;
 
-	public inline function toString() {
-		return this;
-	}
+	/**
+		Adds a text edit.
+
+		@param edit the text edit to add.
+
+		@since 3.16.0 - support for annotated text edits. This is usually
+		guarded using a client capability.
+	**/
+	function add(edit:EitherType<TextEdit, AnnotatedTextEdit>):Void;
+
+	/**
+		Insert the given text at the given position.
+
+		@param position A position.
+		@param newText A string.
+		@param annotation An optional annotation.
+	**/
+	extern overload function insert(position:Position, newText:String):Void;
+
+	extern overload function insert(position:Position, newText:String,
+		annotation:EitherType<ChangeAnnotation, ChangeAnnotationIdentifier>):ChangeAnnotationIdentifier;
+
+	/**
+		Replace the given range with given text for the given resource.
+
+		@param range A range.
+		@param newText A string.
+		@param annotation An optional annotation.
+	**/
+	extern overload function replace(range:Range, newText:String):Void;
+
+	extern overload function replace(range:Range, newText:String,
+		?annotation:EitherType<ChangeAnnotation, ChangeAnnotationIdentifier>):ChangeAnnotationIdentifier;
+
+	/**
+		Delete the text at the given range.
+
+		@param range A range.
+		@param annotation An optional annotation.
+	**/
+	extern overload function delete(range:Range):Void;
+
+	extern overload function delete(range:Range, ?annotation:EitherType<ChangeAnnotation, ChangeAnnotationIdentifier>):ChangeAnnotationIdentifier;
 }
 
 /**
@@ -593,6 +679,20 @@ typedef VersionedTextDocumentIdentifier = TextDocumentIdentifier & {
 		truth (as speced with document content ownership).
 	**/
 	var version:Int;
+}
+
+/**
+	A text document identifier to optionally denote a specific version of a text document.
+**/
+typedef OptionalVersionedTextDocumentIdentifier = TextDocumentIdentifier & {
+	/**
+		The version number of this document. If a versioned text document identifier
+		is sent from the server to the client and the file is not open in the editor
+		(the server has not received an open notification before) the server can send
+		`null` to indicate that the version is unknown and the content on disk is the
+		truth (as specified with document content ownership).
+	**/
+	var version:Null<Int>;
 }
 
 /**
@@ -765,6 +865,54 @@ typedef InsertReplaceEdit = {
 }
 
 /**
+	How whitespace and indentation is handled during completion
+	item insertion.
+
+	@since 3.16.0
+**/
+enum abstract InsertTextMode(Int) {
+	/**
+		The insertion or replace strings is taken as it is. If the
+		value is multi line the lines below the cursor will be
+		inserted using the indentation defined in the string value.
+		The client will not apply any kind of adjustments to the
+		string.
+	**/
+	var asIs = 1;
+
+	/**
+		The editor adjusts leading whitespace of new lines so that
+		they match the indentation up to the cursor of the line for
+		which the item is accepted.
+
+		Consider a line like this: <2tabs><cursor><3tabs>foo. Accepting a
+		multi line completion item is indented using 2 tabs and all
+		following lines inserted will be indented using 2 tabs as well.
+	**/
+	var adjustIndentation = 2;
+}
+
+/**
+	Additional details for a completion item label.
+
+	@since 3.17.0
+	@proposed
+**/
+typedef CompletionItemLabelDetails = {
+	/**
+		An optional string which is rendered less prominently directly after {@link CompletionItem.label label},
+		without any spacing. Should be used for function signatures or type annotations.
+	**/
+	var ?detail:String;
+
+	/**
+		An optional string which is rendered less prominently after {@link CompletionItem.detail}. Should be used
+		for fully qualified names or file path.
+	**/
+	var ?description:String;
+}
+
+/**
 	A completion item represents a text snippet that is
 	proposed to complete text that is being typed.
 **/
@@ -774,6 +922,14 @@ typedef CompletionItem = {
 		By default also the text that is inserted when selecting this completion.
 	**/
 	var label:String;
+
+	/**
+		Additional details for the label
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?labelDetails:CompletionItemLabelDetails;
 
 	/**
 		The kind of this completion item.
@@ -808,7 +964,7 @@ typedef CompletionItem = {
 		Select this item when showing.
 
 		*Note* that only one completion item can be selected and that the
-		tool / client decides which item that is. The rule is that the *first*
+		tool / client decides which item that is. The rule is that thefirst*
 		item of those that match best is selected.
 	**/
 	var ?preselect:Bool;
@@ -832,39 +988,71 @@ typedef CompletionItem = {
 
 		The `insertText` is subject to interpretation by the client side.
 		Some tools might not take the string literally. For example
-		VS Code when code complete is requested in this example `con<cursor position>`
-		and a completion item with an `insertText` of `console` is provided it
-		will only insert `sole`. Therefore it is recommended to use `textEdit` instead
-		since it avoids additional client side interpretation.
+		VS Code when code complete is requested in this example
+		`con<cursor position>` and a completion item with an `insertText` of
+		`console` is provided it will only insert `sole`. Therefore it is
+		recommended to use `textEdit` instead since it avoids additional client
+		side interpretation.
 	**/
 	var ?insertText:String;
 
 	/**
-		The format of the insert text. The format applies to both the `insertText` property
-		and the `newText` property of a provided `textEdit`. If ommitted defaults to
-		`InsertTextFormat.PlainText`.
+		The format of the insert text. The format applies to both the
+		`insertText` property and the `newText` property of a provided
+		`textEdit`. If omitted defaults to `InsertTextFormat.PlainText`.
+
+		Please note that the insertTextFormat doesn't apply to
+		`additionalTextEdits`.
 	**/
 	var ?insertTextFormat:InsertTextFormat;
 
 	/**
-		A `TextEdit` which is applied to a document when selecting
-		this completion. When an edit is provided the value of
-		`insertText` is ignored.
+		How whitespace and indentation is handled during completion
+		item insertion. If ignored the clients default value depends on
+		the `textDocument.completion.insertTextMode` client capability.
 
-		Most editors support two different operation when accepting a completion item. One is to insert a
-		completion text and the other is to replace an existing text with a competion text. Since this can
-		usually not predetermend by a server it can report both ranges. Clients need to signal support for
-		`InsertReplaceEdits` via the `textDocument.completion.insertReplaceSupport` client capability
+		@since 3.16.0
+	**/
+	var ?insertTextMode:InsertTextMode;
+
+	/**
+		An [edit](#TextEdit) which is applied to a document when selecting
+		this completion. When an edit is provided the value of
+		[insertText](#CompletionItem.insertText) is ignored.
+
+		Most editors support two different operation when accepting a completion
+		item. One is to insert a completion text and the other is to replace an
+		existing text with a completion text. Since this can usually not
+		predetermined by a server it can report both ranges. Clients need to
+		signal support for `InsertReplaceEdits` via the
+		`textDocument.completion.insertReplaceSupport` client capability
 		property.
 
-		*Note 1:* The text edit's range as well as both ranges from a insert replace edit must be a
-		[single line] and they must contain the position at which completion has been requested.
-		*Note 2:* If an `InsertReplaceEdit` is returned the edit's insert range must be a prefix of
-		the edit's replace range, that means it must be contained and starting at the same position.
+		*Note 1:* The text edit's range as well as both ranges from a insert
+		replace edit must be a [single line] and they must contain the position
+		at which completion has been requested.
+		*Note 2:* If an `InsertReplaceEdit` is returned the edit's insert range
+		must be a prefix of the edit's replace range, that means it must be
+		contained and starting at the same position.
 
 		@since 3.16.0 additional type `InsertReplaceEdit` - Proposed state
 	**/
 	var ?textEdit:EitherType<TextEdit, InsertReplaceEdit>;
+
+	/**
+		The edit text used if the completion item is part of a CompletionList and
+		CompletionList defines an item default for the text edit range.
+
+		Clients will only honor this property if they opt into completion list
+		item defaults using the capability `completionList.itemDefaults`.
+
+		If not provided and a list's default range is provided the label
+		property is used as a text.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?textEditText:String;
 
 	/**
 		An optional array of additional [text edits](#TextEdit) that are applied when
@@ -879,13 +1067,13 @@ typedef CompletionItem = {
 
 	/**
 		An optional set of characters that when pressed while this completion is active will accept it first and
-		then type that character. *Note* that all commit characters should have `length=1` and that superfluous
+		then type that character.Note* that all commit characters should have `length=1` and that superfluous
 		characters will be ignored.
 	**/
 	var ?commitCharacters:Array<String>;
 
 	/**
-		An optional command that is executed *after* inserting this completion. *Note* that
+		An optional command that is executedafter* inserting this completion.Note* that
 		additional modifications to the current document should be described with the
 		additionalTextEdits-property.
 	**/
@@ -894,7 +1082,7 @@ typedef CompletionItem = {
 	/**
 		An data entry field that is preserved on a completion item between a completion and a completion resolve request.
 	**/
-	var ?data:Dynamic;
+	var ?data:LSPAny;
 }
 
 /**
@@ -905,6 +1093,67 @@ typedef CompletionList = {
 		This list it not complete. Further typing should result in recomputing this list.
 	**/
 	var isIncomplete:Bool;
+
+	/**
+		In many cases the items of an actual completion result share the same
+		value for properties like `commitCharacters` or the range of a text
+		edit. A completion list can therefore define item defaults which will
+		be used if a completion item itself doesn't specify the value.
+
+		If a completion list specifies a default value and a completion item
+		also specifies a corresponding value the one from the item is used.
+
+		Servers are only allowed to return default values if the client
+		signals support for this via the `completionList.itemDefaults`
+		capability.
+
+		@since 3.17.0
+		@proposed
+	**/
+	var ?itemDefaults:{
+		/**
+			A default commit character set.
+
+			@since 3.17.0
+			@proposed
+		**/
+		var ?commitCharacters:Array<String>;
+
+		/**
+			A default edit range.
+
+			@since 3.17.0
+			@proposed
+		**/
+		var ?editRange:EitherType<Range, {
+			var insert:Range;
+			var replace:Range;
+		}>;
+
+		/**
+			A default insert text format.
+
+			@since 3.17.0
+			@proposed
+		**/
+		var ?insertTextFormat:InsertTextFormat;
+
+		/**
+			A default insert text mode.
+
+			@since 3.17.0
+			@proposed
+		**/
+		var ?insertTextMode:InsertTextMode;
+
+		/**
+			A default data value.
+
+			@since 3.17.0
+			@proposed
+		**/
+		var ?data:LSPAny;
+	};
 
 	/**
 		The completion items.
@@ -924,8 +1173,8 @@ typedef CompletionList = {
 	```
 
 	Note that markdown strings will be sanitized - that means html will be escaped.
-	@deprecated use MarkupContent instead
 **/
+@:deprecated("use MarkupContent instead")
 typedef MarkedString = EitherType<String, {language:String, value:String}>;
 
 /**
@@ -988,6 +1237,15 @@ typedef SignatureInformation = {
 		The parameters of this signature.
 	**/
 	var ?parameters:Array<ParameterInformation>;
+
+	/**
+		The index of the active parameter.
+
+		If provided, this is used in place of `SignatureHelp.activeParameter`.
+
+		@since 3.16.0
+	**/
+	var ?activeParameter:Int;
 }
 
 /**
@@ -1021,7 +1279,7 @@ typedef SignatureHelp = {
 	Servers should prefer returning `DefinitionLink` over `Definition` if supported
 	by the client.
 **/
-typedef Definition = Null<EitherType<Location, Array<Location>>>;
+typedef Definition = EitherType<Location, Array<Location>>;
 
 /**
 	Information about where a symbol is defined.
@@ -1138,9 +1396,9 @@ enum abstract SymbolTag(Int) {
 }
 
 /**
-	Represents information about programming constructs like variables, classes, interfaces etc.
+	A base for all symbol information.
 **/
-typedef SymbolInformation = {
+typedef BaseSymbolInformation = {
 	/**
 		The name of this symbol.
 	**/
@@ -1154,10 +1412,23 @@ typedef SymbolInformation = {
 	/**
 		Tags for this completion item.
 
-		@since 3.16.0 - Proposed state
+		@since 3.16.0
 	**/
 	var ?tags:Array<SymbolTag>;
 
+	/**
+		The name of the symbol containing this symbol. This information is for
+		user interface purposes (e.g. to render a qualifier in the user interface
+		if necessary). It can't be used to re-infer a hierarchy for the document
+		symbols.
+	**/
+	var ?containerName:String;
+}
+
+/**
+	Represents information about programming constructs like variables, classes, interfaces etc.
+**/
+typedef SymbolInformation = BaseSymbolInformation & {
 	/**
 		Indicates if this symbol is deprecated.
 	**/
@@ -1176,14 +1447,33 @@ typedef SymbolInformation = {
 		the symbols.
 	**/
 	var location:Location;
+}
+
+/**
+	A special workspace symbol that supports locations without a range.
+
+	See also SymbolInformation.
+
+	@since 3.17.0
+	@proposed
+**/
+typedef WorkspaceSymbol = BaseSymbolInformation & {
+	/**
+		The location of the symbol. Whether a server is allowed to
+		return a location without a range depends on the client
+		capability `workspace.symbol.resolveSupport`.
+
+		See SymbolInformation#location for more details.
+	**/
+	var location:EitherType<Location, {
+		var uri:DocumentUri;
+	}>;
 
 	/**
-		The name of the symbol containing this symbol. This information is for
-		user interface purposes (e.g. to render a qualifier in the user interface
-		if necessary). It can't be used to re-infer a hierarchy for the document
-		symbols.
+		A data entry field that is preserved on a workspace symbol between a
+		workspace symbol request and a workspace symbol resolve request.
 	**/
-	var ?containerName:String;
+	var ?data:LSPAny;
 }
 
 /**
@@ -1330,6 +1620,27 @@ enum abstract CodeActionKind(String) from String to String {
 }
 
 /**
+	The reason why code actions were requested.
+
+	@since 3.17.0
+	@proposed
+**/
+enum abstract CodeActionTriggerKind(Int) {
+	/**
+		Code actions were explicitly requested by the user or by an extension.
+	**/
+	var Invoked = 1;
+
+	/**
+		Code actions were requested automatically.
+
+		This typically happens when current selection in a file changes, but can
+		also be triggered when file content changes.
+	**/
+	var Automatic = 2;
+}
+
+/**
 	Contains additional diagnostic information about the context in which a code action is run.
 **/
 typedef CodeActionContext = {
@@ -1349,6 +1660,13 @@ typedef CodeActionContext = {
 		can omit computing them.
 	**/
 	var ?only:Array<CodeActionKind>;
+
+	/**
+		The reason why code actions were requested.
+
+		@since 3.17.0
+	**/
+	var ?triggerKind:CodeActionTriggerKind;
 }
 
 /**
@@ -1387,6 +1705,32 @@ typedef CodeAction = {
 	var ?isPreferred:Bool;
 
 	/**
+		Marks that the code action cannot currently be applied.
+
+		Clients should follow the following guidelines regarding disabled code actions:
+
+		  - Disabled code actions are not shown in automatic [lightbulb](https://code.visualstudio.com/docs/editor/editingevolved#_code-action)
+			code action menu.
+
+		  - Disabled actions are shown as faded out in the code action menu when the user request a more specific type
+			of code action, such as refactorings.
+
+		  - If the user has a [keybinding](https://code.visualstudio.com/docs/editor/refactoring#_keybindings-for-code-actions)
+			that auto applies a code action and only a disabled code actions are returned, the client should show the user an
+			error message with `reason` in the editor.
+
+		@since 3.16.0
+	**/
+	var ?disabled:{
+		/**
+			Human readable description of why the code action is currently disabled.
+
+			This is displayed in the code actions UI.
+		**/
+		var reason:String;
+	};
+
+	/**
 		The workspace edit this code action performs.
 	**/
 	var ?edit:WorkspaceEdit;
@@ -1397,6 +1741,14 @@ typedef CodeAction = {
 		executed and then the command.
 	**/
 	var ?command:Command;
+
+	/**
+		A data entry field that is preserved on a code action between
+		a `textDocument/codeAction` and a `codeAction/resolve` request.
+
+		@since 3.16.0
+	**/
+	var ?data:LSPAny;
 }
 
 /**
@@ -1421,7 +1773,7 @@ typedef CodeLens = {
 	/**
 		An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
 	**/
-	var ?data:Dynamic;
+	var ?data:LSPAny;
 }
 
 /**
@@ -1474,7 +1826,7 @@ typedef DocumentLink = {
 	/**
 		The uri this link points to. If missing a resolve request is sent later.
 	**/
-	var ?target:DocumentUri;
+	var ?target:String;
 
 	/**
 		The tooltip text when you hover over this link.
@@ -1491,7 +1843,7 @@ typedef DocumentLink = {
 		A data entry field that is preserved on a document link between a
 		DocumentLinkRequest and a DocumentLinkResolveRequest.
 	**/
-	var ?data:Dynamic;
+	var ?data:LSPAny;
 }
 
 /**
@@ -1511,43 +1863,576 @@ typedef SelectionRange = {
 }
 
 /**
-	Represents reasons why a text document is saved.
+	Represents programming constructs like functions or constructors in the context
+	of call hierarchy.
+
+	@since 3.16.0
 **/
-enum abstract TextDocumentSaveReason(Int) {
+typedef CallHierarchyItem = {
 	/**
-		Manually triggered, e.g. by the user pressing save, by starting debugging, or by an API call.
+		The name of this item.
 	**/
-	var Manual = 1;
+	var name:String;
 
 	/**
-		Automatic after a delay.
+		The kind of this item.
 	**/
-	var AfterDelay;
+	var kind:SymbolKind;
 
 	/**
-		When the editor lost focus.
+		Tags for this item.
 	**/
-	var FocusOut;
-}
+	var ?tags:Array<SymbolTag>;
 
-/**
-	An event describing a change to a text document. If range and rangeLength are omitted
-	the new text is considered to be the full content of the document.
-**/
-typedef TextDocumentContentChangeEvent = {
 	/**
-		The range of the document that changed.
+		More detail for this item, e.g. the signature of a function.
+	**/
+	var ?etail:String;
+
+	/**
+		The resource identifier of this item.
+	**/
+	var ?uri:DocumentUri;
+
+	/**
+		The range enclosing this symbol not including leading/trailing whitespace but everything else, e.g. comments and code.
 	**/
 	var ?range:Range;
 
 	/**
-		The optional length of the range that got replaced.
+		The range that should be selected and revealed when this symbol is being picked, e.g. the name of a function.
+		Must be contained by the [`range`](#CallHierarchyItem.range).
 	**/
-	@:deprecated("use range instead.")
-	var ?rangeLength:Int;
+	var ?selectionRange:Range;
 
 	/**
-		The new text of the range/document.
+		A data entry field that is preserved between a call hierarchy prepare and
+		incoming calls or outgoing calls requests.
+	**/
+	var ?data:LSPAny;
+}
+
+/**
+	Represents an incoming call, e.g. a caller of a method or constructor.
+
+	@since 3.16.0
+**/
+typedef CallHierarchyIncomingCall = {
+	/**
+		The item that makes the call.
+	**/
+	var from:CallHierarchyItem;
+
+	/**
+		The ranges at which the calls appear. This is relative to the caller
+		denoted by [`this.from`](#CallHierarchyIncomingCall.from).
+	**/
+	var fromRanges:Array<Range>;
+}
+
+/**
+	Represents an outgoing call, e.g. calling a getter from a method or a method from a constructor etc.
+
+	@since 3.16.0
+**/
+typedef CallHierarchyOutgoingCall = {
+	/**
+		The item that is called.
+	**/
+	var to:CallHierarchyItem;
+
+	/**
+		The range at which this item is called. This is the range relative to the caller, e.g the item
+		passed to [`provideCallHierarchyOutgoingCalls`](#CallHierarchyItemProvider.provideCallHierarchyOutgoingCalls)
+		and not [`this.to`](#CallHierarchyOutgoingCall.to).
+	**/
+	var fromRanges:Array<Range>;
+}
+
+/**
+	A set of predefined token types. This set is not fixed
+	an clients can specify additional token types via the
+	corresponding client capabilities.
+
+	@since 3.16.0
+**/
+enum abstract SemanticTokenTypes(String) {
+	var namespace = 'namespace';
+
+	/**
+		Represents a generic type. Acts as a fallback for types which can't be mapped to
+		a specific type like class or enum.
+	**/
+	var Type = 'type';
+
+	var Class = 'class';
+	var Enum = 'enum';
+	var Interface = 'interface';
+	var Struct = 'struct';
+	var TypeParameter = 'typeParameter';
+	var Parameter = 'parameter';
+	var Variable = 'variable';
+	var Property = 'property';
+	var EnumMember = 'enumMember';
+	var Event = 'event';
+	var Function = 'function';
+	var Method = 'method';
+	var Macro = 'macro';
+	var Keyword = 'keyword';
+	var Modifier = 'modifier';
+	var Comment = 'comment';
+	var StringToken = 'string';
+	var Number = 'number';
+	var Regexp = 'regexp';
+	var Operator = 'operator';
+
+	/**
+		@since 3.17.0
+	**/
+	var Decorator = 'decorator';
+}
+
+/**
+	A set of predefined token modifiers. This set is not fixed
+	an clients can specify additional token types via the
+	corresponding client capabilities.
+
+	@since 3.16.0
+**/
+enum abstract SemanticTokenModifiers(String) {
+	var Declaration = 'declaration';
+	var Definition = 'definition';
+	var Readonly = 'readonly';
+	var Static = 'static';
+	var Deprecated = 'deprecated';
+	var Abstract = 'abstract';
+	var Async = 'async';
+	var Modification = 'modification';
+	var Documentation = 'documentation';
+	var DefaultLibrary = 'defaultLibrary';
+}
+
+/**
+	@since 3.16.0
+**/
+typedef SemanticTokensLegend = {
+	/**
+		The token types a server uses.
+	**/
+	var tokenTypes:Array<String>;
+
+	/**
+		The token modifiers a server uses.
+	**/
+	var tokenModifiers:Array<String>;
+}
+
+/**
+	@since 3.16.0
+**/
+typedef SemanticTokens = {
+	/**
+		An optional result id. If provided and clients support delta updating
+		the client will include the result id in the next semantic token request.
+		A server can then instead of computing all semantic tokens again simply
+		send a delta.
+	**/
+	var ?resultId:String;
+
+	/**
+		The actual tokens.
+	**/
+	var data:Array<Int>;
+}
+
+/**
+	@since 3.16.0
+**/
+typedef SemanticTokensEdit = {
+	/**
+		The start offset of the edit.
+	**/
+	var start:Int;
+
+	/**
+		The count of elements to remove.
+	**/
+	var deleteCount:Int;
+
+	/**
+		The elements to insert.
+	**/
+	var ?data:Array<Int>;
+}
+
+/**
+	@since 3.16.0
+**/
+typedef SemanticTokensDelta = {
+	var ?resultId:String;
+
+	/**
+		The semantic token edits to transform a previous result into a new result.
+	**/
+	var ?edits:Array<SemanticTokensEdit>;
+}
+
+/**
+	@since 3.17.0
+	@proposed
+**/
+typedef TypeHierarchyItem = {
+	/**
+		The name of this item.
+	**/
+	var name:String;
+
+	/**
+		The kind of this item.
+	**/
+	var kind:SymbolKind;
+
+	/**
+		Tags for this item.
+	**/
+	var ?tags:Array<SymbolTag>;
+
+	/**
+		More detail for this item, e.g. the signature of a function.
+	**/
+	var ?detail:String;
+
+	/**
+		The resource identifier of this item.
+	**/
+	var uri:DocumentUri;
+
+	/**
+		The range enclosing this symbol not including leading/trailing whitespace
+		but everything else, e.g. comments and code.
+	**/
+	var range:Range;
+
+	/**
+		The range that should be selected and revealed when this symbol is being
+		picked, e.g. the name of a function. Must be contained by the
+		[`range`](#TypeHierarchyItem.range).
+	**/
+	var selectionRange:Range;
+
+	/**
+		A data entry field that is preserved between a type hierarchy prepare and
+		supertypes or subtypes requests. It could also be used to identify the
+		type hierarchy in the server, helping improve the performance on
+		resolving supertypes and subtypes.
+	**/
+	var ?data:LSPAny;
+};
+
+/**
+	Provide inline value as text.
+
+	@since 3.17.0
+	@proposed
+**/
+typedef InlineValueText = {
+	/**
+		The document range for which the inline value applies.
+	**/
+	var range:Range;
+
+	/**
+		The text of the inline value.
 	**/
 	var text:String;
+};
+
+/**
+	Provide inline value through a variable lookup.
+	If only a range is specified, the variable name will be extracted from the underlying document.
+	An optional variable name can be used to override the extracted name.
+
+	@since 3.17.0
+	@proposed
+**/
+typedef InlineValueVariableLookup = {
+	/**
+		The document range for which the inline value applies.
+		The range is used to extract the variable name from the underlying document.
+	**/
+	var range:Range;
+
+	/**
+		If specified the name of the variable to look up.
+	**/
+	var ?variableName:String;
+
+	/**
+		How to perform the lookup.
+	**/
+	var caseSensitiveLookup:Bool;
+};
+
+/**
+	Provide an inline value through an expression evaluation.
+	If only a range is specified, the expression will be extracted from the underlying document.
+	An optional expression can be used to override the extracted expression.
+
+	@since 3.17.0
+	@proposed
+**/
+typedef InlineValueEvaluatableExpression = {
+	/**
+		The document range for which the inline value applies.
+		The range is used to extract the evaluatable expression from the underlying document.
+	**/
+	var range:Range;
+
+	/**
+		If specified the expression overrides the extracted expression.
+	**/
+	var ?expression:String;
+};
+
+/**
+	Inline value information can be provided by different means:
+	- directly as a text value (class InlineValueText).
+	- as a name to use for a variable lookup (class InlineValueVariableLookup)
+	- as an evaluatable expression (class InlineValueEvaluatableExpression)
+	The InlineValue types combines all inline value types into one type.
+
+	@since 3.17.0
+	@proposed
+**/
+typedef InlineValue = EitherType<InlineValueText, EitherType<InlineValueVariableLookup, InlineValueEvaluatableExpression>>;
+
+/**
+	@since 3.17.0
+	@proposed
+**/
+typedef InlineValueContext = {
+	/**
+		The stack frame (as a DAP Id) where the execution has stopped.
+	**/
+	var frameId:Float;
+
+	/**
+		The document range where execution has stopped.
+		Typically the end position of the range denotes the line where the inline values are shown.
+	**/
+	var stoppedLocation:Range;
+};
+
+/**
+	Inlay hint kinds.
+
+	@since 3.17.0
+	@proposed
+**/
+enum abstract InlayHintKind(Int) {
+	/**
+		An inlay hint that for a type annotation.
+	**/
+	var Type = 1;
+
+	/**
+		An inlay hint that is for a parameter.
+	**/
+	var Parameter = 2;
+}
+
+/**
+	An inlay hint label part allows for interactive and composite labels
+	of inlay hints.
+
+	@since 3.17.0
+	@proposed
+**/
+typedef InlayHintLabelPart = {
+	/**
+		The value of this label part.
+	**/
+	var value:String;
+
+	/**
+		The tooltip text when you hover over this label part. Depending on
+		the client capability `inlayHint.resolveSupport` clients might resolve
+		this property late using the resolve request.
+	**/
+	var ?tooltip:EitherType<String, MarkupContent>;
+
+	/**
+		An optional source code location that represents this
+		label part.
+
+		The editor will use this location for the hover and for code navigation
+		features: This part will become a clickable link that resolves to the
+		definition of the symbol at the given location (not necessarily the
+		location itself), it shows the hover that shows at the given location,
+		and it shows a context menu with further code navigation commands.
+
+		Depending on the client capability `inlayHint.resolveSupport` clients
+		might resolve this property late using the resolve request.
+	**/
+	var ?location:Location;
+
+	/**
+		An optional command for this label part.
+
+		Depending on the client capability `inlayHint.resolveSupport` clients
+		might resolve this property late using the resolve request.
+	**/
+	var ?command:Command;
+};
+
+/**
+	Inlay hint information.
+
+	@since 3.17.0
+	@proposed
+**/
+typedef InlayHint = {
+	/**
+		The position of this hint.
+	**/
+	var position:Position;
+
+	/**
+		The label of this hint. A human readable string or an array of
+		InlayHintLabelPart label parts.
+
+		*Note* that neither the string nor the label part can be empty.
+	**/
+	var label:EitherType<String, Array<InlayHintLabelPart>>;
+
+	/**
+		The kind of this hint. Can be omitted in which case the client
+		should fall back to a reasonable default.
+	**/
+	var ?kind:InlayHintKind;
+
+	/**
+		Optional text edits that are performed when accepting this inlay hint.
+
+		*Note* that edits are expected to change the document so that the inlay
+		hint (or its nearest variant) is now part of the document and the inlay
+		hint itself is now obsolete.
+	**/
+	var ?textEdits:Array<TextEdit>;
+
+	/**
+		The tooltip text when you hover over this item.
+	**/
+	var ?tooltip:EitherType<String, MarkupContent>;
+
+	/**
+		Render padding before the hint.
+
+		Note: Padding should use the editor's background color, not the
+		background color of the hint itself. That means padding can be used
+		to visually align/separate an inlay hint.
+	**/
+	var ?paddingLeft:Bool;
+
+	/**
+		Render padding after the hint.
+
+		Note: Padding should use the editor's background color, not the
+		background color of the hint itself. That means padding can be used
+		to visually align/separate an inlay hint.
+	**/
+	var ?paddingRight:Bool;
+
+	/**
+		A data entry field that is preserved on a inlay hint between
+		a `textDocument/inlayHint` and a `inlayHint/resolve` request.
+	**/
+	var ?data:LSPAny;
+};
+
+/**
+	A workspace folder inside a client.
+**/
+typedef WorkspaceFolder = {
+	/**
+		The associated URI for this workspace folder.
+	**/
+	var uri:DocumentUri;
+
+	/**
+		The name of the workspace folder. Used to refer to this
+		workspace folder in thge user interface.
+	**/
+	var name:String;
+}
+
+/**
+	A simple text document. Not to be implemented. The document keeps the content
+	as string.
+ */
+@:deprecated("Use the text document from the new vscode-languageserver-textdocument package.")
+extern class TextDocument {
+	/**
+		The associated URI for this document. Most documents have the __file__-scheme, indicating that they
+		represent files on disk. However, some documents may have other schemes indicating that they are not
+		available on disk.
+
+		@readonly
+	**/
+	public var uri:DocumentUri;
+
+	/**
+		The identifier of the language associated with this document.
+
+		@readonly
+	**/
+	public var languageId:String;
+
+	/**
+		The version number of this document (it will increase after each
+		change, including undo/redo).
+
+		@readonly
+	**/
+	public var version:Int;
+
+	/**
+	 * Get the text of this document. A substring can be retrieved by
+	 * providing a range.
+	 *
+	 * @param range (optional) An range within the document to return.
+	 * If no range is passed, the full content is returned.
+	 * Invalid range positions are adjusted as described in [Position.line](#Position.line)
+	 * and [Position.character](#Position.character).
+	 * If the start range position is greater than the end range position,
+	 * then the effect of getText is as if the two positions were swapped.
+	 * @return The text of this document or a substring of the text if a
+	 *         range is provided.
+	**/
+	public function getText(?range:Range):String;
+
+	/**
+		Converts a zero-based offset to a position.
+
+		@param offset A zero-based offset.
+		@return A valid [position](#Position).
+	**/
+	public function positionAt(offset:Int):Position;
+
+	/**
+		Converts the position to a zero-based offset.
+		Invalid positions are adjusted as described in [Position.line](#Position.line)
+		and [Position.character](#Position.character).
+
+		@param position A position.
+		@return A valid zero-based offset.
+	**/
+	public function offsetAt(position:Position):Int;
+
+	/**
+		The number of lines in this document.
+
+		@readonly
+	**/
+	public var lineCount:Int;
 }

@@ -42,7 +42,4 @@ typedef SelectionRangeParams = WorkDoneProgressParams &
 class SelectionRangeRequest {
 	public static inline final type = new ProtocolRequestType<SelectionRangeParams, Null<Array<SelectionRange>>, Array<SelectionRange>, NoData,
 		SelectionRangeRegistrationOptions>("textDocument/selectionRange");
-
-	@:deprecated("Use SelectionRangeRequest.type")
-	public static final resultType = new ProgressType<Array<SelectionRange>>();
 }

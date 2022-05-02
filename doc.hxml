@@ -7,4 +7,4 @@
 -xml out/js.xml
 
 --next
--cmd haxelib run dox -i out -o out --toplevel-package languageServerProtocol --title "Haxe externs for the Language Server Protocol - API documentation" -D version 3.15.3 -D themeColor 0x141419 -D textColor 0xFFFFFF -D logo "https://avatars3.githubusercontent.com/u/19169749?v=3&s=100" -D source-path https://github.com/vshaxe/language-server-protocol-haxe/blob/master/src/ -D website "https://github.com/vshaxe/"
+-cmd haxelib run dox -i out -o out --toplevel-package languageServerProtocol --title "Haxe externs for the Language Server Protocol - API documentation" -D version 3.17.0-next20 -D themeColor 0x141419 -D textColor 0xFFFFFF -D logo "https://avatars3.githubusercontent.com/u/19169749?v=3&s=100" -D source-path https://github.com/vshaxe/language-server-protocol-haxe/blob/master/src/ -D website "https://github.com/vshaxe/"
