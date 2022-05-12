@@ -1091,7 +1091,7 @@ typedef InitializeParams = WorkDoneProgressParams &
 		Is null if no folder is open.
 		If both `rootPath` and `rootUri` are set `rootUri` wins.
 	**/
-	@:deprecated("deprecated in favour of workspaceFolders")
+	// @:deprecated("deprecated in favour of workspaceFolders")
 	var rootUri:Null<DocumentUri>;
 
 	/**
