@@ -29,7 +29,6 @@ typedef FoldingRangeClientCapabilities = {
 		Specific options for the folding range kind.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?foldingRangeKind:{
 		/**
@@ -44,7 +43,6 @@ typedef FoldingRangeClientCapabilities = {
 	/**
 		Specific options for the folding range.
 		@since 3.17.0
-		@proposed
 	**/
 	var ?foldingRange:{
 		/**
@@ -52,7 +50,6 @@ typedef FoldingRangeClientCapabilities = {
 			folding ranges to display custom labels instead of the default text.
 
 			@since 3.17.0
-			@proposed
 		**/
 		var ?collapsedText:Bool;
 	};

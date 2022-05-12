@@ -1,4 +1,4 @@
-package languageServerProtocol.protocol.proposed;
+package languageServerProtocol.protocol;
 
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
@@ -7,7 +7,6 @@ import languageServerProtocol.protocol.Protocol;
 	Client capabilities specific to diagnostic pull requests.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef DiagnosticClientCapabilities = {
 	/**
@@ -27,7 +26,6 @@ typedef DiagnosticClientCapabilities = {
 	Workspace client capabilities specific to diagnostic pull requests.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef DiagnosticWorkspaceClientCapabilities = {
 	/**
@@ -46,7 +44,6 @@ typedef DiagnosticWorkspaceClientCapabilities = {
 	Diagnostic options.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef DiagnosticOptions = WorkDoneProgressOptions & {
 	/**
@@ -73,7 +70,6 @@ typedef DiagnosticOptions = WorkDoneProgressOptions & {
 	Diagnostic registration options.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef DiagnosticRegistrationOptions = TextDocumentRegistrationOptions & DiagnosticOptions & StaticRegistrationOptions;
 
@@ -85,7 +81,6 @@ typedef DiagnosticServerCapabilities = {
 	Cancellation data returned from a diagnostic request.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef DiagnosticServerCancellationData = {
 	var retriggerRequest:Bool;
@@ -95,7 +90,6 @@ typedef DiagnosticServerCancellationData = {
 	Parameters of the document diagnostic request.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef DocumentDiagnosticParams = WorkDoneProgressParams &
 	PartialResultParams & {
@@ -119,7 +113,6 @@ typedef DocumentDiagnosticParams = WorkDoneProgressParams &
 	The document diagnostic report kinds.
 
 	@since 3.17.0
-	@proposed
 **/
 enum abstract DocumentDiagnosticReportFullKind(String) {
 	/**
@@ -133,7 +126,6 @@ enum abstract DocumentDiagnosticReportFullKind(String) {
 	The document diagnostic report kinds.
 
 	@since 3.17.0
-	@proposed
 **/
 enum abstract DocumentDiagnosticReportUnchangedKind(String) {
 	/**
@@ -147,7 +139,6 @@ enum abstract DocumentDiagnosticReportUnchangedKind(String) {
 	A diagnostic report with a full set of problems.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef FullDocumentDiagnosticReport = {
 	/**
@@ -172,7 +163,6 @@ typedef FullDocumentDiagnosticReport = {
 	A full diagnostic report with a set of related documents.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef RelatedFullDocumentDiagnosticReport = FullDocumentDiagnosticReport & {
 	/**
@@ -193,7 +183,6 @@ typedef RelatedFullDocumentDiagnosticReport = FullDocumentDiagnosticReport & {
 	report is still accurate.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef UnchangedDocumentDiagnosticReport = {
 	/**
@@ -215,7 +204,6 @@ typedef UnchangedDocumentDiagnosticReport = {
 	An unchanged diagnostic report with a set of related documents.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef RelatedUnchangedDocumentDiagnosticReport = UnchangedDocumentDiagnosticReport & {
 	/**
@@ -226,7 +214,6 @@ typedef RelatedUnchangedDocumentDiagnosticReport = UnchangedDocumentDiagnosticRe
 		a.cpp and result in errors in a header file b.hpp.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?relatedDocuments:haxe.DynamicAccess<EitherType<FullDocumentDiagnosticReport, UnchangedDocumentDiagnosticReport>>;
 };
@@ -239,7 +226,6 @@ typedef RelatedUnchangedDocumentDiagnosticReport = UnchangedDocumentDiagnosticRe
 	pull request.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef DocumentDiagnosticReport = EitherType<RelatedFullDocumentDiagnosticReport, RelatedUnchangedDocumentDiagnosticReport>;
 
@@ -247,7 +233,6 @@ typedef DocumentDiagnosticReport = EitherType<RelatedFullDocumentDiagnosticRepor
 	A partial result for a document diagnostic report.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef DocumentDiagnosticReportPartialResult = {
 	var relatedDocuments:haxe.DynamicAccess<EitherType<FullDocumentDiagnosticReport, UnchangedDocumentDiagnosticReport>>;
@@ -257,7 +242,6 @@ typedef DocumentDiagnosticReportPartialResult = {
 	The document diagnostic request definition.
 
 	@since 3.17.0
-	@proposed
 **/
 class DocumentDiagnosticRequest {
 	public static inline final type = new ProtocolRequestType<DocumentDiagnosticParams, DocumentDiagnosticReport, DocumentDiagnosticReportPartialResult,
@@ -268,7 +252,6 @@ class DocumentDiagnosticRequest {
 	A previous result id in a workspace pull request.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef PreviousResultId = {
 	/**
@@ -287,7 +270,6 @@ typedef PreviousResultId = {
 	Parameters of the workspace diagnostic request.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef WorkspaceDiagnosticParams = WorkDoneProgressParams &
 	PartialResultParams & {
@@ -307,7 +289,6 @@ typedef WorkspaceDiagnosticParams = WorkDoneProgressParams &
 	A full document diagnostic report for a workspace diagnostic result.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef WorkspaceFullDocumentDiagnosticReport = FullDocumentDiagnosticReport & {
 	/**
@@ -326,7 +307,6 @@ typedef WorkspaceFullDocumentDiagnosticReport = FullDocumentDiagnosticReport & {
 	An unchanged document diagnostic report for a workspace diagnostic result.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef WorkspaceUnchangedDocumentDiagnosticReport = UnchangedDocumentDiagnosticReport & {
 	/**
@@ -345,7 +325,6 @@ typedef WorkspaceUnchangedDocumentDiagnosticReport = UnchangedDocumentDiagnostic
 	A workspace diagnostic document report.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef WorkspaceDocumentDiagnosticReport = EitherType<WorkspaceFullDocumentDiagnosticReport, WorkspaceUnchangedDocumentDiagnosticReport>;
 
@@ -353,7 +332,6 @@ typedef WorkspaceDocumentDiagnosticReport = EitherType<WorkspaceFullDocumentDiag
 	A workspace diagnostic report.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef WorkspaceDiagnosticReport = {
 	var items:Array<WorkspaceDocumentDiagnosticReport>;
@@ -363,7 +341,6 @@ typedef WorkspaceDiagnosticReport = {
 	A partial result for a workspace diagnostic report.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef WorkspaceDiagnosticReportPartialResult = {
 	var items:Array<WorkspaceDocumentDiagnosticReport>;
@@ -373,7 +350,6 @@ typedef WorkspaceDiagnosticReportPartialResult = {
 	The workspace diagnostic request definition.
 
 	@since 3.17.0
-	@proposed
 **/
 class WorkspaceDiagnosticRequest {
 	public static inline final type = new ProtocolRequestType<WorkspaceDiagnosticParams, WorkspaceDiagnosticReport, WorkspaceDiagnosticReportPartialResult,
@@ -384,7 +360,6 @@ class WorkspaceDiagnosticRequest {
 	The diagnostic refresh request definition.
 
 	@since 3.17.0
-	@proposed
 **/
 class DiagnosticRefreshRequest {
 	public static inline final type = new ProtocolRequestType<NoData, NoData, NoData, NoData, NoData>("workspace/diagnostic/refresh");

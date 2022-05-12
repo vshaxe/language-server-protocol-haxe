@@ -1,4 +1,4 @@
-package languageServerProtocol.protocol.proposed;
+package languageServerProtocol.protocol;
 
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
@@ -7,7 +7,6 @@ import languageServerProtocol.protocol.Protocol;
 	Notebook specific client capabilities.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef NotebookDocumentSyncClientCapabilities = {
 	/**
@@ -28,7 +27,6 @@ typedef NotebookDocumentSyncClientCapabilities = {
 	A notebook cell kind.
 
 	@since 3.17.0
-	@proposed
 **/
 enum abstract NotebookCellKind(Int) {
 	/**
@@ -65,7 +63,6 @@ typedef ExecutionSummary = {
 	notebook cell or the cell's text document.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef NotebookCell = {
 	/**
@@ -81,6 +78,8 @@ typedef NotebookCell = {
 
 	/**
 		Additional metadata stored with the cell.
+
+		Note: should always be an object literal (e.g. LSPObject)
 	**/
 	var ?metadata:LSPObject;
 
@@ -95,7 +94,6 @@ typedef NotebookCell = {
 	A notebook document.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef NotebookDocument = {
 	/**
@@ -117,6 +115,8 @@ typedef NotebookDocument = {
 	/**
 		Additional metadata stored with the notebook
 		document.
+
+		Note: should always be an object literal (e.g. LSPObject)
 	**/
 	var ?metadata:LSPObject;
 
@@ -130,7 +130,6 @@ typedef NotebookDocument = {
 	A literal to identify a notebook document in the client.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef NotebookDocumentIdentifier = {
 	/**
@@ -143,7 +142,6 @@ typedef NotebookDocumentIdentifier = {
 	A versioned notebook document identifier.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef VersionedNotebookDocumentIdentifier = {
 	/**
@@ -171,7 +169,6 @@ typedef VersionedNotebookDocumentIdentifier = {
 	cell will be synced.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef NotebookDocumentSyncOptions = {
 	/**
@@ -180,7 +177,7 @@ typedef NotebookDocumentSyncOptions = {
 	var notebookSelector:Array<{
 		/**
 			The notebook to be synced If a string
-			 	 	value is provided it matches against the
+			value is provided it matches against the
 			notebook type. '*' matches every notebook.
 		**/
 		var ?notebook:EitherType<String, NotebookDocumentFilter>;
@@ -202,7 +199,6 @@ typedef NotebookDocumentSyncOptions = {
 	Registration options specific to a notebook.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef NotebookDocumentSyncRegistrationOptions = NotebookDocumentSyncOptions & StaticRegistrationOptions;
 
@@ -214,7 +210,6 @@ class NotebookDocumentSyncRegistrationType {
 	The params sent in a open notebook document notification.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef DidOpenNotebookDocumentParams = {
 	/**
@@ -233,7 +228,6 @@ typedef DidOpenNotebookDocumentParams = {
 	A notification sent when a notebook opens.
 
 	@since 3.17.0
-	@proposed
 **/
 class DidOpenNotebookDocumentNotification {
 	public static inline final type = new ProtocolNotificationType<DidOpenNotebookDocumentParams, NoData>("notebookDocument/didOpen");
@@ -244,7 +238,6 @@ class DidOpenNotebookDocumentNotification {
 	array from state S to S'.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef NotebookCellArrayChange = {
 	/**
@@ -267,11 +260,12 @@ typedef NotebookCellArrayChange = {
 	A change event for a notebook document.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef NotebookDocumentChangeEvent = {
 	/**
 		The changed meta data if any.
+
+		Note: should always be an object literal (e.g. LSPObject)
 	**/
 	var ?metadata:LSPObject;
 
@@ -320,7 +314,6 @@ typedef NotebookDocumentChangeEvent = {
 	The params sent in a change notebook document notification.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef DidChangeNotebookDocumentParams = {
 	/**
@@ -357,7 +350,6 @@ class DidChangeNotebookDocumentNotification {
 	The params sent in a save notebook document notification.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef DidSaveNotebookDocumentParams = {
 	/**
@@ -370,7 +362,6 @@ typedef DidSaveNotebookDocumentParams = {
 	A notification sent when a notebook document is saved.
 
 	@since 3.17.0
-	@proposed
 **/
 class DidSaveNotebookDocumentNotification {
 	public static inline final type = new ProtocolNotificationType<DidSaveNotebookDocumentParams, NoData>("notebookDocument/didSave");
@@ -380,7 +371,6 @@ class DidSaveNotebookDocumentNotification {
 	The params sent in a close notebook document notification.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef DidCloseNotebookDocumentParams = {
 	/**
@@ -399,7 +389,6 @@ typedef DidCloseNotebookDocumentParams = {
 	A notification sent when a notebook closes.
 
 	@since 3.17.0
-	@proposed
 **/
 class DidCloseNotebookDocumentNotification {
 	public static inline final type = new ProtocolNotificationType<DidCloseNotebookDocumentParams, NoData>("notebookDocument/didClose");

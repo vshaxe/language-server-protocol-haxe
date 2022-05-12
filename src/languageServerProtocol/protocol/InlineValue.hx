@@ -1,4 +1,4 @@
-package languageServerProtocol.protocol.proposed;
+package languageServerProtocol.protocol;
 
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
@@ -9,7 +9,6 @@ import languageServerProtocol.protocol.Protocol;
 	Client capabilities specific to inline values.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlineValueClientCapabilities = {
 	/**
@@ -22,7 +21,6 @@ typedef InlineValueClientCapabilities = {
 	Client workspace capabilities specific to inline values.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlineValueWorkspaceClientCapabilities = {
 	/**
@@ -41,7 +39,6 @@ typedef InlineValueWorkspaceClientCapabilities = {
 	Inline value options used during static registration.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlineValueOptions = WorkDoneProgressOptions;
 
@@ -49,7 +46,6 @@ typedef InlineValueOptions = WorkDoneProgressOptions;
 	Inline value options used during static or dynamic registration.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlineValueRegistrationOptions = InlineValueOptions & TextDocumentRegistrationOptions & StaticRegistrationOptions;
 
@@ -57,7 +53,6 @@ typedef InlineValueRegistrationOptions = InlineValueOptions & TextDocumentRegist
 	A parameter literal used in inline value requests.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlineValueParams = WorkDoneProgressParams & {
 	/**
@@ -83,7 +78,6 @@ typedef InlineValueParams = WorkDoneProgressParams & {
 	[InlineValue[]](#InlineValue[]) or a Thenable that resolves to such.
 
 	@since 3.17.0
-	@proposed
 **/
 class InlineValueRequest {
 	public static inline final type = new ProtocolRequestType<InlineValueParams, Null<Array<InlineValueParams>>, Array<InlineValueParams>, NoData,
@@ -92,7 +86,6 @@ class InlineValueRequest {
 
 /**
 	@since 3.17.0
-	@proposed
 **/
 class InlineValueRefreshRequest {
 	public static inline final type = new ProtocolRequestType<NoData, NoData, NoData, NoData, NoData>("workspace/inlineValue/refresh");

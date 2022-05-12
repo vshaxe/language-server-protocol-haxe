@@ -1,11 +1,10 @@
-package languageServerProtocol.protocol.proposed;
+package languageServerProtocol.protocol;
 
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
 
 /**
 	@since 3.17.0
-	@proposed
 **/
 typedef TypeHierarchyClientCapabilities = {
 	/**
@@ -20,7 +19,6 @@ typedef TypeHierarchyClientCapabilities = {
 	Type hierarchy options used during static registration.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef TypeHierarchyOptions = WorkDoneProgressOptions;
 
@@ -28,7 +26,6 @@ typedef TypeHierarchyOptions = WorkDoneProgressOptions;
 	Type hierarchy options used during static or dynamic registration.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef TypeHierarchyRegistrationOptions = TextDocumentRegistrationOptions & TypeHierarchyOptions & StaticRegistrationOptions;
 
@@ -36,7 +33,6 @@ typedef TypeHierarchyRegistrationOptions = TextDocumentRegistrationOptions & Typ
 	The parameter of a `textDocument/prepareTypeHierarchy` request.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef TypeHierarchyPrepareParams = TextDocumentPositionParams & WorkDoneProgressParams;
 
@@ -45,7 +41,6 @@ typedef TypeHierarchyPrepareParams = TextDocumentPositionParams & WorkDoneProgre
 	Can be used as an input to a subtypes or supertypes type hierarchy.
 
 	@since 3.17.0
-	@proposed
 **/
 class TypeHierarchyPrepareRequest {
 	public static inline final type = new ProtocolRequestType<TypeHierarchyPrepareParams, Null<Array<TypeHierarchyItem>>, Never, NoData,
@@ -56,7 +51,6 @@ class TypeHierarchyPrepareRequest {
 	The parameter of a `typeHierarchy/supertypes` request.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef TypeHierarchySupertypesParams = WorkDoneProgressParams &
 	PartialResultParams & {
@@ -67,7 +61,6 @@ typedef TypeHierarchySupertypesParams = WorkDoneProgressParams &
 	A request to resolve the supertypes for a given `TypeHierarchyItem`.
 
 	@since 3.17.0
-	@proposed
 **/
 class TypeHierarchySupertypesRequest {
 	public static inline final type = new ProtocolRequestType<TypeHierarchySupertypesParams, Null<Array<TypeHierarchyItem>>, Array<TypeHierarchyItem>, NoData,
@@ -78,7 +71,6 @@ class TypeHierarchySupertypesRequest {
 	The parameter of a `typeHierarchy/subtypes` request.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef TypeHierarchySubtypesParams = WorkDoneProgressParams &
 	PartialResultParams & {
@@ -89,7 +81,6 @@ typedef TypeHierarchySubtypesParams = WorkDoneProgressParams &
 	A request to resolve the subtypes for a given `TypeHierarchyItem`.
 
 	@since 3.17.0
-	@proposed
 **/
 class TypeHierarchySubtypesRequest {
 	public static inline final type = new ProtocolRequestType<TypeHierarchySubtypesParams, Null<Array<TypeHierarchyItem>>, Array<TypeHierarchyItem>, NoData,

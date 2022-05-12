@@ -5,22 +5,22 @@ import languageServerProtocol.protocol.CallHierarchy;
 import languageServerProtocol.protocol.ColorProvider;
 import languageServerProtocol.protocol.Configuration;
 import languageServerProtocol.protocol.Declaration;
+import languageServerProtocol.protocol.Diagnostics;
 import languageServerProtocol.protocol.FileOperations;
 import languageServerProtocol.protocol.FoldingRange;
 import languageServerProtocol.protocol.Implementation;
+import languageServerProtocol.protocol.InlayHints;
+import languageServerProtocol.protocol.InlineValue;
 import languageServerProtocol.protocol.LinkedEditingRange;
 import languageServerProtocol.protocol.Moniker;
+import languageServerProtocol.protocol.Notebook;
 import languageServerProtocol.protocol.Progress;
 import languageServerProtocol.protocol.SelectionRange;
 import languageServerProtocol.protocol.SemanticTokens;
 import languageServerProtocol.protocol.ShowDocument;
 import languageServerProtocol.protocol.TypeDefinition;
+import languageServerProtocol.protocol.TypeHierarchy;
 import languageServerProtocol.protocol.WorkspaceFolders;
-import languageServerProtocol.protocol.proposed.Diagnostics;
-import languageServerProtocol.protocol.proposed.InlayHints;
-import languageServerProtocol.protocol.proposed.InlineValue;
-import languageServerProtocol.protocol.proposed.Notebook;
-import languageServerProtocol.protocol.proposed.TypeHierarchy;
 
 typedef RequestType<TParams, TResponse, TError, TRegistrationOptions> = jsonrpc.Types.RequestType<TParams, TResponse, TError>;
 typedef NotificationType<TParams, TRegistrationOptions> = jsonrpc.Types.NotificationType<TParams>;
@@ -69,7 +69,6 @@ typedef TextDocumentFilter = {
 	against the notebook's URI (same as with documents)
 
 	@since 3.17.0
-	@proposed
 **/
 typedef NotebookDocumentFilter = {
 	/** The type of the enclosing notebook.**/
@@ -87,7 +86,6 @@ typedef NotebookDocumentFilter = {
 	document by different properties.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef NotebookCellTextDocumentFilter = {
 	/**
@@ -344,7 +342,6 @@ typedef WorkspaceClientCapabilites = {
 		workspace.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?inlineValue:InlineValueWorkspaceClientCapabilities;
 
@@ -353,7 +350,6 @@ typedef WorkspaceClientCapabilites = {
 		workspace.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?inlayHint:InlayHintWorkspaceClientCapabilities;
 
@@ -362,7 +358,6 @@ typedef WorkspaceClientCapabilites = {
 		workspace.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?diagnostics:DiagnosticWorkspaceClientCapabilities;
 }
@@ -523,7 +518,6 @@ typedef TextDocumentClientCapabilities = {
 		Capabilities specific to the various type hierarchy requests.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?typeHierarchy:TypeHierarchyClientCapabilities;
 
@@ -531,7 +525,6 @@ typedef TextDocumentClientCapabilities = {
 		Capabilities specific to the `textDocument/inlineValue` request.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?inlineValue:InlineValueClientCapabilities;
 
@@ -539,7 +532,6 @@ typedef TextDocumentClientCapabilities = {
 		Capabilities specific to the `textDocument/inlayHint` request.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?inlayHint:InlayHintClientCapabilities;
 
@@ -547,7 +539,6 @@ typedef TextDocumentClientCapabilities = {
 		Capabilities specific to the diagnostic pull model.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?diagnostic:DiagnosticClientCapabilities;
 }
@@ -627,7 +618,6 @@ typedef MarkdownClientCapabilities = {
 	A set of predefined position encoding kinds.
 
 	@since 3.17.0
-	@proposed
 **/
 enum abstract PositionEncodingKind(String) {
 	/**
@@ -658,7 +648,6 @@ enum abstract PositionEncodingKind(String) {
 	specifically what column offsets mean.
 
 	@since 3.17.0
-	@proposed
 **/
 // typedef PositionEncodingKind = String;
 
@@ -675,7 +664,6 @@ typedef GeneralClientCapabilities = {
 		anymore since the information is outdated).
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?staleRequestSupport:{
 		/**
@@ -724,7 +712,6 @@ typedef GeneralClientCapabilities = {
 		side.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?positionEncodings:Array<PositionEncodingKind>;
 }
@@ -733,14 +720,12 @@ typedef GeneralClientCapabilities = {
 	Capabilities specific to the notebook document support.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef NotebookDocumentClientCapabilities = {
 	/**
 		Capabilities specific to notebook document synchronization
 
 		@since 3.17.0
-		@proposed
 	**/
 	var synchronization:NotebookDocumentSyncClientCapabilities;
 }
@@ -767,7 +752,6 @@ typedef ClientCapabilities = {
 		Capabilities specific to the notebook document support.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?notebookDocument:NotebookDocumentClientCapabilities;
 
@@ -843,7 +827,6 @@ typedef ServerCapabilities = WorkspaceFoldersServerCapabilities & {
 		If for some reason
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?positionEncoding:PositionEncodingKind;
 
@@ -857,7 +840,6 @@ typedef ServerCapabilities = WorkspaceFoldersServerCapabilities & {
 		Defines how notebook documents are synced.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?notebookDocumentSync:EitherType<NotebookDocumentSyncOptions, NotebookDocumentSyncRegistrationOptions>;
 
@@ -1007,7 +989,6 @@ typedef ServerCapabilities = WorkspaceFoldersServerCapabilities & {
 		The server provides type hierarchy support.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?typeHierarchyProvider:EitherType<Bool, EitherType<TypeHierarchyOptions, TypeHierarchyRegistrationOptions>>;
 
@@ -1015,7 +996,6 @@ typedef ServerCapabilities = WorkspaceFoldersServerCapabilities & {
 		The server provides inline values.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?inlineValueProvider:EitherType<Bool, EitherType<InlineValueOptions, InlineValueRegistrationOptions>>;
 
@@ -1023,7 +1003,6 @@ typedef ServerCapabilities = WorkspaceFoldersServerCapabilities & {
 		The server provides inlay hints.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?inlayHintProvider:EitherType<Bool, EitherType<InlayHintOptions, InlayHintRegistrationOptions>>;
 
@@ -1031,7 +1010,6 @@ typedef ServerCapabilities = WorkspaceFoldersServerCapabilities & {
 		The server has support for pull model diagnostics.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?diagnosticProvider:EitherType<DiagnosticOptions, DiagnosticRegistrationOptions>;
 
@@ -1765,7 +1743,7 @@ typedef FileSystemWatcher = {
 		to WatchKind.Create | WatchKind.Change | WatchKind.Delete
 		which is 7.
 	**/
-	var ?kind:Int;
+	var ?kind:WatchKind;
 }
 
 enum abstract WatchKind(Int) to Int {
@@ -1964,7 +1942,6 @@ typedef CompletionClientCapabilities = {
 			details (see also `CompletionItemLabelDetails`).
 
 			@since 3.17.0
-			@proposed
 		**/
 		var ?labelDetailsSupport:Bool;
 	};
@@ -1989,7 +1966,6 @@ typedef CompletionClientCapabilities = {
 		text in either `insertText` or `textEdit`.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?insertTextMode:InsertTextMode;
 
@@ -2004,7 +1980,6 @@ typedef CompletionClientCapabilities = {
 		capabilities.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?completionList:{
 		/**
@@ -2016,7 +1991,6 @@ typedef CompletionClientCapabilities = {
 			no properties are supported.
 
 			@since 3.17.0
-			@proposed
 		**/
 		var ?itemDefaults:Array<String>;
 	};
@@ -2111,7 +2085,6 @@ typedef CompletionOptions = WorkDoneProgressOptions & {
 		capabilities.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?completionItem:{
 		/**
@@ -2120,7 +2093,6 @@ typedef CompletionOptions = WorkDoneProgressOptions & {
 			receiving a completion item in a resolve call.
 
 			@since 3.17.0
-			@proposed
 		**/
 		var ?labelDetailsSupport:Bool;
 	};
@@ -2764,7 +2736,6 @@ typedef WorkspaceSymbolClientCapabilities = {
 		properties.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var resolveSupport:{
 		/**
@@ -2796,7 +2767,6 @@ typedef WorkspaceSymbolOptions = WorkDoneProgressOptions & {
 		information for a workspace symbol.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?resolveProvider:Bool;
 };
@@ -2822,7 +2792,6 @@ class WorkspaceSymbolRequest {
 	symbol's location.
 
 	@since 3.17.0
-	@proposed
 **/
 class WorkspaceSymbolResolveRequest {
 	public static inline final type = new ProtocolRequestType<WorkspaceSymbol, WorkspaceSymbol, Never, NoData, NoData>("workspaceSymbol/resolve");

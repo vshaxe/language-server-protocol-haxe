@@ -3,7 +3,7 @@ package languageServerProtocol;
 /**
 	A tagging type for string properties that are actually URIs
 
-	@since 3.16.0 - Proposed state
+	@since 3.16.0
 **/
 abstract URI(String) {
 	public inline function new(uri:String) {
@@ -17,6 +17,19 @@ abstract URI(String) {
 
 /**
 	The LSP any type.
+
+	In the current implementation we map LSPAny to any. This is due to the fact
+	that the TypeScript compilers can't infer string access signatures for
+	interface correctly (it can though for types). See the following issue for
+	details: https://github.com/microsoft/TypeScript/issues/15300.
+
+	When the issue is addressed LSPAny can be defined as follows:
+
+	```ts
+	export type LSPAny = LSPObject | LSPArray | string | integer | uinteger | decimal | boolean | null | undefined;
+	export type LSPObject = { [key: string]: LSPAny };
+	export type LSPArray = LSPAny[];
+	```
 
 	Please note that strictly speaking a property with the value `undefined`
 	can't be converted into JSON preserving the property name. However for
@@ -200,7 +213,6 @@ typedef FoldingRange = {
 		will be chosen by the client.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?collapsedText:String;
 }
@@ -845,7 +857,7 @@ enum abstract CompletionItemTag(Int) {
 /**
 	A special text edit to provide an insert and a replace operation.
 
-	@since 3.16.0 - Proposed state
+	@since 3.16.0
 **/
 typedef InsertReplaceEdit = {
 	/**
@@ -896,7 +908,6 @@ enum abstract InsertTextMode(Int) {
 	Additional details for a completion item label.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef CompletionItemLabelDetails = {
 	/**
@@ -927,7 +938,6 @@ typedef CompletionItem = {
 		Additional details for the label
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?labelDetails:CompletionItemLabelDetails;
 
@@ -1050,7 +1060,6 @@ typedef CompletionItem = {
 		property is used as a text.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?textEditText:String;
 
@@ -1108,14 +1117,12 @@ typedef CompletionList = {
 		capability.
 
 		@since 3.17.0
-		@proposed
 	**/
 	var ?itemDefaults:{
 		/**
 			A default commit character set.
 
 			@since 3.17.0
-			@proposed
 		**/
 		var ?commitCharacters:Array<String>;
 
@@ -1123,7 +1130,6 @@ typedef CompletionList = {
 			A default edit range.
 
 			@since 3.17.0
-			@proposed
 		**/
 		var ?editRange:EitherType<Range, {
 			var insert:Range;
@@ -1134,7 +1140,6 @@ typedef CompletionList = {
 			A default insert text format.
 
 			@since 3.17.0
-			@proposed
 		**/
 		var ?insertTextFormat:InsertTextFormat;
 
@@ -1142,7 +1147,6 @@ typedef CompletionList = {
 			A default insert text mode.
 
 			@since 3.17.0
-			@proposed
 		**/
 		var ?insertTextMode:InsertTextMode;
 
@@ -1150,7 +1154,6 @@ typedef CompletionList = {
 			A default data value.
 
 			@since 3.17.0
-			@proposed
 		**/
 		var ?data:LSPAny;
 	};
@@ -1455,7 +1458,6 @@ typedef SymbolInformation = BaseSymbolInformation & {
 	See also SymbolInformation.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef WorkspaceSymbol = BaseSymbolInformation & {
 	/**
@@ -1623,7 +1625,6 @@ enum abstract CodeActionKind(String) from String to String {
 	The reason why code actions were requested.
 
 	@since 3.17.0
-	@proposed
 **/
 enum abstract CodeActionTriggerKind(Int) {
 	/**
@@ -2079,7 +2080,6 @@ typedef SemanticTokensDelta = {
 
 /**
 	@since 3.17.0
-	@proposed
 **/
 typedef TypeHierarchyItem = {
 	/**
@@ -2133,7 +2133,6 @@ typedef TypeHierarchyItem = {
 	Provide inline value as text.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlineValueText = {
 	/**
@@ -2153,7 +2152,6 @@ typedef InlineValueText = {
 	An optional variable name can be used to override the extracted name.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlineValueVariableLookup = {
 	/**
@@ -2179,7 +2177,6 @@ typedef InlineValueVariableLookup = {
 	An optional expression can be used to override the extracted expression.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlineValueEvaluatableExpression = {
 	/**
@@ -2202,13 +2199,11 @@ typedef InlineValueEvaluatableExpression = {
 	The InlineValue types combines all inline value types into one type.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlineValue = EitherType<InlineValueText, EitherType<InlineValueVariableLookup, InlineValueEvaluatableExpression>>;
 
 /**
 	@since 3.17.0
-	@proposed
 **/
 typedef InlineValueContext = {
 	/**
@@ -2227,7 +2222,6 @@ typedef InlineValueContext = {
 	Inlay hint kinds.
 
 	@since 3.17.0
-	@proposed
 **/
 enum abstract InlayHintKind(Int) {
 	/**
@@ -2246,7 +2240,6 @@ enum abstract InlayHintKind(Int) {
 	of inlay hints.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlayHintLabelPart = {
 	/**
@@ -2289,7 +2282,6 @@ typedef InlayHintLabelPart = {
 	Inlay hint information.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlayHint = {
 	/**

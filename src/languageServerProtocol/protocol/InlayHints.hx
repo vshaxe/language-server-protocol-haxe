@@ -1,4 +1,4 @@
-package languageServerProtocol.protocol.proposed;
+package languageServerProtocol.protocol;
 
 import languageServerProtocol.Types;
 import languageServerProtocol.protocol.Protocol;
@@ -7,7 +7,6 @@ import languageServerProtocol.protocol.Protocol;
 	Inlay hint client capabilities
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlayHintClientCapabilities = {
 	/**
@@ -31,7 +30,6 @@ typedef InlayHintClientCapabilities = {
 	Client workspace capabilities specific to inlay hints.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlayHintWorkspaceClientCapabilities = {
 	/**
@@ -50,7 +48,6 @@ typedef InlayHintWorkspaceClientCapabilities = {
 	Inlay hint options used during static registration.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlayHintOptions = WorkDoneProgressOptions & {
 	/**
@@ -64,7 +61,6 @@ typedef InlayHintOptions = WorkDoneProgressOptions & {
 	Inlay hint options used during static or dynamic registration.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlayHintRegistrationOptions = InlayHintOptions & TextDocumentRegistrationOptions & StaticRegistrationOptions;
 
@@ -72,7 +68,6 @@ typedef InlayHintRegistrationOptions = InlayHintOptions & TextDocumentRegistrati
 	A parameter literal used in inlay hints requests.
 
 	@since 3.17.0
-	@proposed
 **/
 typedef InlayHintParams = WorkDoneProgressParams & {
 	/**
@@ -92,11 +87,15 @@ typedef InlayHintParams = WorkDoneProgressParams & {
 	[InlayHint[]](#InlayHint[]) or a Thenable that resolves to such.
 
 	@since 3.17.0
-	@proposed
 **/
 class InlayHintRequest {
 	public static inline final type = new ProtocolRequestType<InlayHintParams, Null<Array<InlayHint>>, Array<InlayHint>, NoData,
 		InlayHintRegistrationOptions>("textDocument/inlayHint");
+}
+
+class HaxeInlayHintRequest {
+	public static inline final type = new ProtocolRequestType<InlayHintParams, Null<Array<InlayHint>>, Array<InlayHint>, NoData,
+		InlayHintRegistrationOptions>("haxe/inlayHints");
 }
 
 /**
@@ -105,7 +104,6 @@ class InlayHintRequest {
 	of type [InlayHint](#InlayHint) or a Thenable that resolves to such.
 
 	@since 3.17.0
-	@proposed
 **/
 class InlayHintResolveRequest {
 	public static inline final type = new ProtocolRequestType<InlayHint, InlayHint, Never, NoData, NoData>("inlayHint/resolve");
@@ -113,7 +111,6 @@ class InlayHintResolveRequest {
 
 /**
 	@since 3.17.0
-	@proposed
 **/
 class InlayHintRefreshRequest {
 	public static inline final type = new ProtocolRequestType<NoData, NoData, NoData, NoData, NoData>("workspace/inlayHint/refresh");
