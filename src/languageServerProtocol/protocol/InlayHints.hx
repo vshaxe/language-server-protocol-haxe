@@ -93,11 +93,6 @@ class InlayHintRequest {
 		InlayHintRegistrationOptions>("textDocument/inlayHint");
 }
 
-class HaxeInlayHintRequest {
-	public static inline final type = new ProtocolRequestType<InlayHintParams, Null<Array<InlayHint>>, Array<InlayHint>, NoData,
-		InlayHintRegistrationOptions>("haxe/inlayHints");
-}
-
 /**
 	A request to resolve additional properties for a inlay hint.
 	The request's parameter is of type [InlayHint](#InlayHint), the response is
