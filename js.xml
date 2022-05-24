@@ -9603,18 +9603,8 @@
 
 	@since 3.17.0</haxe_doc>
 	</class>
-	<class path="languageServerProtocol.protocol.HaxeInlayHintRequest" params="" file="src/languageServerProtocol/protocol/InlayHints.hx" module="languageServerProtocol.protocol.InlayHints"><type final="1" public="1" get="inline" set="null" expr="new ProtocolRequestType&lt;InlayHintParams,Null&lt;Array&lt;InlayHint&gt;&gt;,Array&lt;InlayHint&gt;,NoData,InlayHintRegistrationOptions&gt;(&quot;haxe/inlayHints&quot;)" line="97" static="1">
-	<x path="languageServerProtocol.protocol.ProtocolRequestType">
-		<t path="languageServerProtocol.protocol.InlayHintParams"/>
-		<x path="Null"><c path="Array"><t path="languageServerProtocol.InlayHint"/></c></x>
-		<c path="Array"><t path="languageServerProtocol.InlayHint"/></c>
-		<e path="jsonrpc.NoData"/>
-		<t path="languageServerProtocol.protocol.InlayHintRegistrationOptions"/>
-	</x>
-	<meta><m n=":value"><e><![CDATA[new ProtocolRequestType<InlayHintParams,Null<Array<InlayHint>>,Array<InlayHint>,NoData,InlayHintRegistrationOptions>("haxe/inlayHints")]]></e></m></meta>
-</type></class>
 	<class path="languageServerProtocol.protocol.InlayHintResolveRequest" params="" file="src/languageServerProtocol/protocol/InlayHints.hx" module="languageServerProtocol.protocol.InlayHints">
-		<type final="1" public="1" get="inline" set="null" expr="new ProtocolRequestType&lt;InlayHint,InlayHint,Never,NoData,NoData&gt;(&quot;inlayHint/resolve&quot;)" line="109" static="1">
+		<type final="1" public="1" get="inline" set="null" expr="new ProtocolRequestType&lt;InlayHint,InlayHint,Never,NoData,NoData&gt;(&quot;inlayHint/resolve&quot;)" line="104" static="1">
 			<x path="languageServerProtocol.protocol.ProtocolRequestType">
 				<t path="languageServerProtocol.InlayHint"/>
 				<t path="languageServerProtocol.InlayHint"/>
@@ -9631,7 +9621,7 @@
 	@since 3.17.0</haxe_doc>
 	</class>
 	<class path="languageServerProtocol.protocol.InlayHintRefreshRequest" params="" file="src/languageServerProtocol/protocol/InlayHints.hx" module="languageServerProtocol.protocol.InlayHints">
-		<type final="1" public="1" get="inline" set="null" expr="new ProtocolRequestType&lt;NoData,NoData,NoData,NoData,NoData&gt;(&quot;workspace/inlayHint/refresh&quot;)" line="116" static="1">
+		<type final="1" public="1" get="inline" set="null" expr="new ProtocolRequestType&lt;NoData,NoData,NoData,NoData,NoData&gt;(&quot;workspace/inlayHint/refresh&quot;)" line="111" static="1">
 			<x path="languageServerProtocol.protocol.ProtocolRequestType">
 				<e path="jsonrpc.NoData"/>
 				<e path="jsonrpc.NoData"/>
