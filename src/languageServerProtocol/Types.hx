@@ -226,7 +226,7 @@ typedef DiagnosticRelatedInformation = {
 	/**
 		The location of this related diagnostic information.
 	**/
-	var location:Location;
+	var ?location:Location;
 
 	/**
 		The message of this related diagnostic information.
@@ -301,7 +301,7 @@ typedef Diagnostic = {
 	/**
 		The range at which the message applies
 	**/
-	var range:Range;
+	var ?range:Range;
 
 	/**
 		The diagnostic's severity.
