@@ -80,7 +80,7 @@ typedef InlineValueParams = WorkDoneProgressParams & {
 	@since 3.17.0
 **/
 class InlineValueRequest {
-	public static inline final type = new ProtocolRequestType<InlineValueParams, Null<Array<InlineValueParams>>, Array<InlineValueParams>, NoData,
+	public static inline final type = new ProtocolRequestType<InlineValueParams, Null<Array<InlineValue>>, Array<InlineValue>, NoData,
 		InlineValueRegistrationOptions>("textDocument/inlineValue");
 }
 
