@@ -1,6 +1,6 @@
 <!-- This file can be parsed by haxe.rtti.XmlParser -->
 <haxe>
-	<abstract path="Any" params="" file="/home/runner/haxe/versions/1138057/std/Any.hx">
+	<abstract path="Any" params="" file="/home/runner/haxe/versions/b7fce0e/std/Any.hx">
 		<from><icast><d/></icast></from>
 		<this><d/></this>
 		<to><icast field="__promote"><c path="__promote.T"/></icast></to>
@@ -14,7 +14,7 @@
 	to work with the actual value, it needs to be explicitly promoted
 	to another type.</haxe_doc>
 		<meta><m n=":forward.variance"/></meta>
-		<impl><class path="_Any.Any_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/Any.hx" private="1" module="Any" final="1">
+		<impl><class path="_Any.Any_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/Any.hx" private="1" module="Any" final="1">
 	<__promote params="T" get="inline" set="null" line="37" static="1">
 		<f a="this">
 			<d/>
@@ -35,7 +35,7 @@
 	<meta><m n=":keep"/></meta>
 </class></impl>
 	</abstract>
-	<class path="_Any.Any_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/Any.hx" private="1" module="Any" final="1">
+	<class path="_Any.Any_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/Any.hx" private="1" module="Any" final="1">
 		<__promote params="T" get="inline" set="null" line="37" static="1">
 			<f a="this">
 				<d/>
@@ -55,7 +55,7 @@
 		</toString>
 		<meta><m n=":keep"/></meta>
 	</class>
-	<class path="Array" params="T" file="/home/runner/haxe/versions/1138057/std/js/_std/Array.hx" extern="1">
+	<class path="Array" params="T" file="/home/runner/haxe/versions/b7fce0e/std/js/_std/Array.hx" extern="1">
 		<length public="1" set="null">
 			<x path="Int"/>
 			<haxe_doc>The length of `this` Array.</haxe_doc>
@@ -144,13 +144,18 @@
 			<f a=""><x path="Void"/></f>
 			<haxe_doc>Creates a new Array.</haxe_doc>
 		</new>
+		<haxe_doc>An Array is a storage for values. You can access it using indexes or
+	with its API.
+
+	@see https://haxe.org/manual/std-Array.html
+	@see https://haxe.org/manual/lf-array-comprehension.html</haxe_doc>
 		<meta>
 			<m n=":keep"/>
 			<m n=":directlyUsed"/>
 			<m n=":coreApi"/>
 		</meta>
 	</class>
-	<abstract path="Class" params="T" file="/home/runner/haxe/versions/1138057/std/Class.hx">
+	<abstract path="Class" params="T" file="/home/runner/haxe/versions/b7fce0e/std/Class.hx">
 		<this><x path="Class"><c path="Class.T"/></x></this>
 		<haxe_doc>An abstract type that represents a Class.
 
@@ -162,7 +167,7 @@
 			<m n=":runtimeValue"/>
 		</meta>
 	</abstract>
-	<class path="Date" params="" file="/home/runner/haxe/versions/1138057/std/js/_std/Date.hx" extern="1">
+	<class path="Date" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/_std/Date.hx" extern="1">
 		<now public="1" get="inline" set="null" line="46" static="1">
 			<f a=""><c path="Date"/></f>
 			<haxe_doc>Returns a Date representing the current local time.</haxe_doc>
@@ -187,7 +192,9 @@
 		- `"hh:mm:ss"`
 
 		The first two formats expressed a date in local time. The third is a time
-		relative to the UTC epoch.</haxe_doc>
+		relative to the UTC epoch.
+
+		If `s` does not match these formats, the result is unspecified.</haxe_doc>
 		</fromString>
 		<getTime public="1" set="method">
 			<f a=""><x path="Float"/></f>
@@ -316,7 +323,7 @@
 	timestamps outside the range on any target.</haxe_doc>
 		<meta><m n=":coreApi"/></meta>
 	</class>
-	<class path="js.lib.RegExp" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/RegExp.hx" extern="1">
+	<class path="js.lib.RegExp" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/RegExp.hx" extern="1">
 		<global public="1" set="null">
 			<x path="Bool"/>
 			<haxe_doc>Indicates whether or not the "g" flag is used with the regular expression.</haxe_doc>
@@ -373,13 +380,13 @@
 	@see <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp>]]></haxe_doc>
 		<meta><m n=":native"><e>"RegExp"</e></m></meta>
 	</class>
-	<class path="_EReg.HaxeRegExp" params="" file="/home/runner/haxe/versions/1138057/std/js/_std/EReg.hx" private="1" module="EReg" extern="1">
+	<class path="_EReg.HaxeRegExp" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/_std/EReg.hx" private="1" module="EReg" extern="1">
 		<extends path="js.lib.RegExp"/>
 		<m public="1"><c path="js.lib.RegExpMatch"/></m>
 		<s public="1"><c path="String"/></s>
 		<meta><m n=":native"><e>"RegExp"</e></m></meta>
 	</class>
-	<abstract path="Enum" params="T" file="/home/runner/haxe/versions/1138057/std/Enum.hx">
+	<abstract path="Enum" params="T" file="/home/runner/haxe/versions/b7fce0e/std/Enum.hx">
 		<this><x path="Enum"><c path="Enum.T"/></x></this>
 		<haxe_doc>An abstract type that represents an Enum type.
 
@@ -393,16 +400,16 @@
 			<m n=":runtimeValue"/>
 		</meta>
 	</abstract>
-	<abstract path="EnumValue" params="" file="/home/runner/haxe/versions/1138057/std/EnumValue.hx">
+	<abstract path="EnumValue" params="" file="/home/runner/haxe/versions/b7fce0e/std/EnumValue.hx">
 		<this><x path="EnumValue"/></this>
 		<haxe_doc>An abstract type that represents any enum value.
 	See `Type` for the Haxe Reflection API.
 
 	@see https://haxe.org/manual/types-enum-instance.html</haxe_doc>
 		<meta><m n=":coreType"/></meta>
-		<impl><class path="_EnumValue.EnumValue_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/EnumValue.hx" private="1" module="EnumValue" final="1"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="_EnumValue.EnumValue_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/EnumValue.hx" private="1" module="EnumValue" final="1"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<class path="js.Syntax" params="" file="/home/runner/haxe/versions/1138057/std/js/Syntax.hx" extern="1">
+	<class path="js.Syntax" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/Syntax.hx" extern="1">
 		<code public="1" set="method" static="1">
 			<f a="code:args">
 				<c path="String"/>
@@ -469,7 +476,7 @@
 				<d/>
 				<x path="Bool"/>
 			</f>
-			<haxe_doc>Genearte `a === b` expression.</haxe_doc>
+			<haxe_doc>Generate `a === b` expression.</haxe_doc>
 		</strictEq>
 		<strictNeq public="1" set="method" static="1">
 			<f a="a:b">
@@ -477,7 +484,7 @@
 				<d/>
 				<x path="Bool"/>
 			</f>
-			<haxe_doc>Genearte `a !== b` expression.</haxe_doc>
+			<haxe_doc>Generate `a !== b` expression.</haxe_doc>
 		</strictNeq>
 		<delete public="1" set="method" static="1">
 			<f a="o:f">
@@ -511,10 +518,10 @@
 			<m n=":noClosure"/>
 		</meta>
 	</class>
-	<class path="js.lib.Date" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Date.hx" extern="1">
+	<class path="js.lib.Date" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Date.hx" extern="1">
 		<fromHaxeDate public="1" get="inline" set="null" line="40" static="1">
 			<f a="date">
-				<t path="_Date.HaxeDate"/>
+				<c path="Date"/>
 				<c path="js.lib.Date"/>
 			</f>
 			<haxe_doc>Cast Haxe's Date to js.lib.Date.</haxe_doc>
@@ -522,7 +529,7 @@
 		<toHaxeDate public="1" get="inline" set="null" line="47" static="1">
 			<f a="date">
 				<c path="js.lib.Date"/>
-				<t path="_Date.HaxeDate"/>
+				<c path="Date"/>
 			</f>
 			<haxe_doc>Cast js.lib.Date to Haxe's Date.</haxe_doc>
 		</toHaxeDate>
@@ -839,11 +846,11 @@
 			<m n=":native"><e>"Date"</e></m>
 		</meta>
 	</class>
-	<typedef path="Map" params="K:V" file="/home/runner/haxe/versions/1138057/std/Map.hx"><x path="haxe.ds.Map">
+	<typedef path="Map" params="K:V" file="/home/runner/haxe/versions/b7fce0e/std/Map.hx"><x path="haxe.ds.Map">
 	<c path="Map.K"/>
 	<c path="Map.V"/>
 </x></typedef>
-	<typedef path="IMap" params="K:V" file="/home/runner/haxe/versions/1138057/std/Map.hx" module="Map">
+	<typedef path="IMap" params="K:V" file="/home/runner/haxe/versions/b7fce0e/std/Map.hx" module="Map">
 		<c path="haxe.IMap">
 			<c path="IMap.K"/>
 			<c path="IMap.V"/>
@@ -853,11 +860,11 @@
 			<m n=":deprecated"/>
 		</meta>
 	</typedef>
-	<class path="Math" params="" file="/home/runner/haxe/versions/1138057/std/js/_std/Math.hx" extern="1"><meta>
+	<class path="Math" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/_std/Math.hx" extern="1"><meta>
 	<m n=":keep"/>
 	<m n=":keepInit"/>
 </meta></class>
-	<class path="String" params="" file="/home/runner/haxe/versions/1138057/std/js/_std/String.hx" extern="1">
+	<class path="String" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/_std/String.hx" extern="1">
 		<fromCharCode public="1" get="inline" set="null" line="43" static="1">
 			<f a="code">
 				<x path="Int"/>
@@ -897,20 +904,22 @@
 				<x path="Int"/>
 				<x path="Int"/>
 			</f>
-			<haxe_doc>Returns the position of the leftmost occurrence of `str` within `this`
-		String.
+			<haxe_doc><![CDATA[Returns the position of the leftmost occurrence of `str` within `this` String.
 
-		If `startIndex` is given, the search is performed within the substring
-		of `this` String starting from `startIndex`.
+		If `str` is the empty String `""`, then:
+			* If `startIndex` is not specified or < 0, 0 is returned.
+			* If `startIndex >= this.length`, `this.length` is returned.
+			* Otherwise, `startIndex` is returned,
 
-		If `startIndex` exceeds `this.length`, -1 is returned.
+		Otherwise, if `startIndex` is not specified or < 0, it is treated as 0.
 
-		If `startIndex` is negative, the result is unspecifed.
+		If `startIndex >= this.length`, -1 is returned.
 
-		Otherwise the search is performed within `this` String. In either case,
-		the returned position is relative to the beginning of `this` String.
+		Otherwise the search is performed within the substring of `this` String starting
+		at `startIndex`. If `str` is found, the position of its first character in `this`
+		String relative to position 0 is returned.
 
-		If `str` cannot be found, -1 is returned.</haxe_doc>
+		If `str` cannot be found, -1 is returned.]]></haxe_doc>
 		</indexOf>
 		<lastIndexOf public="1" set="method">
 			<f a="str:?startIndex">
@@ -926,7 +935,7 @@
 		is performed within `this` String. In either case, the returned position
 		is relative to the beginning of `this` String.
 
-		If `startIndex` is negative, the result is unspecifed.
+		If `startIndex` is negative, the result is unspecified.
 
 		If `str` cannot be found, -1 is returned.</haxe_doc>
 		</lastIndexOf>
@@ -1032,7 +1041,7 @@
 			<m n=":coreApi"/>
 		</meta>
 	</class>
-	<class path="Std" params="" file="/home/runner/haxe/versions/1138057/std/js/_std/Std.hx">
+	<class path="Std" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/_std/Std.hx">
 		<string public="1" set="method" line="47" static="1">
 			<f a="s">
 				<d/>
@@ -1064,21 +1073,22 @@
 
 		Leading whitespaces are ignored.
 
-		If `x` starts with 0x or 0X, hexadecimal notation is recognized where the following digits may
-		contain 0-9 and A-F.
+		`x` may optionally start with a + or - to denote a positive or negative value respectively.
 
-		Otherwise `x` is read as decimal number with 0-9 being allowed characters. `x` may also start with
-		a - to denote a negative value.
+		If the optional sign is followed 0x or 0X, hexadecimal notation is recognized where the following
+		digits may contain 0-9 and A-F. Both the prefix and digits are case insensitive.
 
-		In decimal mode, parsing continues until an invalid character is detected, in which case the
-		result up to that point is returned. For hexadecimal notation, the effect of invalid characters
-		is unspecified.
+		Otherwise `x` is read as decimal number with 0-9 being allowed characters. Octal and binary
+		notations are not supported.
 
-		Leading 0s that are not part of the 0x/0X hexadecimal notation are ignored, which means octal
-		notation is not supported.
+		Parsing continues until an invalid character is detected, in which case the result up to
+		that point is returned. Scientific notation is not supported. That is `Std.parseInt('10e2')` produces `10`.
 
-		If `x` is null, the result is unspecified.
-		If `x` cannot be parsed as integer, the result is `null`.</haxe_doc>
+		If `x` is `null`, the result is `null`.
+		If `x` cannot be parsed as integer or is empty, the result is `null`.
+
+		If `x` starts with a hexadecimal prefix which is not followed by at least one valid hexadecimal
+		digit, the result is unspecified.</haxe_doc>
 		</parseInt>
 		<haxe_doc>The Std class provides standard methods for manipulating basic types.</haxe_doc>
 		<meta>
@@ -1088,14 +1098,14 @@
 			<m n=":coreApi"/>
 		</meta>
 	</class>
-	<abstract path="Void" params="" file="/home/runner/haxe/versions/1138057/std/StdTypes.hx" module="StdTypes">
+	<abstract path="Void" params="" file="/home/runner/haxe/versions/b7fce0e/std/StdTypes.hx" module="StdTypes">
 		<this><x path="Void"/></this>
 		<haxe_doc>The standard `Void` type. Only `null` values can be of the type `Void`.
 
 	@see https://haxe.org/manual/types-void.html</haxe_doc>
 		<meta><m n=":coreType"/></meta>
 	</abstract>
-	<abstract path="Float" params="" file="/home/runner/haxe/versions/1138057/std/StdTypes.hx" module="StdTypes">
+	<abstract path="Float" params="" file="/home/runner/haxe/versions/b7fce0e/std/StdTypes.hx" module="StdTypes">
 		<this><x path="Float"/></this>
 		<haxe_doc><![CDATA[The standard `Float` type, this is a double-precision IEEE 64bit float.
 
@@ -1113,7 +1123,7 @@
 			<m n=":runtimeValue"/>
 		</meta>
 	</abstract>
-	<abstract path="Int" params="" file="/home/runner/haxe/versions/1138057/std/StdTypes.hx" module="StdTypes">
+	<abstract path="Int" params="" file="/home/runner/haxe/versions/b7fce0e/std/StdTypes.hx" module="StdTypes">
 		<this><x path="Int"/></this>
 		<to><icast><x path="Float"/></icast></to>
 		<haxe_doc><![CDATA[The standard `Int` type. Its precision depends on the platform.
@@ -1133,7 +1143,7 @@
 			<m n=":runtimeValue"/>
 		</meta>
 	</abstract>
-	<abstract path="Null" params="T" file="/home/runner/haxe/versions/1138057/std/StdTypes.hx" module="StdTypes">
+	<abstract path="Null" params="T" file="/home/runner/haxe/versions/b7fce0e/std/StdTypes.hx" module="StdTypes">
 		<from><icast><c path="Null.T"/></icast></from>
 		<this><x path="Null"><c path="Null.T"/></x></this>
 		<to><icast><c path="Null.T"/></icast></to>
@@ -1151,7 +1161,7 @@
 			<m n=":coreType"/>
 		</meta>
 	</abstract>
-	<abstract path="Bool" params="" file="/home/runner/haxe/versions/1138057/std/StdTypes.hx" module="StdTypes">
+	<abstract path="Bool" params="" file="/home/runner/haxe/versions/b7fce0e/std/StdTypes.hx" module="StdTypes">
 		<this><x path="Bool"/></this>
 		<haxe_doc><![CDATA[The standard Boolean type, which can either be `true` or `false`.
 
@@ -1166,7 +1176,7 @@
 			<m n=":runtimeValue"/>
 		</meta>
 	</abstract>
-	<abstract path="Dynamic" params="T" file="/home/runner/haxe/versions/1138057/std/StdTypes.hx" module="StdTypes">
+	<abstract path="Dynamic" params="T" file="/home/runner/haxe/versions/b7fce0e/std/StdTypes.hx" module="StdTypes">
 		<this><x path="Dynamic"><c path="Dynamic.T"/></x></this>
 		<haxe_doc>`Dynamic` is a special type which is compatible with all other types.
 
@@ -1180,7 +1190,7 @@
 			<m n=":runtimeValue"/>
 		</meta>
 	</abstract>
-	<typedef path="Iterator" params="T" file="/home/runner/haxe/versions/1138057/std/StdTypes.hx" module="StdTypes">
+	<typedef path="Iterator" params="T" file="/home/runner/haxe/versions/b7fce0e/std/StdTypes.hx" module="StdTypes">
 		<a>
 			<next set="method">
 				<f a=""><c path="Iterator.T"/></f>
@@ -1210,21 +1220,21 @@
 
 	@see https://haxe.org/manual/lf-iterators.html</haxe_doc>
 	</typedef>
-	<typedef path="Iterable" params="T" file="/home/runner/haxe/versions/1138057/std/StdTypes.hx" module="StdTypes">
+	<typedef path="Iterable" params="T" file="/home/runner/haxe/versions/b7fce0e/std/StdTypes.hx" module="StdTypes">
 		<a><iterator set="method"><f a=""><t path="Iterator"><c path="Iterable.T"/></t></f></iterator></a>
 		<haxe_doc>An `Iterable` is a data structure which has an `iterator()` method.
 	See `Lambda` for generic functions on iterable structures.
 
 	@see https://haxe.org/manual/lf-iterators.html</haxe_doc>
 	</typedef>
-	<typedef path="KeyValueIterator" params="K:V" file="/home/runner/haxe/versions/1138057/std/StdTypes.hx" module="StdTypes">
+	<typedef path="KeyValueIterator" params="K:V" file="/home/runner/haxe/versions/b7fce0e/std/StdTypes.hx" module="StdTypes">
 		<t path="Iterator"><a>
 	<value><c path="KeyValueIterator.V"/></value>
 	<key><c path="KeyValueIterator.K"/></key>
 </a></t>
 		<haxe_doc>A `KeyValueIterator` is an `Iterator` that has a key and a value.</haxe_doc>
 	</typedef>
-	<typedef path="KeyValueIterable" params="K:V" file="/home/runner/haxe/versions/1138057/std/StdTypes.hx" module="StdTypes">
+	<typedef path="KeyValueIterable" params="K:V" file="/home/runner/haxe/versions/b7fce0e/std/StdTypes.hx" module="StdTypes">
 		<a><keyValueIterator set="method"><f a=""><t path="KeyValueIterator">
 	<c path="KeyValueIterable.K"/>
 	<c path="KeyValueIterable.V"/>
@@ -1232,7 +1242,7 @@
 		<haxe_doc>A `KeyValueIterable` is a data structure which has a `keyValueIterator()`
 	method to iterate over key-value-pairs.</haxe_doc>
 	</typedef>
-	<class path="ArrayAccess" params="T" file="/home/runner/haxe/versions/1138057/std/StdTypes.hx" module="StdTypes" extern="1" interface="1"><haxe_doc>`ArrayAccess` is used to indicate a class that can be accessed using brackets.
+	<class path="ArrayAccess" params="T" file="/home/runner/haxe/versions/b7fce0e/std/StdTypes.hx" module="StdTypes" extern="1" interface="1"><haxe_doc>`ArrayAccess` is used to indicate a class that can be accessed using brackets.
 	The type parameter represents the type of the elements stored.
 
 	This interface should be used for externs only. Haxe does not support custom
@@ -1240,7 +1250,7 @@
 	abstract types.
 
 	@see https://haxe.org/manual/types-abstract-array-access.html</haxe_doc></class>
-	<class path="StringBuf" params="" file="/home/runner/haxe/versions/1138057/std/StringBuf.hx">
+	<class path="StringBuf" params="" file="/home/runner/haxe/versions/b7fce0e/std/StringBuf.hx">
 		<b><c path="String"/></b>
 		<new public="1" get="inline" set="null" line="44">
 			<f a=""><x path="Void"/></f>
@@ -1259,8 +1269,8 @@
 			<m n=":directlyUsed"/>
 		</meta>
 	</class>
-	<class path="StringTools" params="" file="/home/runner/haxe/versions/1138057/std/StringTools.hx">
-		<isSpace public="1" set="method" line="278" static="1">
+	<class path="StringTools" params="" file="/home/runner/haxe/versions/b7fce0e/std/StringTools.hx">
+		<isSpace public="1" set="method" line="274" static="1">
 			<f a="s:pos">
 				<c path="String"/>
 				<x path="Int"/>
@@ -1274,33 +1284,7 @@
 		If `s` is the empty String `""`, or if pos is not a valid position within
 		`s`, the result is false.</haxe_doc>
 		</isSpace>
-		<ltrim public="1" set="method" line="296" static="1">
-			<f a="s">
-				<c path="String"/>
-				<c path="String"/>
-			</f>
-			<haxe_doc>Removes leading space characters of `s`.
-
-		This function internally calls `isSpace()` to decide which characters to
-		remove.
-
-		If `s` is the empty String `""` or consists only of space characters, the
-		result is the empty String `""`.</haxe_doc>
-		</ltrim>
-		<rtrim public="1" set="method" line="321" static="1">
-			<f a="s">
-				<c path="String"/>
-				<c path="String"/>
-			</f>
-			<haxe_doc>Removes trailing space characters of `s`.
-
-		This function internally calls `isSpace()` to decide which characters to
-		remove.
-
-		If `s` is the empty String `""` or consists only of space characters, the
-		result is the empty String `""`.</haxe_doc>
-		</rtrim>
-		<trim public="1" set="method" line="343" static="1">
+		<trim public="1" set="method" line="331" static="1">
 			<f a="s">
 				<c path="String"/>
 				<c path="String"/>
@@ -1320,7 +1304,7 @@
 			<m n=":directlyUsed"/>
 		</meta>
 	</class>
-	<enum path="haxe.StackItem" params="" file="/home/runner/haxe/versions/1138057/std/haxe/CallStack.hx" module="haxe.CallStack">
+	<enum path="haxe.StackItem" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/CallStack.hx" module="haxe.CallStack">
 		<CFunction/>
 		<Module a="m"><c path="String"/></Module>
 		<FilePos a="s:file:line:?column">
@@ -1337,7 +1321,7 @@
 		<haxe_doc>Elements return by `CallStack` methods.</haxe_doc>
 		<meta><m n=":directlyUsed"/></meta>
 	</enum>
-	<abstract path="haxe.CallStack" params="" file="/home/runner/haxe/versions/1138057/std/haxe/CallStack.hx">
+	<abstract path="haxe.CallStack" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/CallStack.hx">
 		<from><icast><c path="Array"><e path="haxe.StackItem"/></c></icast></from>
 		<this><c path="Array"><e path="haxe.StackItem"/></c></this>
 		<haxe_doc>Get information about the call stack.</haxe_doc>
@@ -1345,7 +1329,7 @@
 			<m n=":allow"><e>haxe.Exception</e></m>
 			<m n=":using"><e>haxe.CallStack</e></m>
 		</meta>
-		<impl><class path="haxe._CallStack.CallStack_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/haxe/CallStack.hx" private="1" module="haxe.CallStack" final="1">
+		<impl><class path="haxe._CallStack.CallStack_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/CallStack.hx" private="1" module="haxe.CallStack" final="1">
 	<callStack public="1" set="method" line="51" static="1">
 		<f a=""><c path="Array"><e path="haxe.StackItem"/></c></f>
 		<haxe_doc>Return the call stack elements, or an empty array if not available.</haxe_doc>
@@ -1397,7 +1381,7 @@
 	</meta>
 </class></impl>
 	</abstract>
-	<class path="haxe._CallStack.CallStack_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/haxe/CallStack.hx" private="1" module="haxe.CallStack" final="1">
+	<class path="haxe._CallStack.CallStack_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/CallStack.hx" private="1" module="haxe.CallStack" final="1">
 		<callStack public="1" set="method" line="51" static="1">
 			<f a=""><c path="Array"><e path="haxe.StackItem"/></c></f>
 			<haxe_doc>Return the call stack elements, or an empty array if not available.</haxe_doc>
@@ -1448,33 +1432,33 @@
 			<m n=":allow"><e>haxe.Exception</e></m>
 		</meta>
 	</class>
-	<abstract path="haxe.Function" params="" file="/home/runner/haxe/versions/1138057/std/haxe/Constraints.hx" module="haxe.Constraints">
+	<abstract path="haxe.Function" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/Constraints.hx" module="haxe.Constraints">
 		<this><d/></this>
 		<haxe_doc>This type unifies with any function type.
 
 	It is intended to be used as a type parameter constraint. If used as a real
 	type, the underlying type will be `Dynamic`.</haxe_doc>
 		<meta><m n=":callable"/></meta>
-		<impl><class path="haxe._Constraints.Function_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/haxe/Constraints.hx" private="1" module="haxe.Constraints" final="1"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="haxe._Constraints.Function_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/Constraints.hx" private="1" module="haxe.Constraints" final="1"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<abstract path="haxe.FlatEnum" params="" file="/home/runner/haxe/versions/1138057/std/haxe/Constraints.hx" module="haxe.Constraints">
+	<abstract path="haxe.FlatEnum" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/Constraints.hx" module="haxe.Constraints">
 		<this><d/></this>
 		<haxe_doc>This type unifies with an enum instance if all constructors of the enum
 	require no arguments.
 
 	It is intended to be used as a type parameter constraint. If used as a real
 	type, the underlying type will be `Dynamic`.</haxe_doc>
-		<impl><class path="haxe._Constraints.FlatEnum_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/haxe/Constraints.hx" private="1" module="haxe.Constraints" final="1"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="haxe._Constraints.FlatEnum_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/Constraints.hx" private="1" module="haxe.Constraints" final="1"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<abstract path="haxe.NotVoid" params="" file="/home/runner/haxe/versions/1138057/std/haxe/Constraints.hx" module="haxe.Constraints">
+	<abstract path="haxe.NotVoid" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/Constraints.hx" module="haxe.Constraints">
 		<this><d/></this>
 		<haxe_doc>This type unifies with anything but `Void`.
 
 	It is intended to be used as a type parameter constraint. If used as a real
 	type, the underlying type will be `Dynamic`.</haxe_doc>
-		<impl><class path="haxe._Constraints.NotVoid_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/haxe/Constraints.hx" private="1" module="haxe.Constraints" final="1"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="haxe._Constraints.NotVoid_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/Constraints.hx" private="1" module="haxe.Constraints" final="1"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<abstract path="haxe.Constructible" params="T" file="/home/runner/haxe/versions/1138057/std/haxe/Constraints.hx" module="haxe.Constraints">
+	<abstract path="haxe.Constructible" params="T" file="/home/runner/haxe/versions/b7fce0e/std/haxe/Constraints.hx" module="haxe.Constraints">
 		<this><d/></this>
 		<haxe_doc><![CDATA[This type unifies with any instance of classes that have a constructor
 	which
@@ -1488,10 +1472,10 @@
 
 	It is intended to be used as a type parameter constraint. If used as a real
 	type, the underlying type will be `Dynamic`.]]></haxe_doc>
-		<impl><class path="haxe._Constraints.Constructible_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/haxe/Constraints.hx" private="1" module="haxe.Constraints" final="1"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="haxe._Constraints.Constructible_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/Constraints.hx" private="1" module="haxe.Constraints" final="1"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<class path="haxe.IMap" params="K:V" file="/home/runner/haxe/versions/1138057/std/haxe/Constraints.hx" module="haxe.Constraints" interface="1"><meta><m n=":keep"/></meta></class>
-	<abstract path="haxe.DynamicAccess" params="T" file="/home/runner/haxe/versions/1138057/std/haxe/DynamicAccess.hx">
+	<class path="haxe.IMap" params="K:V" file="/home/runner/haxe/versions/b7fce0e/std/haxe/Constraints.hx" module="haxe.Constraints" interface="1"><meta><m n=":keep"/></meta></class>
+	<abstract path="haxe.DynamicAccess" params="T" file="/home/runner/haxe/versions/b7fce0e/std/haxe/DynamicAccess.hx">
 		<from><icast><d><c path="haxe.DynamicAccess.T"/></d></icast></from>
 		<this><d><c path="haxe.DynamicAccess.T"/></d></this>
 		<to><icast><d><c path="haxe.DynamicAccess.T"/></d></icast></to>
@@ -1501,9 +1485,9 @@
 	For example, these types of structures are often created from JSON.
 
 	Basically, it wraps `Reflect` calls in a `Map`-like interface.</haxe_doc>
-		<impl><class path="haxe._DynamicAccess.DynamicAccess_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/haxe/DynamicAccess.hx" private="1" module="haxe.DynamicAccess" final="1"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="haxe._DynamicAccess.DynamicAccess_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/DynamicAccess.hx" private="1" module="haxe.DynamicAccess" final="1"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<class path="haxe.EnumTools" params="" file="/home/runner/haxe/versions/1138057/std/haxe/EnumTools.hx" extern="1">
+	<class path="haxe.EnumTools" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/EnumTools.hx" extern="1">
 		<getName public="1" params="T" get="inline" set="null" line="52" static="1">
 			<f a="e">
 				<x path="Enum"><c path="getName.T"/></x>
@@ -1595,7 +1579,7 @@
 	If the first argument to any of the methods is `null`, the result is
 	unspecified.</haxe_doc>
 	</class>
-	<class path="haxe.EnumValueTools" params="" file="/home/runner/haxe/versions/1138057/std/haxe/EnumTools.hx" module="haxe.EnumTools" extern="1">
+	<class path="haxe.EnumValueTools" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/EnumTools.hx" module="haxe.EnumTools" extern="1">
 		<equals public="1" params="T" get="inline" set="null" line="138" static="1">
 			<f a="a:b">
 				<c path="equals.T"/>
@@ -1654,7 +1638,7 @@
 	If the first argument to any of the methods is `null`, the result is
 	unspecified.</haxe_doc>
 	</class>
-	<class path="haxe._Exception.NativeException" params="" file="/home/runner/haxe/versions/1138057/std/js/_std/haxe/Exception.hx" private="1" module="haxe.Exception" extern="1">
+	<class path="haxe._Exception.NativeException" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/_std/haxe/Exception.hx" private="1" module="haxe.Exception" extern="1">
 		<new public="1" set="method"><f a="?message">
 	<c path="String"/>
 	<x path="Void"/>
@@ -1666,7 +1650,7 @@
 			<m n=":native"><e>"Error"</e></m>
 		</meta>
 	</class>
-	<class path="haxe.Exception" params="" file="/home/runner/haxe/versions/1138057/std/js/_std/haxe/Exception.hx">
+	<class path="haxe.Exception" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/_std/haxe/Exception.hx">
 		<extends path="haxe._Exception.NativeException"/>
 		<caught set="method" line="18" static="1"><f a="value">
 	<x path="Any"/>
@@ -1784,7 +1768,7 @@
 			<m n=":coreApi"/>
 		</meta>
 	</class>
-	<class path="haxe.Json" params="" file="/home/runner/haxe/versions/1138057/std/js/_std/haxe/Json.hx" extern="1">
+	<class path="haxe.Json" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/_std/haxe/Json.hx" extern="1">
 		<parse public="1" set="method" static="1">
 			<f a="text">
 				<c path="String"/>
@@ -1823,7 +1807,7 @@
 		</stringify>
 		<haxe_doc>Cross-platform JSON API: it will automatically use the optimized native API if available.
 	Use `-D haxeJSON` to force usage of the Haxe implementation even if a native API is found:
-	This will provide extra encoding features such as enums (replaced by their index) and StringMaps.
+	This will provide extra encoding (but not decoding) features such as enums (replaced by their index) and StringMaps.
 
 	@see https://haxe.org/manual/std-Json.html</haxe_doc>
 		<meta>
@@ -1832,7 +1816,7 @@
 			<m n=":native"><e>"JSON"</e></m>
 		</meta>
 	</class>
-	<class path="haxe._NativeStackTrace.V8Error" params="" file="/home/runner/haxe/versions/1138057/std/js/_std/haxe/NativeStackTrace.hx" private="1" module="haxe.NativeStackTrace" extern="1">
+	<class path="haxe._NativeStackTrace.V8Error" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/_std/haxe/NativeStackTrace.hx" private="1" module="haxe.NativeStackTrace" extern="1">
 		<prepareStackTrace public="1" static="1"><f a="error:structuredStackTrace">
 	<c path="js.lib.Error"/>
 	<c path="Array"><t path="haxe.V8CallSite"/></c>
@@ -1843,13 +1827,13 @@
 			<m n=":native"><e>"Error"</e></m>
 		</meta>
 	</class>
-	<typedef path="haxe.V8CallSite" params="" file="/home/runner/haxe/versions/1138057/std/js/_std/haxe/NativeStackTrace.hx" module="haxe.NativeStackTrace"><a>
+	<typedef path="haxe.V8CallSite" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/_std/haxe/NativeStackTrace.hx" module="haxe.NativeStackTrace"><a>
 	<getLineNumber set="method"><f a=""><x path="Int"/></f></getLineNumber>
 	<getFunctionName set="method"><f a=""><c path="String"/></f></getFunctionName>
 	<getFileName set="method"><f a=""><c path="String"/></f></getFileName>
 	<getColumnNumber set="method"><f a=""><x path="Int"/></f></getColumnNumber>
 </a></typedef>
-	<class path="haxe.NativeStackTrace" params="" file="/home/runner/haxe/versions/1138057/std/js/_std/haxe/NativeStackTrace.hx">
+	<class path="haxe.NativeStackTrace" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/_std/haxe/NativeStackTrace.hx">
 		<lastError static="1"><c path="js.lib.Error"/></lastError>
 		<wrapCallSite public="1" static="1">
 			<f a="">
@@ -1910,8 +1894,8 @@
 			<m n=":allow"><e>haxe.Exception</e></m>
 		</meta>
 	</class>
-	<typedef path="haxe._Rest.NativeRest" params="T" file="/home/runner/haxe/versions/1138057/std/haxe/Rest.hx" private="1" module="haxe.Rest"><c path="Array"><c path="haxe._Rest.NativeRest.T"/></c></typedef>
-	<abstract path="haxe.Rest" params="T" file="/home/runner/haxe/versions/1138057/std/haxe/Rest.hx">
+	<typedef path="haxe._Rest.NativeRest" params="T" file="/home/runner/haxe/versions/b7fce0e/std/haxe/Rest.hx" private="1" module="haxe.Rest"><c path="Array"><c path="haxe._Rest.NativeRest.T"/></c></typedef>
+	<abstract path="haxe.Rest" params="T" file="/home/runner/haxe/versions/b7fce0e/std/haxe/Rest.hx">
 		<from><icast field="of"><c path="Array"><c path="of.T"/></c></icast></from>
 		<this><t path="haxe._Rest.NativeRest"><c path="haxe.Rest.T"/></t></this>
 		<to><icast field="toArray"><c path="Array"><c path="haxe.Rest.T"/></c></icast></to>
@@ -1936,12 +1920,12 @@
 	Allows to use array access by index to get values of rest arguments.
 	If the index exceeds the amount of rest arguments passed, the result is unspecified.]]></haxe_doc>
 		<meta><m n=":coreApi"/></meta>
-		<impl><class path="haxe._Rest.Rest_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/haxe/Rest.hx" private="1" module="haxe.Rest" final="1"><meta>
+		<impl><class path="haxe._Rest.Rest_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/Rest.hx" private="1" module="haxe.Rest" final="1"><meta>
 	<m n=":keep"/>
 	<m n=":coreApi"/>
 </meta></class></impl>
 	</abstract>
-	<class path="haxe.ValueException" params="" file="/home/runner/haxe/versions/1138057/std/haxe/ValueException.hx">
+	<class path="haxe.ValueException" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/ValueException.hx">
 		<extends path="haxe.Exception"/>
 		<value public="1" set="null">
 			<x path="Any"/>
@@ -1978,7 +1962,7 @@
 			<m n=":directlyUsed"/>
 		</meta>
 	</class>
-	<class path="haxe.ds.TreeNode" params="K:V" file="/home/runner/haxe/versions/1138057/std/haxe/ds/BalancedTree.hx" module="haxe.ds.BalancedTree">
+	<class path="haxe.ds.TreeNode" params="K:V" file="/home/runner/haxe/versions/b7fce0e/std/haxe/ds/BalancedTree.hx" module="haxe.ds.BalancedTree">
 		<left public="1"><c path="haxe.ds.TreeNode">
 	<c path="haxe.ds.TreeNode.K"/>
 	<c path="haxe.ds.TreeNode.V"/>
@@ -2011,20 +1995,20 @@
 		<haxe_doc>A tree node of `haxe.ds.BalancedTree`.</haxe_doc>
 		<meta><m n=":keep"/></meta>
 	</class>
-	<class path="haxe.ds.IntMap" params="T" file="/home/runner/haxe/versions/1138057/std/js/_std/haxe/ds/IntMap.hx">
+	<class path="haxe.ds.IntMap" params="T" file="/home/runner/haxe/versions/b7fce0e/std/js/_std/haxe/ds/IntMap.hx">
 		<implements path="haxe.IMap">
 			<x path="Int"/>
 			<c path="haxe.ds.IntMap.T"/>
 		</implements>
 		<h><d/></h>
-		<remove public="1" set="method" line="44">
+		<remove public="1" set="method" line="106">
 			<f a="key">
 				<x path="Int"/>
 				<x path="Bool"/>
 			</f>
 			<haxe_doc>See `Map.remove`</haxe_doc>
 		</remove>
-		<new public="1" get="inline" set="null" line="28">
+		<new public="1" get="inline" set="null" line="90">
 			<f a=""><x path="Void"/></f>
 			<haxe_doc>Creates a new IntMap.</haxe_doc>
 		</new>
@@ -2039,7 +2023,7 @@
 			<m n=":coreApi"/>
 		</meta>
 	</class>
-	<abstract path="haxe.ds.Map" params="K:V" file="/home/runner/haxe/versions/1138057/std/haxe/ds/Map.hx">
+	<abstract path="haxe.ds.Map" params="K:V" file="/home/runner/haxe/versions/b7fce0e/std/haxe/ds/Map.hx">
 		<from>
 			<icast field="fromStringMap"><c path="haxe.ds.StringMap"><c path="fromStringMap.V"/></c></icast>
 			<icast field="fromIntMap"><c path="haxe.ds.IntMap"><c path="fromIntMap.V"/></c></icast>
@@ -2082,7 +2066,7 @@
 			<m n=":transitive"/>
 			<m n=":multiType"><e>@:followWithAbstracts K</e></m>
 		</meta>
-		<impl><class path="haxe.ds._Map.Map_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/haxe/ds/Map.hx" private="1" module="haxe.ds.Map" final="1">
+		<impl><class path="haxe.ds._Map.Map_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/ds/Map.hx" private="1" module="haxe.ds.Map" final="1">
 	<_new public="1" set="method" static="1">
 		<f a=""><x path="haxe.ds.Map">
 	<c path="haxe.ds.Map.K"/>
@@ -2105,7 +2089,7 @@
 	<meta><m n=":keep"/></meta>
 </class></impl>
 	</abstract>
-	<class path="haxe.ds._Map.Map_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/haxe/ds/Map.hx" private="1" module="haxe.ds.Map" final="1">
+	<class path="haxe.ds._Map.Map_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/ds/Map.hx" private="1" module="haxe.ds.Map" final="1">
 		<_new public="1" set="method" static="1">
 			<f a=""><x path="haxe.ds.Map">
 	<c path="haxe.ds.Map.K"/>
@@ -2127,13 +2111,13 @@
 		</_new>
 		<meta><m n=":keep"/></meta>
 	</class>
-	<class path="haxe.ds.ObjectMap" params="K:V" file="/home/runner/haxe/versions/1138057/std/js/_std/haxe/ds/ObjectMap.hx">
+	<class path="haxe.ds.ObjectMap" params="K:V" file="/home/runner/haxe/versions/b7fce0e/std/js/_std/haxe/ds/ObjectMap.hx">
 		<implements path="haxe.IMap">
 			<c path="haxe.ds.ObjectMap.K"/>
 			<c path="haxe.ds.ObjectMap.V"/>
 		</implements>
 		<h><a><__keys__><a/></__keys__></a></h>
-		<set public="1" set="method" line="45">
+		<set public="1" set="method" line="107">
 			<f a="key:value">
 				<c path="haxe.ds.ObjectMap.K"/>
 				<c path="haxe.ds.ObjectMap.V"/>
@@ -2141,7 +2125,7 @@
 			</f>
 			<haxe_doc>See `Map.set`</haxe_doc>
 		</set>
-		<remove public="1" set="method" line="62">
+		<remove public="1" set="method" line="124">
 			<f a="key">
 				<c path="haxe.ds.ObjectMap.K"/>
 				<x path="Bool"/>
@@ -2149,7 +2133,7 @@
 			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc>See `Map.remove`</haxe_doc>
 		</remove>
-		<new public="1" set="method" line="41">
+		<new public="1" set="method" line="103">
 			<f a=""><x path="Void"/></f>
 			<haxe_doc>Creates a new ObjectMap.</haxe_doc>
 		</new>
@@ -2167,7 +2151,7 @@
 			<m n=":coreApi"/>
 		</meta>
 	</class>
-	<abstract path="haxe.ds.ReadOnlyArray" params="T" file="/home/runner/haxe/versions/1138057/std/haxe/ds/ReadOnlyArray.hx">
+	<abstract path="haxe.ds.ReadOnlyArray" params="T" file="/home/runner/haxe/versions/b7fce0e/std/haxe/ds/ReadOnlyArray.hx">
 		<from><icast><c path="Array"><c path="haxe.ds.ReadOnlyArray.T"/></c></icast></from>
 		<this><c path="Array"><c path="haxe.ds.ReadOnlyArray.T"/></c></this>
 		<to><icast><t path="Iterable"><c path="haxe.ds.ReadOnlyArray.T"/></t></icast></to>
@@ -2190,15 +2174,15 @@
 	<e>contains</e>
 	<e>toString</e>
 </m></meta>
-		<impl><class path="haxe.ds._ReadOnlyArray.ReadOnlyArray_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/haxe/ds/ReadOnlyArray.hx" private="1" module="haxe.ds.ReadOnlyArray" final="1"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="haxe.ds._ReadOnlyArray.ReadOnlyArray_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/ds/ReadOnlyArray.hx" private="1" module="haxe.ds.ReadOnlyArray" final="1"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<class path="haxe.ds.StringMap" params="T" file="/home/runner/haxe/versions/1138057/std/js/_std/haxe/ds/StringMap.hx">
+	<class path="haxe.ds.StringMap" params="T" file="/home/runner/haxe/versions/b7fce0e/std/js/_std/haxe/ds/StringMap.hx">
 		<implements path="haxe.IMap">
 			<c path="String"/>
 			<c path="haxe.ds.StringMap.T"/>
 		</implements>
 		<h><d/></h>
-		<new public="1" get="inline" set="null" line="33">
+		<new public="1" get="inline" set="null" line="94">
 			<f a=""><x path="Void"/></f>
 			<haxe_doc>Creates a new StringMap.</haxe_doc>
 		</new>
@@ -2213,7 +2197,7 @@
 			<m n=":coreApi"/>
 		</meta>
 	</class>
-	<abstract path="haxe.extern.EitherType" params="T1:T2" file="/home/runner/haxe/versions/1138057/std/haxe/extern/EitherType.hx">
+	<abstract path="haxe.extern.EitherType" params="T1:T2" file="/home/runner/haxe/versions/b7fce0e/std/haxe/extern/EitherType.hx">
 		<from>
 			<icast><c path="haxe.extern.EitherType.T1"/></icast>
 			<icast><c path="haxe.extern.EitherType.T2"/></icast>
@@ -2233,9 +2217,9 @@
 
 	@see <https://haxe.org/manual/lf-externs.html>]]></haxe_doc>
 		<meta><m n=":transitive"/></meta>
-		<impl><class path="haxe.extern._EitherType.EitherType_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/haxe/extern/EitherType.hx" private="1" module="haxe.extern.EitherType" final="1"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="haxe.extern._EitherType.EitherType_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/haxe/extern/EitherType.hx" private="1" module="haxe.extern.EitherType" final="1"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<typedef path="haxe.extern.Rest" params="T" file="/home/runner/haxe/versions/1138057/std/haxe/extern/Rest.hx">
+	<typedef path="haxe.extern.Rest" params="T" file="/home/runner/haxe/versions/b7fce0e/std/haxe/extern/Rest.hx">
 		<x path="haxe.Rest"><c path="haxe.extern.Rest.T"/></x>
 		<haxe_doc><![CDATA[DEPRECATED: use haxe.Rest instead.
 	
@@ -2245,7 +2229,7 @@
 	passed to that method.
 	@see <https://haxe.org/manual/lf-externs.html>]]></haxe_doc>
 	</typedef>
-	<class path="haxe.iterators.ArrayIterator" params="T" file="/home/runner/haxe/versions/1138057/std/haxe/iterators/ArrayIterator.hx">
+	<class path="haxe.iterators.ArrayIterator" params="T" file="/home/runner/haxe/versions/b7fce0e/std/haxe/iterators/ArrayIterator.hx">
 		<array final="1"><c path="Array"><c path="haxe.iterators.ArrayIterator.T"/></c></array>
 		<current expr="0">
 			<x path="Int"/>
@@ -2269,19 +2253,20 @@
 		<haxe_doc><![CDATA[This iterator is used only when `Array<T>` is passed to `Iterable<T>`]]></haxe_doc>
 		<meta><m n=":keep"/></meta>
 	</class>
-	<class path="js.Boot" params="" file="/home/runner/haxe/versions/1138057/std/js/Boot.hx">
+	<class path="js.Boot" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/Boot.hx">
 		<__string_rec set="method" line="58" static="1">
 			<f a="o:s">
-				<a>
-					<toString set="null"><f a=""><c path="String"/></f></toString>
-					<length set="null"><x path="Int"/></length>
-					<hasOwnProperty set="null"><f a="">
+				<x path="Null"><a>
+	<toString set="null"><f a=""><c path="String"/></f></toString>
+	<length set="null"><x path="Int"/></length>
+	<hasOwnProperty set="null"><x path="Null"><f a="">
 	<c path="String"/>
 	<x path="Bool"/>
-</f></hasOwnProperty>
-					<_hx_index set="null"><x path="Int"/></_hx_index>
-					<__enum__ set="null"><x path="Bool"/></__enum__>
-				</a>
+</f></x></hasOwnProperty>
+	<_hx_index set="null"><x path="Int"/></_hx_index>
+	<__params__ set="null"><x path="Bool"/></__params__>
+	<__enum__ set="null"><x path="Bool"/></__enum__>
+</a></x>
 				<c path="String"/>
 				<c path="String"/>
 			</f>
@@ -2297,7 +2282,7 @@
 			<m n=":dox"><e>hide</e></m>
 		</meta>
 	</class>
-	<class path="js.Lib" params="" file="/home/runner/haxe/versions/1138057/std/js/Lib.hx">
+	<class path="js.Lib" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/Lib.hx">
 		<require public="1" get="inline" set="null" line="65" static="1">
 			<f a="module">
 				<c path="String"/>
@@ -2364,7 +2349,7 @@
 	for the JavaScript target.</haxe_doc>
 		<meta><m n=":keep"/></meta>
 	</class>
-	<class path="js.lib.Error" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Error.hx" extern="1">
+	<class path="js.lib.Error" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Error.hx" extern="1">
 		<message public="1"><c path="String"/></message>
 		<name public="1"><c path="String"/></name>
 		<stack public="1" set="null"><c path="String"/></stack>
@@ -2377,7 +2362,7 @@
 			<m n=":native"><e>"Error"</e></m>
 		</meta>
 	</class>
-	<class path="js.lib.EvalError" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
+	<class path="js.lib.EvalError" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
 		<extends path="js.lib.Error"/>
 		<new public="1" set="method"><f a="?message">
 	<c path="String"/>
@@ -2385,7 +2370,7 @@
 </f></new>
 		<meta><m n=":native"><e>"EvalError"</e></m></meta>
 	</class>
-	<class path="js.lib.RangeError" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
+	<class path="js.lib.RangeError" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
 		<extends path="js.lib.Error"/>
 		<new public="1" set="method"><f a="?message">
 	<c path="String"/>
@@ -2393,7 +2378,7 @@
 </f></new>
 		<meta><m n=":native"><e>"RangeError"</e></m></meta>
 	</class>
-	<class path="js.lib.ReferenceError" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
+	<class path="js.lib.ReferenceError" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
 		<extends path="js.lib.Error"/>
 		<new public="1" set="method"><f a="?message">
 	<c path="String"/>
@@ -2401,7 +2386,7 @@
 </f></new>
 		<meta><m n=":native"><e>"ReferenceError"</e></m></meta>
 	</class>
-	<class path="js.lib.SyntaxError" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
+	<class path="js.lib.SyntaxError" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
 		<extends path="js.lib.Error"/>
 		<new public="1" set="method"><f a="?message">
 	<c path="String"/>
@@ -2409,7 +2394,7 @@
 </f></new>
 		<meta><m n=":native"><e>"SyntaxError"</e></m></meta>
 	</class>
-	<class path="js.lib.TypeError" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
+	<class path="js.lib.TypeError" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
 		<extends path="js.lib.Error"/>
 		<new public="1" set="method"><f a="?message">
 	<c path="String"/>
@@ -2417,7 +2402,7 @@
 </f></new>
 		<meta><m n=":native"><e>"TypeError"</e></m></meta>
 	</class>
-	<class path="js.lib.URIError" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
+	<class path="js.lib.URIError" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Error.hx" module="js.lib.Error" extern="1">
 		<extends path="js.lib.Error"/>
 		<new public="1" set="method"><f a="?message">
 	<c path="String"/>
@@ -2425,7 +2410,7 @@
 </f></new>
 		<meta><m n=":native"><e>"URIError"</e></m></meta>
 	</class>
-	<class path="js.lib.Function" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Function.hx" extern="1">
+	<class path="js.lib.Function" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Function.hx" extern="1">
 		<length public="1" set="null">
 			<x path="Int"/>
 			<haxe_doc>Specifies the number of arguments expected by the function.</haxe_doc>
@@ -2473,64 +2458,97 @@
 		</new>
 		<meta><m n=":native"><e>"Function"</e></m></meta>
 	</class>
-	<class path="js.lib.Object" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Object.hx" extern="1">
-		<assign public="1" params="T" set="method" static="1">
+	<class path="js.lib.Object" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Object.hx" extern="1">
+		<assign public="1" params="TSource:TDest" set="method" static="1">
 			<f a="target:sources">
-				<c path="assign.T"/>
+				<c path="assign.TSource"/>
 				<t path="haxe.extern.Rest"><a/></t>
-				<c path="assign.T"/>
+				<c path="assign.TDest"/>
 			</f>
-			<haxe_doc>Copies the values of all enumerable own properties from one or more
-		source objects to a target object.</haxe_doc>
+			<haxe_doc>The Object.assign() method is used to copy the values of all enumerable
+		own properties from one or more source objects to a target object. It
+		will return the target object.
+
+		Note: this is an ES2015 feature
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign</haxe_doc>
 		</assign>
 		<create public="1" params="T" set="method" static="1">
 			<f a="proto:?propertiesObject">
-				<a/>
-				<x path="haxe.DynamicAccess"><t path="js.lib.ObjectPropertyDescriptor"/></x>
+				<x path="Null"><a/></x>
+				<x path="haxe.DynamicAccess"><t path="js.lib.ObjectPropertyDescriptor"><x path="Any"/></t></x>
 				<c path="create.T"/>
 			</f>
-			<haxe_doc>Creates a new object with the specified prototype object and properties.</haxe_doc>
+			<haxe_doc>The Object.create() method create a new object, using an existing object
+		to provide the newly created object's __proto__ . (see browser console
+		for visual evidence.)
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create</haxe_doc>
 		</create>
 		<defineProperties public="1" params="T" set="method" static="1">
 			<f a="obj:props">
 				<c path="defineProperties.T"/>
-				<x path="haxe.DynamicAccess"><t path="js.lib.ObjectPropertyDescriptor"/></x>
+				<x path="haxe.DynamicAccess"><t path="js.lib.ObjectPropertyDescriptor"><x path="Any"/></t></x>
 				<c path="defineProperties.T"/>
 			</f>
-			<haxe_doc>Adds the named properties described by the given descriptors to an object.</haxe_doc>
+			<haxe_doc>The Object.defineProperties() method defines new or modifies existing
+		properties directly on an object, returning the object.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties</haxe_doc>
 		</defineProperties>
-		<defineProperty public="1" params="T" set="method" static="1">
+		<defineProperty public="1" params="T:TProp" set="method" static="1">
 			<f a="obj:prop:descriptor">
 				<c path="defineProperty.T"/>
 				<c path="String"/>
-				<t path="js.lib.ObjectPropertyDescriptor"/>
+				<t path="js.lib.ObjectPropertyDescriptor"><c path="defineProperty.TProp"/></t>
 				<c path="defineProperty.T"/>
 			</f>
-			<haxe_doc>Adds the named property described by a given descriptor to an object.</haxe_doc>
-			<overloads><defineProperty public="1" params="T" set="method">
+			<haxe_doc>The static method Object.defineProperty() defines a new property directly
+		on an object, or modifies an existing property on an object, and returns
+		the object.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty</haxe_doc>
+			<overloads><defineProperty public="1" params="T:TProp" set="method">
 	<f a="obj:prop:descriptor">
 		<c path="defineProperty.T"/>
 		<c path="js.lib.Symbol"/>
-		<t path="js.lib.ObjectPropertyDescriptor"/>
+		<t path="js.lib.ObjectPropertyDescriptor"><c path="defineProperty.TProp"/></t>
 		<c path="defineProperty.T"/>
 	</f>
-	<haxe_doc>Adds the named property described by a given descriptor to an object.</haxe_doc>
+	<haxe_doc>The static method Object.defineProperty() defines a new property directly
+		on an object, or modifies an existing property on an object, and returns
+		the object.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty</haxe_doc>
 </defineProperty></overloads>
 		</defineProperty>
-		<entries public="1" set="method" static="1">
+		<entries public="1" params="T" set="method" static="1">
 			<f a="obj">
-				<a/>
+				<c path="entries.T"/>
 				<c path="Array"><x path="js.lib.ObjectEntry"/></c>
 			</f>
-			<haxe_doc>Returns an array containing all of the [key, value] pairs of a given
-		object's own enumerable string properties.</haxe_doc>
+			<haxe_doc>The Object.entries() method returns an array of a given object's own
+		enumerable property [key, value] pairs, in the same order as that
+		provided by a for...in loop (the difference being that a for-in loop
+		enumerates properties in the prototype chain as well).
+
+		Note: this is an ES2017 feature
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries</haxe_doc>
 		</entries>
 		<freeze public="1" params="T" set="method" static="1">
 			<f a="obj">
 				<c path="freeze.T"/>
 				<c path="freeze.T"/>
 			</f>
-			<haxe_doc>Freezes an object: other code can't delete or change any properties.</haxe_doc>
+			<haxe_doc>The Object.freeze() method freezes an object: that is, prevents new
+		properties from being added to it; prevents existing properties from
+		being removed; and prevents existing properties, or their enumerability,
+		configurability, or writability, from being changed, it also prevents the
+		prototype from being changed.
+		The method returns the passed object.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze</haxe_doc>
 		</freeze>
 		<fromEntries public="1" params="T" set="method" static="1">
 			<f a="iterable">
@@ -2540,122 +2558,267 @@
 			<haxe_doc>Returns a new object from an iterable of key-value pairs
 		(reverses Object.entries).</haxe_doc>
 		</fromEntries>
-		<getOwnPropertyDescriptor public="1" set="method" static="1">
+		<getOwnPropertyDescriptor public="1" params="T:TProp" set="method" static="1">
 			<f a="obj:prop">
-				<a/>
+				<c path="getOwnPropertyDescriptor.T"/>
 				<c path="String"/>
-				<x path="Null"><t path="js.lib.ObjectPropertyDescriptor"/></x>
+				<x path="Null"><t path="js.lib.ObjectPropertyDescriptor"><c path="getOwnPropertyDescriptor.TProp"/></t></x>
 			</f>
-			<haxe_doc>Returns a property descriptor for a named property on an object.</haxe_doc>
+			<haxe_doc>The Object.getOwnPropertyDescriptor() method returns a property
+		descriptor for an own property (that is, one directly present on an
+		object and not in the object's prototype chain) of a given object.
+
+		In ES5, if the first argument to this method is not an object (a
+		primitive), then it will cause a TypeError. In ES2015, a non-object
+		first argument will be coerced to an object at first.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor</haxe_doc>
 			<overloads>
+				<getOwnPropertyDescriptor public="1" set="method">
+					<f a="obj:prop">
+						<c path="String"/>
+						<c path="js.lib.Symbol"/>
+						<x path="Null"><t path="js.lib.ObjectPropertyDescriptor"><c path="String"/></t></x>
+					</f>
+					<haxe_doc>The Object.getOwnPropertyDescriptor() method returns a property
+		descriptor for an own property (that is, one directly present on an
+		object and not in the object's prototype chain) of a given object.
+
+		In ES5, if the first argument to this method is not an object (a
+		primitive), then it will cause a TypeError. In ES2015, a non-object
+		first argument will be coerced to an object at first.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor</haxe_doc>
+				</getOwnPropertyDescriptor>
+				<getOwnPropertyDescriptor public="1" set="method">
+					<f a="obj:prop">
+						<c path="String"/>
+						<c path="String"/>
+						<x path="Null"><t path="js.lib.ObjectPropertyDescriptor"><c path="String"/></t></x>
+					</f>
+					<haxe_doc>The Object.getOwnPropertyDescriptor() method returns a property
+		descriptor for an own property (that is, one directly present on an
+		object and not in the object's prototype chain) of a given object.
+
+		In ES5, if the first argument to this method is not an object (a
+		primitive), then it will cause a TypeError. In ES2015, a non-object
+		first argument will be coerced to an object at first.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor</haxe_doc>
+				</getOwnPropertyDescriptor>
 				<getOwnPropertyDescriptor public="1" params="T" set="method">
 					<f a="target:propertyKey">
 						<c path="Array"><c path="getOwnPropertyDescriptor.T"/></c>
 						<x path="Int"/>
-						<x path="Null"><t path="js.lib.ObjectPropertyDescriptor"/></x>
+						<x path="Null"><t path="js.lib.ObjectPropertyDescriptor"><c path="getOwnPropertyDescriptor.T"/></t></x>
 					</f>
-					<haxe_doc>Returns a property descriptor for a named property on an object.</haxe_doc>
+					<haxe_doc>The Object.getOwnPropertyDescriptor() method returns a property
+		descriptor for an own property (that is, one directly present on an
+		object and not in the object's prototype chain) of a given object.
+
+		In ES5, if the first argument to this method is not an object (a
+		primitive), then it will cause a TypeError. In ES2015, a non-object
+		first argument will be coerced to an object at first.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor</haxe_doc>
 				</getOwnPropertyDescriptor>
-				<getOwnPropertyDescriptor public="1" set="method">
+				<getOwnPropertyDescriptor public="1" params="T:TProp" set="method">
 					<f a="obj:prop">
-						<a/>
+						<c path="getOwnPropertyDescriptor.T"/>
 						<c path="js.lib.Symbol"/>
-						<x path="Null"><t path="js.lib.ObjectPropertyDescriptor"/></x>
+						<x path="Null"><t path="js.lib.ObjectPropertyDescriptor"><c path="getOwnPropertyDescriptor.TProp"/></t></x>
 					</f>
-					<haxe_doc>Returns a property descriptor for a named property on an object.</haxe_doc>
+					<haxe_doc>The Object.getOwnPropertyDescriptor() method returns a property
+		descriptor for an own property (that is, one directly present on an
+		object and not in the object's prototype chain) of a given object.
+
+		In ES5, if the first argument to this method is not an object (a
+		primitive), then it will cause a TypeError. In ES2015, a non-object
+		first argument will be coerced to an object at first.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor</haxe_doc>
 				</getOwnPropertyDescriptor>
 			</overloads>
 		</getOwnPropertyDescriptor>
-		<getOwnPropertyNames public="1" set="method" static="1">
+		<getOwnPropertyDescriptors public="1" params="T" set="method" static="1">
 			<f a="obj">
-				<a/>
+				<c path="getOwnPropertyDescriptors.T"/>
+				<x path="haxe.DynamicAccess"><t path="js.lib.ObjectPropertyDescriptor"><x path="Any"/></t></x>
+			</f>
+			<haxe_doc>The Object.getOwnPropertyDescriptors() method returns all own property
+		descriptors of a given object.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors</haxe_doc>
+			<overloads>
+				<getOwnPropertyDescriptors public="1" set="method">
+					<f a="target">
+						<c path="String"/>
+						<x path="haxe.DynamicAccess"><t path="js.lib.ObjectPropertyDescriptor"><c path="String"/></t></x>
+					</f>
+					<haxe_doc>The Object.getOwnPropertyDescriptors() method returns all own property
+		descriptors of a given object.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors</haxe_doc>
+				</getOwnPropertyDescriptors>
+				<getOwnPropertyDescriptors public="1" params="T" set="method">
+					<f a="target">
+						<c path="Array"><c path="getOwnPropertyDescriptors.T"/></c>
+						<x path="haxe.DynamicAccess"><t path="js.lib.ObjectPropertyDescriptor"><c path="getOwnPropertyDescriptors.T"/></t></x>
+					</f>
+					<haxe_doc>The Object.getOwnPropertyDescriptors() method returns all own property
+		descriptors of a given object.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors</haxe_doc>
+				</getOwnPropertyDescriptors>
+			</overloads>
+		</getOwnPropertyDescriptors>
+		<getOwnPropertyNames public="1" params="T" set="method" static="1">
+			<f a="obj">
+				<c path="getOwnPropertyNames.T"/>
 				<c path="Array"><c path="String"/></c>
 			</f>
-			<haxe_doc>Returns an array containing the names of all of the given object's own
-		enumerable and non-enumerable properties.</haxe_doc>
+			<haxe_doc>The Object.getOwnPropertyNames() method returns an array of all
+		properties (including non-enumerable properties except for those which
+		use Symbol) found directly upon a given object.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames</haxe_doc>
 		</getOwnPropertyNames>
-		<getOwnPropertySymbols public="1" set="method" static="1">
+		<getOwnPropertySymbols public="1" params="T" set="method" static="1">
 			<f a="obj">
-				<a/>
+				<c path="getOwnPropertySymbols.T"/>
 				<c path="Array"><c path="js.lib.Symbol"/></c>
 			</f>
-			<haxe_doc>Returns an array of all symbol properties found directly upon a given object.</haxe_doc>
+			<haxe_doc>The Object.getOwnPropertySymbols() method returns an array of all symbol
+		properties found directly upon a given object.
+
+		Note: this is an ES2015 feature
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols</haxe_doc>
 		</getOwnPropertySymbols>
-		<getPrototypeOf public="1" params="TProto" set="method" static="1">
+		<getPrototypeOf public="1" params="T:TProto" set="method" static="1">
 			<f a="obj">
-				<a/>
-				<x path="Null"><c path="getPrototypeOf.TProto"/></x>
+				<c path="getPrototypeOf.T"/>
+				<c path="getPrototypeOf.TProto"/>
 			</f>
-			<haxe_doc>Returns the prototype of the specified object.</haxe_doc>
+			<haxe_doc>The Object.getPrototypeOf() method returns the prototype (i.e. the value
+		of the internal [[Prototype]] property) of the specified object.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf</haxe_doc>
 		</getPrototypeOf>
+		<isSame public="1" params="T" set="method" static="1">
+			<f a="obj1:obj2">
+				<c path="isSame.T"/>
+				<c path="isSame.T"/>
+				<x path="Bool"/>
+			</f>
+			<meta><m n=":native"><e>"is"</e></m></meta>
+			<haxe_doc>The Object.is() method determines whether two values are the same value.
+
+		Note: this is an ES2015 feature
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is</haxe_doc>
+		</isSame>
 		<is public="1" params="T" set="method" static="1">
-			<f a="value1:value2">
+			<f a="obj1:obj2">
 				<c path="is.T"/>
 				<c path="is.T"/>
 				<x path="Bool"/>
 			</f>
-			<haxe_doc>Compares if two values are the same value. Equates all NaN values
-		(which differs from both Abstract Equality Comparison and
-		Strict Equality Comparison).</haxe_doc>
+			<meta><m n=":deprecated"><e>"Use Object.isSame()"</e></m></meta>
+			<haxe_doc>The Object.is() method determines whether two values are the same value.
+
+		Note: this is an ES2015 feature
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is</haxe_doc>
 		</is>
-		<isExtensible public="1" set="method" static="1">
+		<isExtensible public="1" params="T" set="method" static="1">
 			<f a="obj">
-				<a/>
+				<c path="isExtensible.T"/>
 				<x path="Bool"/>
 			</f>
-			<haxe_doc>Determines if extending of an object is allowed.</haxe_doc>
+			<haxe_doc>The Object.isExtensible() method determines if an object is extensible
+		(whether it can have new properties added to it).
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/isExtensible</haxe_doc>
 		</isExtensible>
-		<isFrozen public="1" set="method" static="1">
+		<isFrozen public="1" params="T" set="method" static="1">
 			<f a="obj">
-				<a/>
+				<c path="isFrozen.T"/>
 				<x path="Bool"/>
 			</f>
-			<haxe_doc>Determines if an object was frozen.</haxe_doc>
+			<haxe_doc>The Object.isFrozen() determines if an object is frozen.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/isFrozen</haxe_doc>
 		</isFrozen>
-		<isSealed public="1" set="method" static="1">
+		<isSealed public="1" params="T" set="method" static="1">
 			<f a="obj">
-				<a/>
+				<c path="isSealed.T"/>
 				<x path="Bool"/>
 			</f>
-			<haxe_doc>Determines if an object is sealed.</haxe_doc>
+			<haxe_doc>The Object.isSealed() method determines if an object is sealed.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/isSealed</haxe_doc>
 		</isSealed>
-		<keys public="1" set="method" static="1">
+		<keys public="1" params="T" set="method" static="1">
 			<f a="obj">
-				<a/>
+				<c path="keys.T"/>
 				<c path="Array"><c path="String"/></c>
 			</f>
-			<haxe_doc>Returns an array containing the names of all of the given object's own
-		enumerable string properties.</haxe_doc>
+			<haxe_doc>The Object.keys() method returns an array of a given object's own
+		enumerable properties, in the same order as that provided by a for...in
+		loop (the difference being that a for-in loop enumerates properties in
+		the prototype chain as well).
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys</haxe_doc>
 		</keys>
 		<preventExtensions public="1" params="T" set="method" static="1">
 			<f a="obj">
 				<c path="preventExtensions.T"/>
 				<c path="preventExtensions.T"/>
 			</f>
-			<haxe_doc>Prevents any extensions of an object.</haxe_doc>
+			<haxe_doc>The Object.preventExtensions() method prevents new properties from ever
+		being added to an object (i.e. prevents future extensions to the object).
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/preventExtensions</haxe_doc>
 		</preventExtensions>
 		<seal public="1" params="T" set="method" static="1">
 			<f a="obj">
 				<c path="seal.T"/>
 				<c path="seal.T"/>
 			</f>
-			<haxe_doc>Prevents other code from deleting properties of an object.</haxe_doc>
+			<haxe_doc>The Object.seal() method seals an object, preventing new properties from
+		being added to it and marking all existing properties as
+		non-configurable. Values of present properties can still be changed as
+		long as they are writable.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/seal</haxe_doc>
 		</seal>
-		<setPrototypeOf public="1" params="T" set="method" static="1">
-			<f a="obj:prototype">
+		<setPrototypeOf public="1" params="T:TProto" set="method" static="1">
+			<f a="obj:proto">
 				<c path="setPrototypeOf.T"/>
-				<x path="Null"><a/></x>
+				<x path="Null"><c path="setPrototypeOf.TProto"/></x>
 				<c path="setPrototypeOf.T"/>
 			</f>
-			<haxe_doc>Sets the prototype (i.e., the internal Prototype property).</haxe_doc>
+			<haxe_doc>The Object.setPrototypeOf() method sets the prototype (i.e., the internal
+		[[Prototype]] property) of a specified object to another object or null.
+
+		Note: this is an ES2015 feature
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf</haxe_doc>
 		</setPrototypeOf>
-		<values public="1" set="method" static="1">
+		<values public="1" params="T" set="method" static="1">
 			<f a="obj">
-				<a/>
+				<c path="values.T"/>
 				<c path="Array"><x path="Any"/></c>
 			</f>
-			<haxe_doc>Returns an array containing the values that correspond to all of
-		a given object's own enumerable string properties.</haxe_doc>
+			<haxe_doc>The Object.values() method returns an array of a given object's own
+		enumerable property values, in the same order as that provided by a
+		for...in loop (the difference being that a for-in loop enumerates
+		properties in the prototype chain as well).
+
+		Note: this is an ES2017 feature
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values</haxe_doc>
 		</values>
 		<prototype public="1" set="null" static="1">
 			<t path="js.lib.ObjectPrototype"/>
@@ -2676,7 +2839,7 @@
 			<m n=":native"><e>"Object"</e></m>
 		</meta>
 	</class>
-	<typedef path="js.lib.ObjectPrototype" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Object.hx" module="js.lib.Object">
+	<typedef path="js.lib.ObjectPrototype" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Object.hx" module="js.lib.Object">
 		<a>
 			<valueOf set="null">
 				<c path="js.lib.Function"/>
@@ -2709,25 +2872,24 @@
 		<haxe_doc><![CDATA[Type for
 	@see <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object>]]></haxe_doc>
 	</typedef>
-	<typedef path="js.lib.ObjectPropertyDescriptor" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Object.hx" module="js.lib.Object">
+	<typedef path="js.lib.ObjectPropertyDescriptor" params="TProp" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Object.hx" module="js.lib.Object">
 		<a>
 			<writable>
 				<x path="Null"><x path="Bool"/></x>
 				<meta><m n=":optional"/></meta>
 				<haxe_doc>`true` if and only if the value associated with the property may be
 		changed with an assignment operator.
-
 		Defaults to `false`.</haxe_doc>
 			</writable>
 			<value>
-				<x path="Null"><x path="Any"/></x>
+				<x path="Null"><c path="js.lib.ObjectPropertyDescriptor.TProp"/></x>
 				<meta><m n=":optional"/></meta>
 				<haxe_doc>The value associated with the property.
 		Can be any valid JavaScript value (number, object, function, etc).</haxe_doc>
 			</value>
 			<set>
 				<x path="Null"><f a="">
-	<x path="Any"/>
+	<c path="js.lib.ObjectPropertyDescriptor.TProp"/>
 	<x path="Void"/>
 </f></x>
 				<meta><m n=":optional"/></meta>
@@ -2737,7 +2899,7 @@
 		and with `this` set to the object through which the property is assigned.</haxe_doc>
 			</set>
 			<get>
-				<x path="Null"><f a=""><x path="Any"/></f></x>
+				<x path="Null"><f a=""><c path="js.lib.ObjectPropertyDescriptor.TProp"/></f></x>
 				<meta><m n=":optional"/></meta>
 				<haxe_doc>A function which serves as a getter for the property, or `undefined` if
 		there is no getter. When the property is accessed, this function is
@@ -2751,7 +2913,6 @@
 				<meta><m n=":optional"/></meta>
 				<haxe_doc>`true` if and only if this property shows up during enumeration of the
 		properties on the corresponding object.
-
 		Defaults to `false`.</haxe_doc>
 			</enumerable>
 			<configurable>
@@ -2759,18 +2920,17 @@
 				<meta><m n=":optional"/></meta>
 				<haxe_doc>`true` if and only if the type of this property descriptor may be
 		changed and if the property may be deleted from the corresponding object.
-
 		Defaults to `false`.</haxe_doc>
 			</configurable>
 		</a>
 		<haxe_doc><![CDATA[@see <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty>]]></haxe_doc>
 	</typedef>
-	<abstract path="js.lib.ObjectEntry" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Object.hx" module="js.lib.Object">
+	<abstract path="js.lib.ObjectEntry" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Object.hx" module="js.lib.Object">
 		<this><c path="Array"><x path="Any"/></c></this>
 		<haxe_doc>Key/value access helper for `js.lib.Object.entries()`.</haxe_doc>
-		<impl><class path="js.lib._Object.ObjectEntry_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Object.hx" private="1" module="js.lib.Object" final="1"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="js.lib._Object.ObjectEntry_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Object.hx" private="1" module="js.lib.Object" final="1"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<class path="js.lib.Promise" params="T" file="/home/runner/haxe/versions/1138057/std/js/lib/Promise.hx" extern="1">
+	<class path="js.lib.Promise" params="T" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Promise.hx" extern="1">
 		<resolve public="1" params="T" set="method" static="1">
 			<f a="thenable">
 				<x path="js.lib.Thenable"><c path="resolve.T"/></x>
@@ -2956,7 +3116,7 @@
 	Documentation [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) by [Mozilla Contributors](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise$history), licensed under [CC-BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/).</haxe_doc>
 		<meta><m n=":native"><e>"Promise"</e></m></meta>
 	</class>
-	<abstract path="js.lib.PromiseHandler" params="T:TOut" file="/home/runner/haxe/versions/1138057/std/js/lib/Promise.hx" module="js.lib.Promise">
+	<abstract path="js.lib.PromiseHandler" params="T:TOut" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Promise.hx" module="js.lib.Promise">
 		<from>
 			<icast><f a="">
 	<c path="js.lib.PromiseHandler.T"/>
@@ -2976,9 +3136,9 @@
 	<d/>
 </f></this>
 		<haxe_doc>Handler type for the Promise object.</haxe_doc>
-		<impl><class path="js.lib._Promise.PromiseHandler_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Promise.hx" private="1" module="js.lib.Promise" final="1"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="js.lib._Promise.PromiseHandler_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Promise.hx" private="1" module="js.lib.Promise" final="1"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<abstract path="js.lib.Thenable" params="T" file="/home/runner/haxe/versions/1138057/std/js/lib/Promise.hx" module="js.lib.Promise">
+	<abstract path="js.lib.Thenable" params="T" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Promise.hx" module="js.lib.Promise">
 		<from><icast><t path="js.lib.ThenableStruct"><c path="js.lib.Thenable.T"/></t></icast></from>
 		<this><t path="js.lib.ThenableStruct"><c path="js.lib.Thenable.T"/></t></this>
 		<haxe_doc>A value with a `then` method.</haxe_doc>
@@ -2986,9 +3146,9 @@
 			<m n=":forward"/>
 			<m n=":transitive"/>
 		</meta>
-		<impl><class path="js.lib._Promise.Thenable_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Promise.hx" private="1" module="js.lib.Promise" final="1"><meta><m n=":keep"/></meta></class></impl>
+		<impl><class path="js.lib._Promise.Thenable_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Promise.hx" private="1" module="js.lib.Promise" final="1"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
-	<typedef path="js.lib.ThenableStruct" params="T" file="/home/runner/haxe/versions/1138057/std/js/lib/Promise.hx" module="js.lib.Promise"><a><then params="TOut" set="method"><f a="onFulfilled:?onRejected">
+	<typedef path="js.lib.ThenableStruct" params="T" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Promise.hx" module="js.lib.Promise"><a><then params="TOut" set="method"><f a="onFulfilled:?onRejected">
 	<x path="Null"><x path="js.lib.PromiseHandler">
 	<c path="js.lib.ThenableStruct.T"/>
 	<c path="then.TOut"/>
@@ -2999,7 +3159,7 @@
 	</x>
 	<x path="js.lib.Thenable"><c path="then.TOut"/></x>
 </f></then></a></typedef>
-	<typedef path="js.lib.PromiseSettleOutcome" params="T" file="/home/runner/haxe/versions/1138057/std/js/lib/Promise.hx" module="js.lib.Promise"><a>
+	<typedef path="js.lib.PromiseSettleOutcome" params="T" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Promise.hx" module="js.lib.Promise"><a>
 	<value>
 		<x path="Null"><c path="js.lib.PromiseSettleOutcome.T"/></x>
 		<meta><m n=":optional"/></meta>
@@ -3010,16 +3170,16 @@
 		<meta><m n=":optional"/></meta>
 	</reason>
 </a></typedef>
-	<abstract path="js.lib.PromiseSettleStatus" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Promise.hx" module="js.lib.Promise">
+	<abstract path="js.lib.PromiseSettleStatus" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Promise.hx" module="js.lib.Promise">
 		<this><c path="String"/></this>
 		<to><icast><c path="String"/></icast></to>
 		<meta><m n=":enum"/></meta>
-		<impl><class path="js.lib._Promise.PromiseSettleStatus_Impl_" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Promise.hx" private="1" module="js.lib.Promise" final="1"><meta>
+		<impl><class path="js.lib._Promise.PromiseSettleStatus_Impl_" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Promise.hx" private="1" module="js.lib.Promise" final="1"><meta>
 	<m n=":keep"/>
 	<m n=":enum"/>
 </meta></class></impl>
 	</abstract>
-	<class path="js.lib.RegExpMatch" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/RegExp.hx" module="js.lib.RegExp" extern="1">
+	<class path="js.lib.RegExpMatch" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/RegExp.hx" module="js.lib.RegExp" extern="1">
 		<extends path="Array"><c path="String"/></extends>
 		<index public="1">
 			<x path="Int"/>
@@ -3038,22 +3198,29 @@
 		</groups>
 		<haxe_doc>A return value of the `RegExp.exec` method.</haxe_doc>
 	</class>
-	<class path="js.lib.Symbol" params="" file="/home/runner/haxe/versions/1138057/std/js/lib/Symbol.hx" extern="1">
+	<class path="js.lib.Symbol" params="" file="/home/runner/haxe/versions/b7fce0e/std/js/lib/Symbol.hx" extern="1">
 		<for_ public="1" set="method" static="1">
 			<f a="key">
 				<c path="String"/>
 				<c path="js.lib.Symbol"/>
 			</f>
 			<meta><m n=":native"><e>"for"</e></m></meta>
-			<haxe_doc>Searches for existing symbols with the given key and returns it if found.
-		Otherwise a new symbol gets created in the global symbol registry with this key.</haxe_doc>
+			<haxe_doc>The Symbol.for(key) method searches for existing symbols in a
+		runtime-wide symbol registry with the given key and returns it if found.
+		Otherwise a new symbol gets created in the global symbol registry with
+		this key.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/for</haxe_doc>
 		</for_>
 		<keyFor public="1" set="method" static="1">
 			<f a="sym">
 				<c path="js.lib.Symbol"/>
 				<x path="Null"><c path="String"/></x>
 			</f>
-			<haxe_doc>Retrieves a shared symbol key from the global symbol registry for the given symbol.</haxe_doc>
+			<haxe_doc>The Symbol.keyFor(sym) method retrieves a shared symbol key from the
+		global symbol registry for the given symbol.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/keyFor</haxe_doc>
 		</keyFor>
 		<iterator public="1" set="null" static="1">
 			<c path="js.lib.Symbol"/>
@@ -3063,11 +3230,60 @@
 			<c path="js.lib.Symbol"/>
 			<haxe_doc>A method that returns the default AsyncIterator for an object.</haxe_doc>
 		</asyncIterator>
+		<match public="1" set="null" static="1">
+			<c path="js.lib.Symbol"/>
+			<haxe_doc>A method that matches against a string, also used to determine if an
+		object may be used as a regular expression. Used by
+		String.prototype.match().</haxe_doc>
+		</match>
+		<replace public="1" set="null" static="1">
+			<c path="js.lib.Symbol"/>
+			<haxe_doc>A method that replaces matched substrings of a string. Used by
+		String.prototype.replace().</haxe_doc>
+		</replace>
+		<search public="1" set="null" static="1">
+			<c path="js.lib.Symbol"/>
+			<haxe_doc>A method that returns the index within a string that matches the regular
+		expression. Used by String.prototype.search().</haxe_doc>
+		</search>
+		<split public="1" set="null" static="1">
+			<c path="js.lib.Symbol"/>
+			<haxe_doc>A method that splits a string at the indices that match a regular
+		expression. Used by String.prototype.split().</haxe_doc>
+		</split>
+		<hasInstance public="1" set="null" static="1">
+			<c path="js.lib.Symbol"/>
+			<haxe_doc>A method determining if a constructor object recognizes an object as its
+		instance. Used by instanceof.</haxe_doc>
+		</hasInstance>
+		<isConcatSpreadable public="1" set="null" static="1">
+			<c path="js.lib.Symbol"/>
+			<haxe_doc>A Boolean value indicating if an object should be flattened to its array
+		elements. Used by Array.prototype.concat().</haxe_doc>
+		</isConcatSpreadable>
+		<unscopables public="1" set="null" static="1">
+			<c path="js.lib.Symbol"/>
+			<haxe_doc>An object value of whose own and inherited property names are excluded
+		from the with environment bindings of the associated object.</haxe_doc>
+		</unscopables>
+		<species public="1" set="null" static="1">
+			<c path="js.lib.Symbol"/>
+			<haxe_doc>A constructor function that is used to create derived objects.</haxe_doc>
+		</species>
+		<toPrimitive public="1" set="null" static="1">
+			<c path="js.lib.Symbol"/>
+			<haxe_doc>A method converting an object to a primitive value.</haxe_doc>
+		</toPrimitive>
+		<toStringTag public="1" set="null" static="1">
+			<c path="js.lib.Symbol"/>
+			<haxe_doc>A string value used for the default description of an object. Used by
+		Object.prototype.toString().</haxe_doc>
+		</toStringTag>
 		<toString public="1" set="method">
 			<f a=""><c path="String"/></f>
 			<haxe_doc>Returns a string containing the description of the Symbol.</haxe_doc>
 		</toString>
-		<ofObject public="1" params="T" get="inline" set="null" line="67">
+		<ofObject public="1" params="T" get="inline" set="null" line="134">
 			<f a="object">
 				<a/>
 				<x path="Null"><c path="ofObject.T"/></x>
@@ -3083,9 +3299,10 @@
 			</f>
 			<meta><m n=":selfCall"/></meta>
 			<haxe_doc>To create a new primitive symbol, use `new Symbol()` with an optional string as its `description`.
-
 		NOTE: Unlike in plain JavaScript, `new Symbol()` syntax is used in Haxe. This generates a `Symbol(...)`
-		expression as required by the JavaScript specification.</haxe_doc>
+		expression as required by the JavaScript specification.
+
+		See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol</haxe_doc>
 		</new>
 		<meta><m n=":native"><e>"Symbol"</e></m></meta>
 	</class>
@@ -8008,7 +8225,7 @@
 		</version>
 		<getText public="1" set="method">
 			<f a="?range">
-				<x path="Null"><t path="languageServerProtocol.textdocument.Range"/></x>
+				<t path="languageServerProtocol.textdocument.Range"/>
 				<c path="String"/>
 			</f>
 			<haxe_doc>Get the text of this document. A substring can be retrieved by
@@ -9713,15 +9930,15 @@
 	@since 3.17.0</haxe_doc>
 	</typedef>
 	<class path="languageServerProtocol.protocol.InlineValueRequest" params="" file="src/languageServerProtocol/protocol/InlineValue.hx" module="languageServerProtocol.protocol.InlineValue">
-		<type final="1" public="1" get="inline" set="null" expr="new ProtocolRequestType&lt;InlineValueParams,Null&lt;Array&lt;InlineValueParams&gt;&gt;,Array&lt;InlineValueParams&gt;,NoData,InlineValueRegistrationOptions&gt;(&quot;textDocument/inlineValue&quot;)" line="83" static="1">
+		<type final="1" public="1" get="inline" set="null" expr="new ProtocolRequestType&lt;InlineValueParams,Null&lt;Array&lt;InlineValue&gt;&gt;,Array&lt;InlineValue&gt;,NoData,InlineValueRegistrationOptions&gt;(&quot;textDocument/inlineValue&quot;)" line="83" static="1">
 			<x path="languageServerProtocol.protocol.ProtocolRequestType">
 				<t path="languageServerProtocol.protocol.InlineValueParams"/>
-				<x path="Null"><c path="Array"><t path="languageServerProtocol.protocol.InlineValueParams"/></c></x>
-				<c path="Array"><t path="languageServerProtocol.protocol.InlineValueParams"/></c>
+				<x path="Null"><c path="Array"><t path="languageServerProtocol.InlineValue"/></c></x>
+				<c path="Array"><t path="languageServerProtocol.InlineValue"/></c>
 				<e path="jsonrpc.NoData"/>
 				<t path="languageServerProtocol.protocol.InlineValueRegistrationOptions"/>
 			</x>
-			<meta><m n=":value"><e><![CDATA[new ProtocolRequestType<InlineValueParams,Null<Array<InlineValueParams>>,Array<InlineValueParams>,NoData,InlineValueRegistrationOptions>("textDocument/inlineValue")]]></e></m></meta>
+			<meta><m n=":value"><e><![CDATA[new ProtocolRequestType<InlineValueParams,Null<Array<InlineValue>>,Array<InlineValue>,NoData,InlineValueRegistrationOptions>("textDocument/inlineValue")]]></e></m></meta>
 		</type>
 		<haxe_doc>A request to provide inline values in a document. The request's parameter is of
 	type [InlineValueParams](#InlineValueParams), the response is of type
@@ -11736,10 +11953,9 @@
 		@since 3.16.0</haxe_doc>
 			</markdown>
 		</a>
-		<haxe_doc>A type indicating how positions are encoded,
-	specifically what column offsets mean.
+		<haxe_doc>General client capabilities.
 
-	@since 3.17.0</haxe_doc>
+	@since 3.16.0</haxe_doc>
 	</typedef>
 	<typedef path="languageServerProtocol.protocol.NotebookDocumentClientCapabilities" params="" file="src/languageServerProtocol/protocol/Protocol.hx" module="languageServerProtocol.protocol.Protocol">
 		<a><synchronization>
@@ -16492,7 +16708,7 @@
 		</version>
 		<getText public="1" set="method">
 			<f a="?range">
-				<x path="Null"><t path="languageServerProtocol.textdocument.Range"/></x>
+				<t path="languageServerProtocol.textdocument.Range"/>
 				<c path="String"/>
 			</f>
 			<haxe_doc>Get the text of this document. A substring can be retrieved by
